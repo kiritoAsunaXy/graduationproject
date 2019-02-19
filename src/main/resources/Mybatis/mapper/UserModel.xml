@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyu.springboot.mapper.UserModelMapper">
+
+<insert id="insertUserModel">
+    insert into usermodel(userid,typeone,typetwo,typethree) values (#{userid},#{typeone},#{typetwo},#{typethree})
+</insert>
+
+ <select id="checkUserIfExist" resultType="Integer">
+     select count(id) from usermodel where userid=#{id}
+ </select>
+
+
+    <update id="updateUserModel">
+        update usermodel set typeone=#{typeone},typetwo=#{typetwo},typethree=#{typethree} where userid=#{userid}
+    </update>
+
+    <select id="getAllModels" resultType="com.xuyu.springboot.bean.UserModel">
+        select * from usermodel
+    </select>
+
+    <select id="getModelByUserId" resultType="com.xuyu.springboot.bean.UserModel">
+        select * from usermodel where userid=#{id}
+    </select>
+
+    <update id="updateUserModelsubmitname">
+        update usermodel set submitname=#{lists} where userid=#{id}
+    </update>
+
+
+    <update id="updateScore">
+        update usermodel set score=#{score} where id=#{id}
+    </update>
+
+</mapper>

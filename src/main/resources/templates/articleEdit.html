@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+</head>
+<body>
+<!--引入了左侧菜单栏-->
+<div th:replace="leftmenu :: html"></div>
+
+<!--右侧内容-->
+<div class="admin-right">
+    <!--引入头部文件-->
+    <div th:replace="head :: html"></div>
+
+    <!--内容-->
+    <div class="admin-content">
+        <!--面包屑导航-->
+        <div class="content-header">
+            <div class="breadcrumb">
+                <span>后台主页</span>
+                <span class="divider">/</span>
+                <span class="active">类别表</span>
+            </div>
+        </div>
+
+        <!--全部主体内容-->
+        <div class="list-content">
+            <!--块元素-->
+            <div class="block">
+                <!--修饰块元素名称-->
+                <div class="banner">
+                    <p class="tab fixed">博文</p>
+                </div>
+
+                <!--正文内容-->
+                <div class="main">
+                    <!--主体内容-->
+                    <div class="list-content">
+                        <!--块元素-->
+                        <div class="block">
+                            <!--页面有多个表格时，可以用于标识表格-->
+                            <h2>博文</h2>
+                            <!--右上角的返回按钮-->
+                            <a href="javascript:history.back();">
+                                <button class="button wathet" style="position: absolute;right: 20px;top: 16px;"><span class="icon-arrow_back"></span> 返回</button>
+                            </a>
+
+                            <!--正文内容-->
+                            <div class="main">
+
+                                <!--表格上方的搜索操作-->
+                                <div style="text-align:right;margin-bottom:10px;">
+
+                                    <!-- 选择类型检索 -->
+                                    <select id="type_id" class="no-shadow">
+                                        <option value="">请选择文章类型</option>
+                                           <tr th:each="typeinfo : ${typeList}">
+                                                <option th:value="${typeinfo.id}" th:text="${typeinfo.name}"></option>
+                                            </tr>
+
+
+                                        <!--<c:forEach items="${typeList}" var="typeInfo" varStatus="status" >
+                                            <tr>
+                                                <option value="${typeInfo.id}">${typeInfo.name}</option>
+                                            </tr>
+                                        </c:forEach>-->
+                                    </select>
+
+
+                                    <!-- 选择日期范围检索 -->
+                                    <input type="text" id="date2" class="date" style="width: 300px;" value="" readonly/>
+
+                                    <!-- 标题检索 -->
+                                    <input type="text" class="text" id="title" value="" placeholder="检索文章标题" />
+                                    <!-- 点击查询按钮 -->
+                                    <button class="button blue" style="margin-top: -3px;" onclick="search()"><span class="icon-search"></span></button>
+
+                                </div>
+
+                                <!--表格上方的操作元素，添加、删除等-->
+                                <div class="operation-wrap">
+                                    <div class="buttons-wrap">
+                                        <a href="/edit"><button id="addbtn" class="button blue"><span class="icon-plus"></span> 添加</button></a>
+                                    </div>
+                                </div>
+                                <table id="table" class="table color2">
+                                    <thead>
+                                    <!--获取分页信息的隐藏标签-->
+                                    <p id="pages" th:text="${pageInfo.getPages()}" style="display: none"></p>
+                                    <p id="now" th:text="${pageInfo.getPageNum()}" style="display: none"></p>
+                                    <tr>
+                                        <th style="width: 30px"><input type="checkbox" class="fill listen-1" /> </th>
+                                        <th style="width: 80px">序号</th>
+                                        <th style="width: 130px">文章类型</th>
+                                        <th style="text-align:center">文章标题</th>
+                                        <th style="width: 180px">发布日期</th>
+                                        <th style="width: 100px">阅读量</th>
+                                        <th style="width: 100px">作者</th>
+                                        <th style="width: 70px">编辑</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                  <tr th:each="entity : ${pageInfo.list}">
+                                      <td th:if="${entity.status}!=0"><input type="checkbox" class="fill listen-1-2" name="id" th:value="${entity.id}"/> </td>
+                                      <td th:if="${entity.status}!=0" th:text="${entity.id}"></td>
+                                      <td  th:if="${entity.status}!=0" th:text="${entity.name}"></td>
+                                      <td th:if="${entity.status}!=0" th:text="${entity.title}"></td>
+                                      <td th:if="${entity.status}!=0" th:text="${entity.update_time}"></td>
+                                      <td th:if="${entity.status}!=0" th:text="${entity.view_count}"></td>
+                                      <td th:if="${entity.status}!=0" th:text="${entity.user.username}"></td>
+
+                                      <td th:if="${entity.status}==1">
+                                          <a th:href="@{'edit?id='+${entity.id}}">
+                                          <button class="button indigo"><span class="icon-mode_edit"></span>编辑</button>
+                                          </a>
+                                          <a th:href="@{'article.action?id='+${entity.id}+'&typeId='+${entity.type_id}}"><button class="button green"><span class="icon-mode_edit"></span>查看</button></a>
+                                          </td>
+                                      <td th:if="${entity.status}==3">
+                                          <p style="color: red;text-align: center">待审核</p>
+                                      </td>
+                                  </tr>
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--分页显示栏-->
+            <div class="page">
+                <ul id="page" class="pagination"></ul>
+            </div>
+
+            <!-- 批量处理 -->
+            <!--块元素-->
+            <div class="block">
+                <!--banner用来修饰块元素的名称-->
+                <div class="banner">
+                    <p class="tab fixed">批量操作<span class="hint">Batch Opt</span></p>
+                </div>
+                <!--正文内容-->
+                <div class="main" style="margin-bottom:200px">
+                    <input type="radio" class="fill" name="radio" value="move"/>批量移动到模块:
+                    <select id="type_id2" class="no-shadow">
+                        <option value="">请选择</option>
+                        <tr th:each="typeinfo : ${typeList}">
+                            <option th:value="${typeinfo.id}" th:text="${typeinfo.name}"></option>
+                        </tr>
+
+                        <!--<c:forEach items="${typeList}" var="typeInfo" varStatus="status" >-->
+                            <!--<tr>-->
+                                <!--<option value="${typeInfo.id}">${typeInfo.name}</option>-->
+                            <!--</tr>-->
+                        <!--</c:forEach>-->
+                    </select>
+                    </br>
+                    <input type="radio" class="fill" name="radio" value="recycle_bin" />批量放入回收站
+                    </br>
+                    <button  id="submit" class="button green" style="margin-top:20px"><span class="icon-check"></span>提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    //批量操作的时候的下拉列表框
+    javaex.select({
+        id : "type_id2",
+    });
+
+    //通过类型检索
+    javaex.select({
+        id : "type_id",
+    });
+
+    var startDate="";
+    var endDate="";
+    //通过日期检索
+    javaex.date({
+        id : "date2",		// 承载日期组件的id
+        monthNum : 2,		// 2代表选择范围日期
+        alignment:"right",
+        startDate : "",	// 开始日期
+        endDate : "",		// 结束日期
+        // 重新选择日期之后返回一个时间对象
+        callback : function(rtn) {
+            startDate=rtn.startDate;
+            endDate=rtn.endDate;
+            // alert(rtn.startDate + " - " + rtn.endDate);
+        }
+    });
+
+
+    //点击搜索的方法
+    //查询检索和分页按钮部分逻辑
+    function search() {
+        //文章分类
+        var typeId=$("#type_id").val();
+        var keyWord=$("#title").val();
+        window.location.href = "/toArticleEdit"
+            //+"?pageNum="+1
+            +"?typeId="+typeId
+            +"&startDate="+startDate
+            +"&endDate="+endDate
+            +"&keyWord="+keyWord
+    }
+
+
+
+    var obj=$("#pages").html();
+    var now=$("#now").html();
+    javaex.page({
+        id: "page",
+        pageCount: obj,	// 总页数
+        currentPage: now,// 默认选中第几页
+        position: "center",
+        // 返回当前选中的页数
+        callback: function (rtn) {
+            pageCount = rtn.pageNum;
+            window.location.href = "/toArticleEdit?pageNum=" + rtn.pageNum;
+        }
+    });
+
+    javaex.menu({
+        id: "menu",	// 菜单id
+        isAutoSelected: true
+    });
+
+
+
+
+
+
+    //批量提交按钮点击事件
+    $("#submit").click(function() {
+        var idArr=new Array();
+        $(':checkbox[name="id"]:checked').each(function () {
+            idArr.push($(this).val());
+        });
+
+        //判断至少选择一条记录
+        if(idArr.length==0){
+            javaex.optTip({
+                content : "至少选择一条记录",
+                type : "error"
+            });
+            return false;
+        }
+
+        //判断选择了哪一个单选框进行操作
+        var opt=$(':radio[name="radio"]:checked').val();
+
+
+        if(opt=="move"){
+            //alert("move");
+            //获取目标分类的id
+            var typeId=$("#type_id2").val();
+            $.ajax({
+                url : "move",
+                type : "POST",
+                dataType : "json",
+                traditional : "true",
+                data : {
+                    "idArr" : idArr,
+                    "typeId" : typeId
+                },
+                success : function(rtn) {
+                    if(rtn.code=="000000"){
+                        javaex.optTip({
+                            content : rtn.message+",将会在2秒后自动刷新页面"
+                        });
+
+                        //延迟加载
+                        setTimeout(function() {
+                            //刷新页面，否则
+                            window.location.reload();
+                        }, 2000);
+                    }else{
+                        javaex.optTip({
+                            content : rtn.message,
+                            type : "error"
+                        });
+                    }
+                }
+            });
+
+        }else if(opt=="recycle_bin"){
+            //批量删除
+            $.ajax({
+                url : "recycle_bin",
+                type : "POST",
+                dataType : "json",
+                traditional : "true",
+                data : {
+                    "idArr" : idArr,
+                    "status" : "0"
+                },
+                success : function(rtn) {
+                    if(rtn.code=="000000"){
+                        javaex.optTip({
+                            content : rtn.message+",将会在2秒后自动刷新页面"
+                        });
+
+                        //延迟加载
+                        setTimeout(function() {
+                            //刷新页面，否则
+                            window.location.reload();
+                        }, 2000);
+                    }else{
+                        javaex.optTip({
+                            content : rtn.message,
+                            type : "error"
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>博客内容页</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+    <style>
+        .header{height: 500px;background-image: url(/javaex/pc/images/grey.gif);background-position: center center;background-size: cover;position: relative;}.header-mask{background-color: rgba(0, 0, 0, 0.5);width: 100%;position: absolute;height: 100%;}#top{position: fixed;top: 0px;width: 100%;height: 70px;background-color: #fff;box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.5);z-index: 1003;}.container{width: 1170px;height: 50px;line-height: 50px;padding: 10px;margin: 0 auto;}.footer .container a{color: #ccc;}#logo > a{font-size: 18px;color: #666;}#nav{text-align: right;}#big-title{width: 1170px;margin: 0 auto;height: 450px;line-height: 450px;text-align: center;font-size: 50px;color: #fff;position: absolute;left: 50%;margin-left: -585px;}#article-time{width: 1170px;margin: 60px auto 0;text-align: center;font-size: 20px;color: #fff;position: absolute;left: 50%;margin-left: -585px;top: 220px;}#content{margin: -60px 30px 0;-webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);}.block{margin: 0 auto;box-shadow: none;}.img{height: 250px;margin: -15px 15px 0;}.img img{width:100%;height: 100%;border-radius: 6px;}.nav > li{display: inline-block;}.nav > li > a{font-size: 12px;margin: 0 15px;display: block;}.nav li a:link{color: #666;}.nav li:hover{background:#ededf1;}.nav li a:hover, .active > a{color: #06999e;}.nav > li:hover .classified-nav{display: block;}.classified-nav{position: absolute;top: 48px;left: -40%;z-index: 1000;display: none;float: left;min-width: 140px;padding: 5px 0;margin: 2px 0 0;font-size: 14px;text-align: center;list-style: none;background-color: #fff;-webkit-background-clip: padding-box;background-clip: padding-box;border: 1px solid #ccc;border: 1px solid rgba(0,0,0,.15);border-radius: 4px;-webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);box-shadow: 0 6px 12px rgba(0,0,0,.175);}input[type="text"]{border:none;}.search{-webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;background-image: -webkit-gradient(linear, left top, left bottom, from(#9c27b0), to(#9c27b0)), -webkit-gradient(linear, left top, left bottom, from(#d2d2d2), to(#d2d2d2));background-image: -webkit-linear-gradient(#9c27b0, #9c27b0), -webkit-linear-gradient(#d2d2d2, #d2d2d2);background-image: linear-gradient(#9c27b0, #9c27b0), linear-gradient(#d2d2d2, #d2d2d2);border: 0;border-radius: 0;background-color: transparent;background-repeat: no-repeat;background-position: center bottom, center -webkit-calc(100% - 1px);background-position: center bottom, center calc(100% - 1px);background-size: 0 2px, 100% 1px;-webkit-transition: background 0s ease-out;transition: background 0s ease-out;height: 36px;width: 220px;}.is-focused .search{background-image: -webkit-gradient(linear, left top, left bottom, from(#06999e), to(#06999e)), -webkit-gradient(linear, left top, left bottom, from(#d2d2d2), to(#d2d2d2));background-image: -webkit-linear-gradient(#06999e, #06999e), -webkit-linear-gradient(#d2d2d2, #d2d2d2);background-image: linear-gradient(#06999e, #06999e), linear-gradient(#d2d2d2, #d2d2d2);outline: none;background-size: 100% 2px, 100% 1px;-webkit-transition-duration: 0.3s;transition-duration: 0.3s;}.active{color: #06999e;}.content-header{position: relative;}.content-header span{opacity: 0.8;font-size: 16px;}.side-bar{position: fixed; bottom: 12px; right: 10px; z-index: 999; color: #fff; min-width: 50px;}#goTopBtn{display: none;width: 50px;height: 50px;border-radius: 50%;cursor: pointer;text-align: center;background-color: #999;}#goTopBtn > span{font-size: 20px;line-height: 50px;}.block2{margin: 50px 0;font-size: 18px;color: #555;}.content-header p{position: absolute;right: 0;top: 0;color: rgba(0, 0, 0, 0.1);font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;font-size: 25px;}
+    </style>
+</head>
+
+<body>
+<div class="header">
+    <div class="header-mask"></div>
+    <div id="top">
+        <div class="grid-1-3 container">
+            <div id="logo">
+                <a href="javascript:;">桐谷和人的博客</a>
+            </div>
+            <div id="nav">
+                <ul class="nav">
+                    <li><a th:href="@{/index.action}">首页</a></li>
+                    <li style="position: relative;"><a href="#">菜单</a>
+                        <ul class="classified-nav" id="menu1" >
+                            <li><a  id="myattention" onclick="fn()"><span class="icon-user-plus" style="color: green"></span>&nbsp;&nbsp;关注作者</a></li>
+                            <li><a id="mycollection" onclick="fn2()"><span class="icon-add_circle" style="color: #286090"></span>&nbsp;&nbsp;收藏文章</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" onclick="javascript:history.back(-1);">返回</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <h1 id="big-title" th:text="${articleInfo.title }"></h1>
+    <h4 id="article-time" th:text="${articleInfo.update_time }"></h4>
+    <input type="hidden" th:value="${articleInfo.content}" id="hiddencontext">
+    <input type="hidden" th:value="${articleInfo.cover}" id="cover">
+    <input type="hidden" th:value="${articleInfo.type_id}" id="type_id">
+    <!--获取文章id-->
+    <input type="hidden" th:value="${articleInfo.id}" id="articleid">
+    <!--获取用户的id-->
+    <input type="hidden" th:if="${session.user!=null}" th:value="${session.user.getId()}" id="userid">
+</div>
+
+<div id="content">
+    <div class="block" style="border-radius: 6px 6px 0 0;">
+        <div class="grid-1-2-1">
+            <div></div>
+            <div id="main-content" style="min-width: 950px;margin-top: 100px;margin-bottom: 40px;">
+                <div class="content-header">
+                    <span class="icon-home active"> 主页</span>
+                    <span class="divider">/</span>
+                    <span class="active">前端</span>
+                    <span class="divider">/</span>
+                    <span  th:text="${articleInfo.title }" > </span>
+                     <input type="hidden" id="title" th:value="${articleInfo.title }">
+                    <br>
+                    <span style="font-size: small;color: gray">作者：</span>  <span style="font-size: small;color: gray" th:text="${articleInfo.user.username}" ></span>
+                    <input type="hidden" id="authorname1" th:value="${articleInfo.user.username}">
+                    <p th:text="${articleInfo.view_count}" style="color: darkgray"></p>
+                </div>
+
+                <div class="block block2">
+                    <div class="main-0">
+                        <p id="contenttrue">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div></div>
+        </div>
+
+        <input type="hidden" id="authorname" th:value="${articleInfo.user.username}">
+
+        <!--星级打分-->
+        <div style="margin-left: 1100px">
+        <h3 style="font-weight: bold"> 为文章打个分吧：</h3>
+        <div id="score" class="score"></div>
+            <div style="font-size: larger;color: #2E60C4">当前评分 ：<span id="nowstars" th:text="${articleInfo.stars}" style="color: red;font-size: 30px"></span></div>
+        </div>
+
+
+
+
+        <div class="side-bar">
+            <div id="goTopBtn">
+                <span class="icon-arrow_upward"></span>
+            </div>
+        </div>
+
+        <hr style="color: sandybrown">
+        <span style="color:grey;font-size: 20px"><h2>相关推荐:</h2></span>
+        <div style="width: 100%;height:500px;" >
+           <span th:each="reference : ${referenceArticle}">
+            <table>
+                <tr>
+                    <td style="font-weight: bold;font-size: 30px"><a th:href="@{'/article.action?id='+${reference.id}+'&typeId='+${reference.type_id}}" th:text="${reference.title}"></a></td>
+                </tr>
+
+                <tr>
+                    <td style="color: #b3b3b3" th:text="${reference.content_text}+'......'"></td>
+                </tr>
+                <tr>
+                   <td th:text="'作者：'+${reference.user.username}"></td>
+                </tr>
+                 <tr>
+                   <td> &nbsp;</td>
+                </tr>
+            </table>
+               <hr style="color: grey">
+               </span>
+
+
+
+        </div>
+        <hr>
+        <!--用来承载我自己写的评论区相关-->
+<input type="hidden" th:if="${session.user!=null}" th:value="${session.user.id}" id="myid">
+        <div>
+            <h2 style="color: gray;margin-left: 50px"> 评论：</h2>
+            <textarea style="width:80%;height: 100px;margin-left: 50px" id="comment"> </textarea>
+            <button class="button indigo" style="margin-left: 1150px" id="commentButton">发送评论</button>
+            <br>
+            <ul style="margin-left: 50px">
+            <span th:each="comt:${comment}">
+
+                <li th:if="${comt.recallid}==0">
+                    <a href="javascript:;" onclick="img(this)"><img th:src="${comt.user.head}" style="width: 30px;height: 30px"></a>
+                    <span>&nbsp;&nbsp;</span>
+                    <a href="#"><span th:text="${comt.user.username}+':'"></span></a>
+                    <span>&nbsp;&nbsp;</span>
+                    <span th:text="${comt.comment}"></span>
+                    <span>&nbsp;&nbsp;&nbsp;</span>
+                    <span th:text="'('+${comt.date}+')'" style="font-size: small;color: silver"></span>
+                    <span>&nbsp;&nbsp;</span>
+                    <a href=""  th:id="${comt.id}" onclick="show(this.id);return false" th:value="${comt.user.username}"><span style="font-size: small;color: #2b669a" >回复</span></a>
+
+
+                        <!--内层循环，用来显示回复-->
+                     <span th:each="comt2:${comment}">
+                         <span th:if="${comt2.recallid}==${comt.id}">
+                             <br>
+                             <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                         <a href="javascript:;" onclick="img(this)"><img th:src="${comt2.user.head}" style="width: 30px;height: 30px"></a>
+                    <span>&nbsp;&nbsp;</span>
+                             <a href="#"><span th:text="${comt2.user.username}"></span></a><span>回复@</span><a href="#" th:text="${comt.user.username}+':'"></a>
+                    <span>&nbsp;&nbsp;</span>
+                    <span th:text="${comt2.comment}"></span>
+                    <span>&nbsp;&nbsp;&nbsp;</span>
+                    <span th:text="'('+${comt2.date}+')'" style="font-size: small;color: silver"></span>
+                    <span>&nbsp;&nbsp;</span>
+                    <a href=""  th:id="${comt.id}" onclick="show(this.id);return false" th:value="${comt2.user.username}"><span style="font-size: small;color: #2b669a">回复</span></a>
+                         </span>
+                     </span>
+
+<br>
+ <div style="border-bottom:1px dashed;width:1400px"></div>
+
+                </li>
+            </span>
+            </ul>
+        </div>
+    </div>
+
+
+
+    <div class="footer" style="background: #323437;" id="tolast">
+        <div class="grid-1-3 container">
+            <div style="text-align: left;">
+                <ul class="equal-4">
+                    <li><a href="#">联系我</a></li>
+                    <li><a href="#">友情链接</a></li>
+                    <li><a href="#">后台管理</a></li>
+                </ul>
+            </div>
+            <div style="text-align: right;color: #ccc;">Powered by javaex ©2018 苏ICP备18008530号</div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+<script>
+     var obj=$("#hiddencontext").val();
+     var cover=$("#cover").val();
+     $("#contenttrue").html(obj);
+     var url1="http://127.0.0.1:8087/upload/"+cover;
+    $(document).ready(function() {
+        $(".header").css("background-image", "url("+url1+")");
+        // window的高度
+        var windowHeight = $(window).height();
+        // header的高度
+        var headerHeight = $(".header").height();
+        // footer的高度
+        var footerHeight = $(".footer").height();
+        // 内容的高度
+        var contentHeight = $("#main-content").height();
+        // 差
+        var diff = windowHeight - (headerHeight+(contentHeight-60)+footerHeight);
+        if (diff>0) {
+            $("#main-content").css("margin-bottom", diff-100+"px");
+        }
+
+        // 监听元素获得焦点事件
+        $('input[type="text"]').focus(function() {
+            $("#search").addClass("is-focused");
+        });
+
+        // 监听元素失去焦点事件
+        $('input[type="text"]').blur(function() {
+            $("#search").removeClass("is-focused");
+        });
+    });
+
+    function openSearch() {
+        $(".nav").hide();
+        $("#search").show();
+    }
+
+    $("#close-search").click(function() {
+        $("#search").hide();
+        $(".nav").show();
+    });
+
+
+
+
+
+
+     //评分区域
+
+     javaex.score({
+         id : "score",
+         callback: function (rtn) {
+             var obj=rtn.score
+             var articleid=$("#articleid").val()
+             $.ajax({
+                 url:"/stars",
+                 data:{
+                     "stars":obj,
+                     "id":  articleid
+                 },
+                 success : function(rtn) {
+                     if(rtn.code=="000000"){
+                         javaex.optTip({
+                             content : "评分成功，请稍等...",
+                             type : "success"
+                         });
+                         // 建议延迟加载
+                         setTimeout(function() {
+                             //$("#nowstars").innerText(rtn.data.score)
+                             window.location.reload()
+                         }, 1000);
+
+                     }else{
+                         javaex.optTip({
+                             content : "评分失败，您目前是游客，请先登陆",
+                             type : "error"
+                         });
+                     }
+                 }
+
+             })
+            // alert("选中了第"+rtn.index+"个星星；分数为："+rtn.score);
+
+         }
+     });
+
+
+
+    //我的关注
+     function fn(){
+         var name=$("#authorname").val()
+         var myid=$("#myid").val()
+         $.ajax({
+             url:"/addattention",
+             data:{
+                 "myattname":name,
+                 "myid":myid
+             },
+             success : function(rtn) {
+                 if(rtn.code=="000000"){
+                     javaex.optTip({
+                         content : "关注成功，请稍等...",
+                         type : "success"
+                     });
+                     // 建议延迟加载
+                     setTimeout(function() {
+                         //$("#nowstars").innerText(rtn.data.score)
+                         window.location.reload()
+                     }, 1000);
+
+                 }else{
+                     javaex.optTip({
+                         content : "您已经关注过此人啦！",
+                         type : "error"
+                     });
+                 }
+             }
+         })
+
+     }
+
+     //我的收藏
+     function fn2() {
+         //相关参数
+         var mycollectionname=$("#title").val()
+         var myid=$("#myid").val()
+         var articleid=$("#articleid").val()
+         var typeid=$("#type_id").val()
+
+        $.ajax({
+            url:"/testcollection",
+            data:{
+                "articleid":articleid,
+                "myid":myid
+            },
+            success : function(rtn) {
+                if(rtn.code=="000000"){
+                    javaex.optTip({
+                        content : "检测中，请稍等...",
+                        type : "success"
+                    });
+
+                    $.ajax({
+                        url:"/addcollection",
+                        data:{
+                            "mycollectionname":mycollectionname,
+                            "myid":myid,
+                            "articleid":articleid,
+                            "typeid":typeid
+                        },
+                        success : function(rtn) {
+                            if(rtn.code=="000000"){
+                                javaex.optTip({
+                                    content : "收藏成功",
+                                    type : "success"
+                                });
+                                // // 建议延迟加载
+                                // setTimeout(function() {
+                                //     //$("#nowstars").innerText(rtn.data.score)
+                                //     window.location.reload()
+                                // }, 1000);
+                            }else{
+                                javaex.optTip({
+                                    content : "您已经收藏过该文章啦！",
+                                    type : "error"
+                                });
+                            }
+                        }
+                    })
+
+
+                    // 建议延迟加载
+                    setTimeout(function() {
+                        //$("#nowstars").innerText(rtn.data.score)
+
+
+
+
+                        window.location.reload()
+                    }, 1000);
+                }else{
+                    javaex.optTip({
+                        content : "您已经收藏过该文章啦！",
+                        type : "error"
+                    });
+                }
+            }
+        })
+
+     }
+
+
+
+
+//评论的id，如果是回复的话，用来设置为全局变量
+var recallid=0;
+var name=$("#authorname1").val()
+
+
+       //用来回复的
+     function show(a) {
+         recallid=a;
+         $("#comment").val("");
+          name=$("#"+a).attr("value");
+         $("#comment").val("回复 @"+name+":");
+     }
+
+     //评论区相关功能的实现
+     $("#commentButton").click(function () {
+         javaex.optTip({
+             content : "评论提交中，请等待...",
+             type : "submit"
+         });
+
+         var comment=$("#comment").val()
+         var articleid=$("#articleid").val()
+         var userid=$("#userid").val()
+         //var replyname=$("#"+a).attr("value")
+         $("#comment").val("")
+         $.ajax({
+             url:"/savecomment",
+             data:{
+                 "comment":comment,
+                 "article_id":articleid,
+                 "user_id":userid,
+                 "recallid":recallid,
+                 "replyname":name
+             },
+             success : function(rtn) {
+                 if(rtn.code=="000000"){
+                     $("#comment").val("")
+                     recallid=0
+                     javaex.optTip({
+                         content : "评论成功，请稍等...",
+                         type : "success"
+                     });
+                     // 建议延迟加载
+                     setTimeout(function() {
+                         window.location.reload()
+                     }, 1000);
+
+                 }else{
+                     javaex.optTip({
+                         content : "评论失败，您目前是游客，请先去登陆",
+                         type : "error"
+                     });
+                 }
+             }
+
+         })
+
+     })
+
+     javaex.goTopBtn({
+         id : "goTopBtn"
+     });
+
+
+     function img(obj) {
+         javaex.dialog({
+             type : "image",	// 弹出层类型
+             url : obj.children[0].src	// 图片地址
+         });
+     }
+</script>
+</html>

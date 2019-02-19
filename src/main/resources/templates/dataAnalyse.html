@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+    <!--引入图表-->
+    <script src="/statics/echarts.js"></script>
+
+</head>
+<body>
+
+<!--引入了左侧菜单栏-->
+<div th:replace="leftmenu :: html"></div>
+
+<!--右侧内容-->
+<div class="admin-right">
+
+    <!--引入头部文件-->
+    <div th:replace="head :: html"></div>
+    <!--内容-->
+    <div class="admin-content">
+        <!--面包屑导航-->
+        <div class="content-header">
+            <div class="breadcrumb">
+                <span>后台主页</span>
+                <span class="divider">/</span>
+                <span class="active">数据分析</span>
+            </div>
+        </div>
+
+
+
+        <!--全部主体内容-->
+        <div class="list-content">
+            <!--块元素-->
+            <div class="block">
+                <!--修饰块元素名称-->
+                <div class="banner">
+                    <p class="tab fixed">数据可视化图表</p>
+                </div>
+
+                <!--正文内容-->
+                <div class="main" style="height:1100px ">
+
+                    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+                    <div id="main1" style="width: 100%;height:500px;float: left" ></div>
+
+                    <div id="main2" style="width: 900px;height:550px;float:left;margin-left:100px;margin-top: 40px" ></div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    javaex.menu({
+        id : "menu",	// 菜单id
+        isAutoSelected : true
+    });
+
+$(function () {
+
+    $.ajax({
+        url:"/dataAnalyseT",
+        type : "POST",
+        success : function(rtn) {
+            var articleNumberArray=new Array()
+            var readNumberArray=new Array()
+            var typeNameArray=new Array()
+            var authorNumberArray=new Array()
+            if(rtn.code=="000000") {
+                for (var info in rtn.data.table01) {
+                    articleNumberArray.push(rtn.data.table01[info].articleNumber)
+                    readNumberArray.push(rtn.data.table01[info].readNumber)
+                    typeNameArray.push(rtn.data.table01[info].typeName)
+                    authorNumberArray.push(rtn.data.table01[info].authorNumber)
+                }
+
+
+                //把柱状图放进来
+
+                var myChart = echarts.init(document.getElementById('main1'));
+                option = {
+                    title: {
+                        text: '文章数和阅读量',
+                        subtext: '表目'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['文章数', '阅读量']
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            dataView: {show: true, readOnly: false},
+                            magicType: {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: typeNameArray
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '文章数',
+                            type: 'bar',
+                            data: articleNumberArray,
+                            markPoint: {
+                                data: [
+                                    {type: 'max', name: '最大值'},
+                                    {type: 'min', name: '最小值'}
+                                ]
+                            },
+                            markLine: {
+                                data: [
+                                    {type: 'average', name: '平均值'}
+                                ]
+                            }
+                        },
+                        {
+                            name: '阅读量',
+                            type: 'bar',
+                            data: readNumberArray,
+                            markPoint: {
+                                data: [
+                                    /* {name : '年最高', value : 182.2, xAxis: 7, yAxis: 183},
+                                    {name : '年最低', value : 2.3, xAxis: 11, yAxis: 3}*/
+
+                                    {name: '年最高', type: 'max'},
+                                    {name: '年最低', type: 'min'}
+                                ]
+                            },
+                            markLine: {
+                                data: [
+                                    {type: 'average', name: '平均值'}
+                                ]
+                            }
+                        }
+                    ]
+                };
+
+                myChart.setOption(option);
+                //柱状图结束
+
+
+                var yule = authorNumberArray[0]
+                var zhuanye = 0
+                for (var i = 1; i < authorNumberArray.length; i++) {
+                    zhuanye += authorNumberArray[i]
+                }
+
+                var gouzao = new Array()
+                for (var num = 0; num < typeNameArray.length; num++) {
+                      var demo={value:authorNumberArray[num],name:typeNameArray[num]}
+                      gouzao.push(demo)
+                }
+
+
+            }
+
+
+
+
+                var myChart2 = echarts.init(document.getElementById('main2'));
+
+                option2 = {
+
+
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left',
+                        data:typeNameArray
+                    },
+                    series: [
+                        {
+                            name:'作者数目',
+                            type:'pie',
+                            selectedMode: 'single',
+                            radius: [0, '30%'],
+
+                            label: {
+                                normal: {
+                                    position: 'inner'
+                                }
+                            },
+                            labelLine: {
+                                normal: {
+                                    show: false
+                                }
+                            },
+                            data:[
+                                {value:yule, name:'娱乐', selected:true},
+
+                                {value:zhuanye, name:'专业'}
+                            ]
+                        },
+                        {
+                            name:'作者数目',
+                            type:'pie',
+                            radius: ['40%', '55%'],
+                            label: {
+                                normal: {
+                                    formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                                    backgroundColor: '#eee',
+                                    borderColor: '#aaa',
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    // shadowBlur:3,
+                                    // shadowOffsetX: 2,
+                                    // shadowOffsetY: 2,
+                                    // shadowColor: '#999',
+                                    // padding: [0, 7],
+                                    rich: {
+                                        a: {
+                                            color: '#999',
+                                            lineHeight: 22,
+                                            align: 'center'
+                                        },
+                                        // abg: {
+                                        //     backgroundColor: '#333',
+                                        //     width: '100%',
+                                        //     align: 'right',
+                                        //     height: 22,
+                                        //     borderRadius: [4, 4, 0, 0]
+                                        // },
+                                        hr: {
+                                            borderColor: '#aaa',
+                                            width: '100%',
+                                            borderWidth: 0.5,
+                                            height: 0
+                                        },
+                                        b: {
+                                            fontSize: 16,
+                                            lineHeight: 33
+                                        },
+                                        per: {
+                                            color: '#eee',
+                                            backgroundColor: '#334455',
+                                            padding: [2, 4],
+                                            borderRadius: 2
+                                        }
+                                    }
+                                }
+                            },
+                            data:
+                            gouzao
+                        }
+                    ]
+
+                };
+
+
+                myChart2.setOption(option2);
+                //饼图结束
+
+
+
+            }
+
+    })
+})
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyu.springboot.mapper.MyAttentionMapper">
+
+
+
+<insert id="addone">
+    insert into myattention(myattentionname,myattentionhead,outerid) values (#{myattentionname},#{head},#{outerid})
+</insert>
+
+
+    <select id="getMyAttention" resultType="com.xuyu.springboot.bean.MyAttentionInfo">
+        select * from myattention where outerid=#{myid}
+    </select>
+
+
+    <select id="getMyAttIdByName" resultType="Integer">
+        select id from user where username=#{myattentionname}
+    </select>
+
+
+    <delete id="delMyAtt">
+        delete from myattention where id=#{id}
+
+    </delete>
+
+    <select id="testIfExit" resultType="com.xuyu.springboot.bean.MyAttentionInfo">
+        select * from myattention where myattentionname=#{myattentionname} and outerid=#{outerid}
+    </select>
+
+</mapper>

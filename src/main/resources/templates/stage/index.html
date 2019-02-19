@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>博客首页</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+        .header{height: 430px;background: linear-gradient(45deg, #a81d84 0%, #9729ea 100%);}  #top{position: fixed;top: 0px;width: 100%;height: 70px;background-color: #fff;box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.5);z-index: 1003;}  .container{width: 1170px;height: 50px;line-height: 50px;padding: 10px;margin: 0 auto;}  .footer .container a{color: #ccc;}  #logo > a{font-size: 18px;color: #666;}  #nav{text-align: right;}  #big-title{width: 1170px;margin: 0 auto;height: 430px;line-height: 430px;text-align: center;font-size: 46px;color: #fff;}  #content{margin: -60px 30px 0;-webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);}  .block{margin: 0 auto;overflow:visible;}  .block2{margin-bottom: 60px;border-radius: 6px;-webkit-box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);-moz-box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);}  .block2 h4{margin-top: 24px;}  .block2 h4 a{color: #06999e;}  .block2 h2{font-weight: normal;line-height: 60px;border-bottom:0;padding-left: 0;}  .block2 h2 a{color: #3C4858;}  .block2 p{color: #999;}  .block2 p a{margin-left: 10px;color: #23527c;}  .block2 .day{color: #3C4858;margin-top: 20px;}  .img{height: 250px;margin: -15px 15px 0;}  .img img{width:100%;height: 100%;border-radius: 6px;}  .nav > li{display: inline-block;}  .nav > li > a{font-size: 12px;margin: 0 15px;display: block;}  .nav li a:link{color: #666;}  .nav li:hover{background:#ededf1;}  .nav li a:hover, .active > a{color: #06999e;}  .nav > li:hover .classified-nav{display: block;}  .classified-nav{position: absolute;top: 48px;left: -40%;z-index: 1000;display: none;float: left;min-width: 140px;padding: 5px 0;margin: 2px 0 0;font-size: 14px;text-align: center;list-style: none;background-color: #fff;-webkit-background-clip: padding-box;background-clip: padding-box;border: 1px solid #ccc;border: 1px solid rgba(0,0,0,.15);border-radius: 4px;-webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);box-shadow: 0 6px 12px rgba(0,0,0,.175);}  input[type="text"]{border:none;}  .search{-webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;background-image: -webkit-gradient(linear, left top, left bottom, from(#9c27b0), to(#9c27b0)), -webkit-gradient(linear, left top, left bottom, from(#d2d2d2), to(#d2d2d2));background-image: -webkit-linear-gradient(#9c27b0, #9c27b0), -webkit-linear-gradient(#d2d2d2, #d2d2d2);background-image: linear-gradient(#9c27b0, #9c27b0), linear-gradient(#d2d2d2, #d2d2d2);border: 0;border-radius: 0;background-color: transparent;background-repeat: no-repeat;background-position: center bottom, center -webkit-calc(100% - 1px);background-position: center bottom, center calc(100% - 1px);background-size: 0 2px, 100% 1px;-webkit-transition: background 0s ease-out;transition: background 0s ease-out;height: 36px;width: 220px;}  .is-focused .search{background-image: -webkit-gradient(linear, left top, left bottom, from(#06999e), to(#06999e)), -webkit-gradient(linear, left top, left bottom, from(#d2d2d2), to(#d2d2d2));background-image: -webkit-linear-gradient(#06999e, #06999e), -webkit-linear-gradient(#d2d2d2, #d2d2d2);background-image: linear-gradient(#06999e, #06999e), linear-gradient(#d2d2d2, #d2d2d2);outline: none;background-size: 100% 2px, 100% 1px;-webkit-transition-duration: 0.3s;transition-duration: 0.3s;}  .active{background:#ededf1;color: #06999e;}  .page > ul >li > a{height: 30px;padding: 0 12px;border-radius: 50px !important;color: #999999;background: transparent;font-size: 12px;line-height: 30px;border: 1px solid #eee;}  .page > ul >li{background: transparent;}  .page .active a{background-color: #06999e;border-color: #06999e;-webkit-box-shadow: 0 14px 26px -12pxrgba(6,153,158,0.42),0 4px 23px 0 rgba(0,0,0,0.12),0 8px 10px -5px rgba(6,153,158,0.2);box-shadow: 0 14px 26px -12px rgba(6,153,158,0.42), 0 4px 23px 0 rgba(0,0,0,0.12), 0 8px 10px -5px rgba(6,153,158,0.2);color: #fff;}  .pagination>li>a:focus, .pagination>li>a:hover{z-index: 2;border-color: #ddd;background: #ddd;color: #fff;}  .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover{background-color: #06999e;border-color: #06999e;-webkit-box-shadow: 0 14px 26px -12pxrgba(6,153,158,0.42),0 4px 23px 0 rgba(0,0,0,0.12),0 8px 10px -5px rgba(6,153,158,0.2);box-shadow: 0 14px 26px -12px rgba(6,153,158,0.42), 0 4px 23px 0 rgba(0,0,0,0.12), 0 8px 10px -5px rgba(6,153,158,0.2);color: #fff;}  .pagination>li{margin-right: 10px;}
+        .side-bar{position: fixed; bottom: 12px; right: 10px; z-index: 999; color: #fff; min-width: 50px;}
+        #goTopBtn{display: none;width: 50px;height: 50px;border-radius: 50%;cursor: pointer;text-align: center;background-color: #999;}#goTopBtn > span{font-size: 20px;line-height: 50px;}
+    </style>
+<body>
+
+<div class="header">
+    <div id="top">
+        <div class="grid-1-3 container">
+            <div id="logo">
+                <a href="javascript:;">程序员博客站</a>
+            </div>
+            <div id="nav">
+                <ul class="nav">
+                    <li class="active"><a th:href="@{/index.action}">首页</a></li>
+                    <li style="position: relative;">
+                        <a href="javascript:;">今日热点</a>
+                        <ul class="classified-nav" id="hotsearch" style="width: 500px;text-align: left">
+                        </ul>
+                    </li>
+                    <li style="position: relative;">
+                        <a href="javascript:;">文章目录</a>
+                        <ul class="classified-nav" id="typeList" >
+                        </ul>
+                    </li>
+                    <!--这是一处-->
+                    <li><a href="/aboutPage">关于我</a></li>
+                    <li th:if="${session.user==null}"><a href="/index">登录</a></li>
+                    <li style="position: relative;" th:if="${session.user!=null}"><span style="float: left;margin-top: 17px" class="icon-chevron-down"></span><a href="#" th:text="${session.user.getUsername()}"></a>
+                        <ul class="classified-nav" id="menu1" >
+                            <li><a href="/tomyattention"><span class="icon-group" style="color: green">&nbsp;&nbsp;</span>我的关注</a></li>
+                            <li><a href="/tomycollection"><span class="icon-star_border" style="color: yellow">&nbsp;&nbsp;</span>我的收藏</a></li>
+                            <li><a href="/tomymymessage"><span class="icon-bubbles" style="color: #3399ff">&nbsp;&nbsp;</span>我的消息</a></li>
+                            <li><a href="/toHistory"><span class="icon-videocam">&nbsp;&nbsp;</span>历史记录</a></li>
+                            <li><a href="/background"><span class="icon-grid" style="color: #b9def0">&nbsp;&nbsp;</span>后台管理</a></li>
+                            <li><a href="/logout"><span class="icon-forward" style="color: red">&nbsp;&nbsp;</span>退出</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="javascript:;" onClick="openSearch()"><span class="icon-search" style="font-size: 14px;"></span></a></li>
+                </ul>
+                <div id="search" class="hide">
+						<span class="search-field-wrapper form-group">
+							<input id="tags" style="width: 200px;height: 61px" type="text" class="search" placeholder="搜索…" value="" onkeydown="if(event.keyCode==13){search(this.value);}" />
+						</span>
+                    <span id="close-search" class="icon-close" style="font-size: 16px;"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--=========================================================================================-->
+
+         <div id="big-title" style="font-size: 20px">很多问题不见得会出在你身上，但你亦需要想法解决问题，否则就会变成你的问题</div>
+
+
+
+    <!-- ...................... -->
+    <!--获取分页信息的隐藏标签-->
+    <p id="pages" th:text="${pageInfo.getPages()}" style="display: none"></p>
+    <p id="now" th:text="${pageInfo.getPageNum()}" style="display: none"></p>
+
+
+    <!--获取分类的全局信息-->
+     <input type="hidden" id="typeinfoforall" th:value="${typeid}">
+
+    <!--获取搜索的全局信息-->
+    <input type="hidden" id="searchaction" th:value="${keyword}" th:if="${keyword!=null}">
+</div>
+
+
+
+<div id="content">
+    <div class="block" style="border-radius: 6px 6px 0 0;">
+        <div class="grid-1-2-1">
+            <div></div>
+            <div id="main-content" style="min-width: 950px;margin-top: 100px;margin-bottom: 40px;">
+
+                <p style="font-size: large;color: red;margin-left: 250px"  th:if="${message!=null}" th:text="${message}"/>
+<!--需要修改的-->
+                <div class="block block2" th:each="entity : ${pageInfo.list}">
+                    <div class="grid-5-7" style="height: 250px;">
+                        <div class="img">
+                            <img th:src="'http://127.0.0.1:8087/upload/'+${entity.cover }" />
+                        </div>
+                        <div class="main-15">
+                            <h4>类型：<a href="#" th:text="${entity.name}"></a></h4>
+                            <h2><a th:href="@{'/article.action?id='+${entity.id}+'&typeId='+${entity.type_id}}"><b th:text="${ entity.title}"></b></a></h2>
+                            <p th:text="${ entity.content_text}" style="display: inline"></p><a th:href="@{'/article.action?id='+${entity.id}+'&typeId='+${entity.type_id}}"> 阅读更多…</a>
+                            <div class="day" th:text="${ entity.update_time}" style="display: inline"></div>
+                            <h4>作者：<a href="#" th:text="${entity.user.username}"></a></h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page">
+                    <ul id="page" class="pagination"></ul>
+                </div>
+            </div>
+            <div></div>
+        </div>
+    </div>
+
+
+
+
+    <div class="footer" style="background: #323437;">
+        <div class="grid-1-3 container">
+            <div style="text-align: left;">
+                <ul class="equal-4">
+                    <li><a href="#">联系我</a></li>
+                    <li><a href="#">友情链接</a></li>
+                    <!--这里是要修改的-->
+                    <li shiro:hasRole="admin"><a href="/background">后台管理</a></li>
+                    <li shiro:hasRole="common_user"><a href="/background">后台管理</a></li>
+                </ul>
+            </div>
+            <div style="text-align: right;color: #ccc;">Powered by xuyu ©2018</div>
+        </div>
+    </div>
+</div>
+
+<!--回到顶部-->
+<div class="side-bar">
+    <div id="goTopBtn">
+        <span class="icon-arrow_upward"></span>
+    </div>
+</div>
+
+
+</body>
+
+<script>
+
+    $(function() {
+          //搜索模块
+            $.ajax({
+                url:"/getthings",
+                type : "POST",
+                success : function(rtn) {
+                    // console.log(rtn.data.titles[2].id)
+                    var array=new Array()
+                    if(rtn.code=="000000"){
+                        for(var info in rtn.data.titles) {
+                            array.push(rtn.data.titles[info].title)
+                        }
+                        $( "#tags" ).autocomplete({
+                            source: array
+                        });
+                    }else{
+                        alert("失败")
+                    }
+                }
+            })
+
+
+        $.ajax({
+            url : "/showtypeinfo",
+            type : "POST",
+            dataType:"json",
+            data:{},
+            success:function(rtn){
+                var typeList=rtn.data.TypeList;
+                var hotList=rtn.data.HotArticles;
+                var html='';
+                for(var i=0;i<typeList.length;i++){
+                    $("#typeList").append('<li id="'+typeList[i].id+'" onclick="fn(this.id)"><a href="/type.action?typeId='+typeList[i].id+'">'+typeList[i].name+'</a></li>');
+                }
+                for(var i=0;i<hotList.length;i++){
+                     var count=i+1
+                    $("#hotsearch").append('<li><a href="/article.action?id='+hotList[i].id+'&typeId='+hotList[i].type_id+'">'+'<span style="color: red">&nbsp;&nbsp;&nbsp;NO.'+count+'</span>'+'&nbsp;&nbsp;&nbsp;'+'<span style="color: blue">标题：&nbsp;</span>'+hotList[i].title+'</a></li>');
+                }
+            }
+        });
+    })
+
+
+    function fn(a){
+
+    }
+    var obj=$("#pages").html();
+    var now=$("#now").html();
+
+
+
+
+    $(document).ready(function() {
+
+
+
+        // window的高度
+        var windowHeight = $(window).height();
+        // header的高度
+        var headerHeight = $(".header").height();
+        // footer的高度
+        var footerHeight = $(".footer").height();
+        // 内容的高度
+        var contentHeight = $("#main-content").height();
+        // 差
+        var diff = windowHeight - (headerHeight+(contentHeight-60)+footerHeight);
+        if (diff>0) {
+            $("#main-content").css("margin-bottom", diff-100+"px");
+        }
+
+        // 监听元素获得焦点事件
+        $('input[type="text"]').focus(function() {
+            $("#search").addClass("is-focused");
+        });
+
+        // 监听元素失去焦点事件
+        $('input[type="text"]').blur(function() {
+            $("#search").removeClass("is-focused");
+        });
+    });
+
+    function openSearch() {
+        $(".nav").hide();
+        $("#search").show();
+    }
+
+    $("#close-search").click(function() {
+        $("#search").hide();
+        $(".nav").show();
+    });
+
+
+
+    javaex.page({
+        id : "page",
+        pageCount : obj,	// 总页数
+        currentPage : now,// 默认选中第几页
+        position : "center",
+        // 返回当前选中的页数
+        callback:function(rtn) {
+            var data= $("#typeinfoforall").val()
+            var keyword=$("#searchaction").val()
+          if(data!=null&&data!=""){
+              window.location.href = "/type.action" +"?pageNum="+rtn.pageNum+"&typeId="+data
+          }else if(keyword!=null&&keyword!=""){
+               window.location.href = "/search.action" +"?pageNum="+rtn.pageNum+"&keyWord="+keyword
+           }else {
+              window.location.href = "/index.action" +"?pageNum="+rtn.pageNum+"&typeId="+data
+          }
+
+        }
+    });
+
+
+    function search(keyWord){
+        //console.log("进来了");
+        //判断关键字是否为空
+        keyWord=keyWord.replace(/(^\s*)|(\s*$)/g,"");
+        if(keyWord!=""){
+             window.location.href = "/search.action?keyWord="+keyWord
+           // console.log(keyWord)
+        }else {
+            javaex.alert({
+                content : "请输入些什么",
+                callback : "callback()"
+            });
+        }
+    }
+
+
+    function callback() {
+        //alert("回调函数："+id);
+        // 如果你想阻止弹出层关闭，直接 return false; 即可
+        //return false;
+    }
+</script>
+
+</html>

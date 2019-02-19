@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+
+    <!--<style type="text/css">-->
+        <!--.gen{-->
+            <!--text-overflow: ellipsis;-->
+            <!--white-space: nowrap;-->
+            <!--overflow: hidden;-->
+        <!--}-->
+    <!--</style>-->
+
+</head>
+<body>
+
+<!--引入了左侧菜单栏-->
+<div th:replace="leftmenu :: html"></div>
+
+<!--右侧内容-->
+<div class="admin-right">
+
+    <!--引入头部文件-->
+    <div th:replace="head :: html"></div>
+    <!--内容-->
+    <div class="admin-content">
+        <!--面包屑导航-->
+        <div class="content-header">
+            <div class="breadcrumb">
+                <span>后台主页</span>
+                <span class="divider">/</span>
+                <span class="active">我的消息</span>
+            </div>
+        </div>
+
+
+
+        <!--全部主体内容-->
+        <div class="list-content">
+            <!--块元素-->
+            <div class="block">
+                <!--修饰块元素名称-->
+                <div class="banner">
+                    <p class="tab fixed">我收到的回复</p>
+                </div>
+
+                <!--正文内容-->
+                <div class="main">
+                    <table id="table" class="table color2">
+                        <tr style="text-align: center">
+                            <th>消息头</th>
+                            <th>回复人</th>
+                            <th>时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr th:if="${status}==1" th:each="comment:${commentInfos}">
+                            <td class="gen" style="width: 300px" th:id="${comment.id+'c'}" th:text="${#strings.abbreviate(comment.comment,20)}" th:value="${comment.comment}"></td>
+                            <td th:text="${comment.user.username}" style="text-align: center"></td>
+                            <td th:text="${comment.date}" style="text-align: center"></td>
+                            <td  th:id="${comment.id}+'s'" th:if="${comment.recall==1}"  style="color: red;text-align: center">未读</td>
+                            <td  th:id="${comment.id}+'s'" th:if="${comment.recall==2}"  style="color: gray;text-align: center">已读</td>
+                            <td style="text-align: center"><button th:id="${'a'+comment.id}" th:value="${comment.recall}" onclick="fun1(this.id)" class="button indigo radius-10">查看</button> &nbsp;&nbsp;&nbsp;
+                                <button class="button red radius-10" th:id="${comment.id}" onclick="deleteDialog(this, this.id)">删除</button>&nbsp;&nbsp;&nbsp;<button class="button green radius-10" th:id="${comment.id}" onclick="replay(this.id)">前往回复</button></td>
+                        </tr>
+
+                        <tr th:if="${status}==0">
+                            <th style="text-align: center;color: red" colspan="5">您暂时还没有收到任何信息！</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    javaex.menu({
+        id : "menu",	// 菜单id
+        isAutoSelected : true
+    });
+
+
+    function fun1(id) {
+        var fid=id.substr(1)
+      var content=$("#"+fid+'c').attr("value")
+        javaex.alert({
+            maxHeight:100,
+            title: "回复内容",
+            content : content,
+            confirmName:"已阅",
+            callback : "callback2('"+id+"')"
+        });
+    }
+    function callback2(id) {
+        //这里是查看的回调函数
+       var recall=$("#"+id).val()
+        if(recall==1){
+            var fid=id.substr(1)
+        $.ajax({
+            url:"/setrecall",
+            data:{"id":fid},
+            success : function(rtn) {
+                if(rtn.code=="000000"){
+
+                    // 建议延迟加载
+                   // setTimeout(function() {
+                        // 刷新页面
+                        window.location.reload();
+                        // 跳转页面
+                        // window.location.href = "${pageContext.request.contextPath}/zone_info/list.action";
+                    //}, 1000);
+                }else{
+
+                }
+            }
+
+        })
+        }
+    }
+
+
+
+    //删除的函数
+    function deleteDialog(obj, id) {
+        javaex.deleteDialog(
+            obj,	// obj是必须的
+            {
+                content : "确定要删除么",
+                callback : "callback('"+id+"')"
+            }
+        );
+    }
+
+    function callback(id) {
+      //这是删除的回调函数
+
+                  $.ajax({
+                      url:"/resetrecall",
+                      data:{"id":id},
+                      success : function(rtn) {
+                          if(rtn.code=="000000"){
+                              javaex.optTip({
+                                  content : "删除成功",
+                                  type : "success"
+                              });
+                              // 建议延迟加载
+                              setTimeout(function() {
+                                  // 刷新页面
+                                   window.location.reload();
+                                  // 跳转页面
+                                  // window.location.href = "${pageContext.request.contextPath}/zone_info/list.action";
+                              }, 1000);
+                          }else{
+
+                          }
+                      }
+                  })
+    }
+
+
+//点击回复
+    function replay(id) {
+        //console.log(id)
+        $.ajax({
+            url:"/replay",
+            data:{"id":id},
+            success : function(rtn) {
+                if(rtn.code=="000000"){
+                    var aid=rtn.data.aid
+                    var typeid=rtn.data.type_id
+                   // console.log(aid+" "+typeid)
+                    // 建议延迟加载
+                        // 刷新页面
+                       // window.location.reload();
+                        // 跳转页面
+                         window.location.href = "/article.action?id="+aid+"&typeId="+typeid+"#tolast";
+                }else{
+
+                }
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

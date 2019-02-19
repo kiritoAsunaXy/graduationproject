@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyu.springboot.mapper.MyCollectionMapper">
+
+
+
+    <insert id="addcollection">
+
+        insert into mycollection(mycollectionname,mycollectiontime,myid,articleid,typeid) values (#{mycollectionname},#{mycollectiontime},#{myid},#{articleid},#{typeid})
+
+    </insert>
+
+
+    <select id="getMyCollectionById" resultType="com.xuyu.springboot.bean.MyCollection">
+        select * from mycollection where myid=#{myid}
+    </select>
+
+    <select id="testIfExist" resultType="com.xuyu.springboot.bean.MyCollection">
+        select * from mycollection where articleid=#{articleid} and myid=#{myid}
+    </select>
+
+
+
+    <delete id="delMyCollectionById">
+        delete from mycollection where id=#{id}
+    </delete>
+</mapper>

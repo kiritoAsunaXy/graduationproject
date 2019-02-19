@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+</head>
+<body>
+
+<!--引入了左侧菜单栏-->
+<div th:replace="leftmenu :: html"></div>
+
+<!--右侧内容-->
+<div class="admin-right">
+
+    <!--引入头部文件-->
+    <div th:replace="head :: html"></div>
+    <!--内容-->
+    <div class="admin-content">
+        <!--面包屑导航-->
+        <div class="content-header">
+            <div class="breadcrumb">
+                <span>后台主页</span>
+                <span class="divider">/</span>
+                <span class="active">用户列表</span>
+            </div>
+        </div>
+
+
+
+        <!--全部主体内容-->
+        <div class="list-content">
+
+            <!--块元素-->
+            <div class="block">
+                <!--修饰块元素名称-->
+                <div class="banner">
+                    <p class="tab fixed" th:text="${session.userchoose.getUsername()}+'的信息'"></p>
+                </div>
+
+                <!--正文内容-->
+                <div class="main">
+                    <hr>
+                    <form id="form" action="/updateuserinfo" method="post">
+
+                         <input type="hidden" th:value="${session.userchoose.getId()}" name="id" id="id">
+                        <!--文本框-->
+                        <div class="unit">
+
+                            <div class="left"><span class="required"></span><p class="subtitle">头像</p></div>
+                            <!--<div class="right">-->
+                                <!--style="width: 100px; height:100px; border-radius:50px; overflow:hidden;"-->
+                            <div style="width: 200px; height:200px; border-radius:100px; overflow:hidden;">
+                                <img th:src="${session.userchoose.getHead()}">
+                            </div>
+                            <!--</div>-->
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+                        <!--文本框-->
+                        <div class="unit">
+
+                            <div class="left"><span class="required"></span><p class="subtitle">账号</p></div>
+                            <div class="right">
+                                <input id="username" th:value="${session.userchoose.getUsername()}" type="text" class="text" data-type="英文字母|中文" error-msg="账号格式错误" error-pos="42" placeholder="" name="username" disabled="disabled"/>
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+
+
+                        <div class="unit">
+                            <div class="left"><span class="required"></span><p class="subtitle">邮箱</p></div>
+                            <div class="right">
+                                <input id="email" type="text" th:value="${session.userchoose.getEmail()}" class="text" data-type="邮箱" error-msg="邮箱格式错误" error-pos="42" placeholder="" name="email" disabled="disabled"/>
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+
+
+
+                        <!--单选框-->
+                        <div class="unit">
+                            <div class="left"><p class="subtitle">性别</p></div>
+                            <div class="right">
+                                <ul class="equal-8">
+
+                                    <span th:if="${session.user.getGender()==0}">
+                                    <li><input id="gender1" type="radio" class="fill" name="gender" value="0" checked="checked" disabled="disabled"/>男</li>
+                                    <li><input id="gender2" type="radio" class="fill" name="gender" value="1" disabled="disabled"/>女</li>
+                                    </span>
+
+                                    <span th:if="${session.user.getGender()==1}">
+                                    <li><input id="gender3" type="radio" class="fill" name="gender" value="0" disabled="disabled"/>男</li>
+                                    <li><input id="gender4" type="radio" class="fill" name="gender" value="1"checked="checked" disabled="disabled"/>女</li>
+                                    </span>
+                                    <!--清浮动-->
+                                    <span class="clearfix"></span>
+                                </ul>
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+                        <!--文本域-->
+                        <div class="unit">
+                            <div class="left"><p class="subtitle">简介</p></div>
+                            <div class="right">
+                                <textarea id="introduction" name="introduction" class="desc" placeholder="请填写简介" th:text="${session.user.getIntroduction()}" disabled="disabled"></textarea>
+                                <!--提示说明-->
+                                <p class="hint">请填写个人简介。简介中不得包含令人反感的信息，且长度应在10到255个字符之间。</p>
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+
+
+                        <!--这里是标签区域-->
+                        <div class="unit">
+                            <div class="left"><p class="subtitle">我的标签</p></div>
+                            <div class="right">
+                                <div class="tagbox" style="pointer-events: none" ></div>
+                                <input type="hidden" id="tag" name="tag" value="" />
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+
+
+
+
+
+
+                        <div class="unit">
+                            <div class="left"><p class="subtitle">发表文章</p></div>
+                            <div class="right" style="width: 800px">
+                            <table id="table" class="table color2">
+                                <thead>
+                                <!--获取分页信息的隐藏标签-->
+                                <p id="pages" th:text="${pageInfo.getPages()}" style="display: none"></p>
+                                <p id="now" th:text="${pageInfo.getPageNum()}" style="display: none"></p>
+                                <tr>
+                                    <!--<th style="width: 30px"><input type="checkbox" class="fill listen-1" /> </th>-->
+                                    <!--<th style="width: 80px">序号</th>-->
+                                    <th style="width: 100px">文章类型</th>
+                                    <th style="text-align:center;width: 150px">文章标题</th>
+                                    <th style="width: 130px">发布日期</th>
+                                    <th style="width: 50px">阅读量</th>
+                                    <th style="width: 70px">作者</th>
+                                    <th style="width: 70px">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="entity : ${pageInfo.list}">
+                                    <!--<td><input type="checkbox" class="fill listen-1-2" name="id" th:value="${entity.id}"/> </td>-->
+                                    <!--<td th:text="${entity.id}"></td>-->
+                                    <td th:text="${entity.name}"></td>
+                                    <td th:text="${entity.title}"></td>
+                                    <td th:text="${entity.update_time}"></td>
+                                    <td th:text="${entity.view_count}"></td>
+                                    <td th:text="${entity.user.username}"></td>
+                                    <td>
+                                        <a th:href="@{'/article.action?id='+${entity.id}+'&typeId='+${entity.type_id}}" style="color: red">
+                                            查看文章
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                                <!--分页显示栏-->
+                                <div class="page">
+                                    <ul id="page" class="pagination"></ul>
+                                </div>
+                            </div>
+                            <!--&lt;!&ndash;清浮动&ndash;&gt;-->
+                            <!--<span class="clearfix"></span>-->
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <input type="hidden" id="mytags" th:value="${session.userchoose.getTags()}">
+</div>
+
+
+
+
+<script>
+    javaex.menu({
+        id : "menu",	// 菜单id
+        isAutoSelected : true
+    });
+
+
+    var obj=$("#pages").html()
+    var now=$("#now").html()
+    var id=$("#id").val()
+
+
+
+    javaex.page({
+        id: "page",
+        pageCount: obj,	// 总页数
+        currentPage: now,// 默认选中第几页
+        position: "center",
+        // 返回当前选中的页数
+        callback: function (rtn) {
+            pageCount = rtn.pageNum;
+            window.location.href = "/personalList?pageNum=" + rtn.pageNum+"&id="+id;
+        }
+    });
+
+    var ids=new Array()
+    var obj=$("#mytags").val()
+    tags=obj.split(",")
+
+
+    //标签区域
+    javaex.tag({
+        id : "tag",
+        tags:tags
+    });
+
+
+    $(".tag-input").attr("placeholder","")
+
+    $(".tag-remove").remove()
+
+</script>
+</body>
+</html>

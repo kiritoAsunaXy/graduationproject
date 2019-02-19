@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+</head>
+<body>
+
+
+<!--全部主体内容-->
+<div class="list-content">
+    <!--块元素-->
+    <div class="block">
+        <!--修饰块元素名称-->
+        <div class="banner">
+            <p class="tab fixed">用户注册</p>
+        </div>
+
+        <!--正文内容-->
+        <div class="main">
+            <form id="form">
+                <!--文本框-->
+                <div class="unit">
+                    <div class="left"><span class="required">*</span><p class="subtitle">注册邮箱</p></div>
+                    <div class="right">
+                        <input type="text" class="text" data-type="邮箱" error-msg="邮箱格式错误" error-pos="42" placeholder="请输入邮箱" name="email"/>
+                    </div>
+                    <!--清浮动-->
+                    <span class="clearfix"></span>
+                </div>
+
+                <div class="unit">
+                    <div class="left"><span class="required">*</span><p class="subtitle">用户名</p></div>
+                    <div class="right">
+                        <input type="text" class="text" data-type="英文字母|中文" error-msg="用户名格式错误,请输入英文或中文" error-pos="42" placeholder="请输入用户名" name="username" />
+                    </div>
+                    <!--清浮动-->
+                    <span class="clearfix"></span>
+                </div>
+
+                <div class="unit">
+                    <div class="left"><span class="required">*</span><p class="subtitle">密码</p></div>
+                    <div class="right">
+                        <input type="text" class="text" data-type="整数" error-msg="密码为整数" error-pos="42" placeholder="请输入密码" name="password"/>
+                    </div>
+                    <!--清浮动-->
+                    <span class="clearfix"></span>
+                </div>
+
+                <!--单选框-->
+                <div class="unit">
+                    <div class="left"><p class="subtitle">性别</p></div>
+                    <div class="right">
+                        <ul class="equal-8">
+                            <li><input type="radio" class="fill" name="gender" value="0" checked/>男</li>
+                            <li><input type="radio" class="fill" name="gender" value="1"/>女</li>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </ul>
+                    </div>
+                    <!--清浮动-->
+                    <span class="clearfix"></span>
+                </div>
+
+
+                <!--提交按钮-->
+                <div class="unit" style="width: 800px;">
+                    <div style="text-align: center;">
+                        <!--表单提交时，必须是input元素，并指定type类型为button，否则ajax提交时，会返回error回调函数-->
+                        <input type="button" id="return" class="button no" value="返回"  />
+                        <input type="button" id="save" class="button yes" value="提交" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<form id="form1" action="/icode" method="post" style="display:none;" >
+
+    <!--文本框-->
+    <div class="unit">
+        <div class="left"><span class="required">*</span><p class="subtitle">输入邮箱中的验证码</p></div>
+        <div class="right">
+            <input type="text" class="text" data-type="数字" error-msg="验证码格式错误" error-pos="42" placeholder="请输入验证码" name="mcode"/>
+        </div>
+        <!--清浮动-->
+        <span class="clearfix"></span>
+    </div>
+
+    <!--提交按钮-->
+    <div class="unit" style="width: 800px;">
+        <div style="text-align: center;">
+            <!--表单提交时，必须是input元素，并指定type类型为button，否则ajax提交时，会返回error回调函数-->
+            <input type="submit" id="check" class="button yes" value="提交" />
+        </div>
+    </div>
+</form>
+
+
+
+
+  <script>
+
+
+      // 监听点击保存按钮事件
+      $("#save").click(function() {
+
+              javaex.optTip({
+                  content : "数据提交中，请稍候...",
+                  type : "submit"
+              });
+
+          // 表单验证函数
+          // if (javaexVerify()) {
+              // 返回错误信息时，可以添加自定义异常提示。参数为元素id和提示
+              // addErrorMsg("username", "用户名不存在");
+              // 提交
+              // $("#form").submit();
+              $.ajax({
+                  //几个参数需要注意一下
+                  type: "POST",//方法类型
+                  dataType: "json",//预期服务器返回的数据类型
+                  url: "/mailre" ,//url
+                  data: $('#form').serialize(),
+                  success: function (result) {
+                      console.log(result);//打印服务端返回的数据(调试用)
+                      if (result.code == 000000) {
+                          javaex.optTip({
+                              content : "操作成功",
+                              type : "success",
+                          });
+                          // 建议延迟加载
+                           setTimeout(function() {
+                            $("#form1").show();
+                          //
+                          //     // 刷新页面
+                          //     // window.location.reload();
+                          //     // 跳转页面
+                          //     // window.location.href = "${pageContext.request.contextPath}/zone_info/list.action";
+                           }, 1000);
+
+
+                      }
+                      ;
+                  },
+                  error : function() {
+                         alert("当前网络状态不佳导致崩溃，请关闭网页重试！抱歉");
+                  }
+              });
+
+
+
+
+
+
+      });
+
+      // 监听点击返回按钮事件
+      $("#return").click(function() {
+           window.location.href ="/index";
+      });
+
+
+
+  </script>
+</body>
+
+
+</html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyu.springboot.mapper.HistoryMapper">
+
+
+<insert id="addNotes">
+    insert into history_info(articlename,readtime,reader,articleid) values (#{articlename},#{readtime},#{reader},#{articleid})
+</insert>
+
+
+
+<select id="selectByReader" resultType="com.xuyu.springboot.bean.HistoryInfo">
+    select * from history_info where reader=#{id} and status=1
+</select>
+
+
+    <select id="selectByReaderAndTime" resultType="com.xuyu.springboot.bean.HistoryInfo">
+         select * from history_info where reader=#{id} and readtime between #{result} and #{result2}
+    </select>
+
+
+    <select id="findIfReadIds" resultType="Integer">
+        select articleid from history_info where reader=#{reader}
+    </select>
+
+
+    <update id="updateReadtime">
+        update history_info set readtime=#{readtime} where reader=#{reader} and articleid=#{id}
+    </update>
+
+    <update id="changestatus">
+        update history_info set status=0 where id=#{id}
+    </update>
+
+<select id="findByIdLists" resultType="Integer">
+    select articleid from history_info where reader in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+</select>
+</mapper>

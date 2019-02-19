@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+</head>
+<body>
+<!--引入了左侧菜单栏-->
+<div th:replace="leftmenu :: html"></div>
+
+<!--右侧内容-->
+<div class="admin-right">
+    <!--引入头部文件-->
+    <div th:replace="head :: html"></div>
+
+    <!--内容-->
+    <div class="admin-content">
+        <!--面包屑导航-->
+        <div class="content-header">
+            <div class="breadcrumb">
+                <span>后台主页</span>
+                <span class="divider">/</span>
+                <span class="active">类别表</span>
+            </div>
+        </div>
+
+        <!--全部主体内容-->
+        <div class="list-content">
+            <!--块元素-->
+            <div class="block">
+                <!--修饰块元素名称-->
+                <div class="banner">
+                    <p class="tab fixed">文章分类概要</p>
+                </div>
+
+                <!--正文内容-->
+                <div class="main">
+                    <!--主体内容-->
+                    <div class="list-content">
+                        <!--块元素-->
+                        <div class="block">
+                            <!--页面有多个表格时，可以用于标识表格-->
+                            <h2>分类列表</h2>
+                            <!--右上角的返回按钮-->
+                            <a href="javascript:history.back();">
+                                <button class="button wathet" style="position: absolute;right: 20px;top: 16px;"><span class="icon-arrow_back"></span> 返回</button>
+                            </a>
+
+                            <!--正文内容-->
+                            <div class="main">
+                                <!--表格上方的搜索操作-->
+                                <div class="admin-search">
+                                    <div class="input-group">
+                                       <form action="/getType" method="post">
+                                        <input  id="searchinfo" type="text" class="text" name="data" placeholder="请输入搜索内容" />
+                                        <input id="search-fromType" type="submit" class="button blue"></input>
+                                       </form>
+                                    </div>
+                                </div>
+
+                                <!--表格上方的操作元素，添加、删除等-->
+                                <div class="operation-wrap">
+                                    <div class="buttons-wrap">
+                                        <button id="addbtn" class="button blue"><span class="icon-plus"></span> 添加</button>
+
+                                        <button id="delbtn" class="button red"><span class="icon-remove"></span> 删除</button>
+                                    </div>
+                                </div>
+                                <table id="table" class="table color2">
+                                    <thead>
+                                    <tr>
+                                        <th class="checkbox"><input type="checkbox" class="fill listen-1" /> </th>
+                                        <th>序号</th>
+                                        <th>类型</th>
+                                        <th>热度</th>
+                                    </tr>
+                                    </thead>
+                                    <!--获取分页信息的隐藏标签-->
+                                    <p id="pages" th:text="${pageinfo.getPages()}" style="display: none"></p>
+                                    <p id="now" th:text="${pageinfo.getPageNum()}" style="display: none"></p>
+
+                                    <tbody id="addtypeform" th:each="types:${pageinfo.list}">
+                                    <tr>
+                                        <td class="checkbox"><input type="checkbox" class="fill listen-1-2" th:value="${types.id}"/> </td>
+                                        <td th:text="${types.id}"></td>
+                                        <td th:text="${types.name}"></td>
+                                        <td th:text="${types.sort}"></td>
+                                    </tr>
+                                    </tbody>
+                                    <p style="color: red" th:text="${err_type}"></p>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--分页显示栏-->
+            <div class="page">
+                <ul id="page" class="pagination"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+
+    var obj=$("#pages").html();
+    var now=$("#now").html();
+    javaex.page({
+        id: "page",
+        pageCount: obj,	// 总页数
+        currentPage: now,// 默认选中第几页
+        position: "center",
+        // 返回当前选中的页数
+        callback: function (rtn) {
+            pageCount = rtn.pageNum;
+            window.location.href = "/getType?pageNum=" + rtn.pageNum;
+        }
+    });
+
+    javaex.menu({
+        id: "menu",	// 菜单id
+        isAutoSelected: true
+    });
+
+
+
+
+    //单击添加按钮，可以添加一条表单来输入数据
+    $("#addbtn").click(function () {
+        var html='';
+        html+='<tr>';
+        html+='<td><input type="checkbox" class="fill listen-1-2" name="id" value=""/> </td>';
+        html+='<td><input type="text" class="text" name="sort" data-type="正整数"  value="序号将自动生成"  disabled/></td>';
+        html+='<td><input id="addtypename_1" type="text" class="text" name="name" data-type="必填" error-msg="请输入分类名称" placeholder="请输入分类名称" value=""/></td>';
+        html+='<td><button id="sava_add" class="button green""><span class="icon-check2"></span> 保存</button></td>'
+        html+='</tr>';
+        $("#table thead").append(html);
+
+        $(this).attr("disabled","disabled");
+        //重新渲染。防止之前加载的js约束无法作用于动态添加的对象
+         javaex.render();
+        //添加了类型后点击保存进行持久化操作
+        $("#sava_add").click(function () {
+            var obj = $('input[name=name]').val();
+
+            $.ajax({
+                url: '/sava_addType',
+                data: {'data': obj},
+                success: function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.code == 000000) {
+                        window.location.href = "/getType?pageNum=1";
+                    }
+                }
+
+            });
+        });
+
+        });
+
+// function get() {
+//     var obj=$('input[name=name]').val();
+//     alert(obj);
+// }
+
+        //$("input[type=checkbox]:checked")
+    //批量选中删除
+
+
+    $("#delbtn").click(function(){
+        var array=new Array();
+        $.each($('input:checkbox'),function(){
+            if(this.checked){
+                 /*window.alert("你选了："+
+                     $('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());*/
+
+                 array.push($(this).val());
+
+             /*alert(array[count]);*/
+            }
+        });
+
+
+        $.ajax({
+            url:'delType',
+            dataType : "json",
+            traditional:'true',
+            data:{'data':array},
+            success: function (result) {
+                console.log(result);//打印服务端返回的数据(调试用)
+                if (result.code == 000000) {
+                    window.location.href = "/getType?pageNum=1";
+                }
+            }
+        });
+
+    });
+
+    // //按名称搜索
+    // $("#search-fromType").click(function () {
+    //     var searchinfo= $("#searchinfo").val()
+    //     $.ajax({
+    //         url:"/getType",
+    //         data:{"data":searchinfo},
+    //         success: function (result) {
+    //                 window.location.href = "/getType";
+    //         }
+    //     })
+    // })
+
+
+</script>
+</body>
+</html>

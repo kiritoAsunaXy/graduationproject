@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+</head>
+<body>
+
+<!--引入了左侧菜单栏-->
+<div th:replace="leftmenu :: html"></div>
+
+<!--右侧内容-->
+<div class="admin-right">
+
+    <!--引入头部文件-->
+    <div th:replace="head :: html"></div>
+    <!--内容-->
+    <div class="admin-content">
+        <!--面包屑导航-->
+        <div class="content-header">
+            <div class="breadcrumb">
+                <span>后台主页</span>
+                <span class="divider">/</span>
+                <span class="active">博客后台</span>
+            </div>
+        </div>
+
+
+
+        <!--全部主体内容-->
+        <div class="list-content">
+            <!--块元素-->
+            <div class="block">
+                <!--修饰块元素名称-->
+                <div class="banner">
+                    <p class="tab fixed">流水清风</p>
+                </div>
+
+                <!--正文内容-->
+                <div class="main">
+                    <div style="position:relative;width:100%;height:600px;">
+                     <img src="/images/img_0682.jpg" style="height: 600px;width: 100%">
+                        <div style="position:absolute;width:600px;height:600px;z-indent:2;left:0;top:0;">
+                            <span style="color: #FFFFFF;font-family: STCaiyun;font-size: 20px" id="word"></span><br>
+                            <span style="color: #FFFFFF;font-family: STCaiyun;font-size: 20px" id="word2"></span><br>
+                            <span style="color: #FFFFFF;font-family: STCaiyun;font-size: 20px" id="word3"></span><br>
+                            <span style="color: #FFFFFF;font-family: STCaiyun;font-size: 20px" id="word4"></span><br>
+                            <span style="color: #FFFFFF;font-family: STCaiyun;font-size: 20px" id="word5"></span><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    javaex.menu({
+        id : "menu",	// 菜单id
+        isAutoSelected : true
+    });
+
+/*一个人的闯荡，有时候也会疲惫，也会迷茫，但我的梦想，仍在发光*/
+  $(document).ready(function () {
+     setTimeout(function () {
+         $("#word").html("一个人的闯荡")
+         setTimeout(function () {
+             $("#word2").html("有时候也会疲惫")
+             setTimeout(function () {
+                 $("#word3").html("也会迷茫")
+                 setTimeout(function () {
+                     $("#word4").html("但我的梦想")
+                     setTimeout(function () {
+                         $("#word5").html("仍在发光")
+                     },1500)
+                 },1500)
+             },1500)
+         },1500)
+     },1500)
+  });
+
+
+
+
+
+</script>
+</body>
+</html>

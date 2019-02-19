@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+</head>
+    <!--顶部-->
+    <div class="admin-header">
+        <ul class="header-right">
+            <li>
+                <a class="pull-left avatar" href="#"><img th:src="${session.user.getHead()}" alt=""></a>
+                <p class="pull-left margin-left-10">欢迎您，<span th:text="${session.user.getUsername()}"></span></p>
+                <label class="margin-left-10 margin-right-10">|</label>
+                <a href="/index">退出</a>
+            </li>
+            <li>
+                <a href="/tomymymessage">
+				<span class="icon-commenting-o" style="font-size: 20px;position: relative;top:2px;">
+					<i id="i" style=""><span id="num"></span></i>
+				</span>
+                </a>
+            </li>
+            <li>
+                <a href="/personal">用户中心</a>
+            </li>
+        </ul>
+    </div>
+<input type="hidden" id="myname" th:value="${session.user.getUsername()}">
+<script>
+    window.onload=function () {
+        var myname=$("#myname").val()
+        $.ajax({
+            url:"/numofmessage",
+            data:{"myname":myname},
+            success : function(rtn) {
+                if(rtn.code=="000000"){
+                    if(rtn.data.num!=0) {
+                        $("#num").html(rtn.data.num)
+                    }else {
+                        $("#i").remove()
+                    }
+                }
+            }
+        })
+    }
+</script>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyu.springboot.mapper.CommentMapper">
+
+    <resultMap id="commonMap" type="com.xuyu.springboot.bean.CommentInfo">
+        <result column="id" property="id" />
+        <result column="articleid" property="articleid" />
+        <result column="userid" property="userid" />
+        <result column="recall" property="recall" />
+        <result column="date" property="date" />
+        <result column="comment" property="comment"></result>
+        <result column="recallid" property="recallid"></result>
+        <result column="replyname" property="replyname"></result>
+        <association property="user" javaType="com.xuyu.springboot.bean.User">
+            <id column="id" property="id"/>
+            <result column="username" property="username"/>
+            <result column="head" property="head"/>
+        </association>
+    </resultMap>
+
+
+
+    <insert id="savecomment">
+        insert into comment_info(comment,articleid,userid,date,recallid,replyname) values (#{comment},#{article_id},#{user_id},#{datetime},#{recallid},#{replyname})
+    </insert>
+
+
+<select id="getCommentInfo" resultMap="commonMap">
+    select c.id,c.articleid,c.userid,c.recall,c.date,c.replyname,c.comment,c.recallid,u.username,u.head from comment_info c,user u where c.articleid=#{id} and c.userid=u.id
+</select>
+
+    <select id="getCommentInfoss" resultMap="commonMap">
+          select c.id,c.articleid,c.userid,c.recall,c.replyname,c.date,c.comment,c.recallid,u.username,u.head from comment_info c,user u
+          where c.replyname=#{myname}
+         and c.recall in (1,2)
+        order by c.id desc
+    </select>
+
+
+    <update id="resetrecall">
+        update comment_info set recall=0 where id=#{id}
+    </update>
+
+
+    <select id="getArticleId" resultType="Integer">
+        select articleid from comment_info where id=#{id}
+    </select>
+
+    <update id="setrecall">
+        update comment_info set recall=2 where id=#{id}
+    </update>
+
+  <!--  <select id="getnum" resultType="Integer">
+        select count (c.id)
+        where c.articleid in
+        <foreach collection="list" index="index" item="aids" open="(" separator="," close=")">
+            #{aids}
+        </foreach>
+        and c.userid=u.id and c.recall in (1,2)
+        order by c.id desc
+    </select>-->
+</mapper>

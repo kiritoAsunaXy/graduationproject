@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+</head>
+<!--引入了左侧菜单栏-->
+<div th:replace="leftmenu :: html"></div>
+
+<!--右侧内容-->
+<div class="admin-right">
+    <!--引入头部文件-->
+    <div th:replace="head :: html"></div>
+    <!--内容-->
+    <div class="admin-content">
+        <!--面包屑导航-->
+        <div class="content-header">
+            <div class="breadcrumb">
+                <span>文章管理</span>
+                <span class="divider">/</span>
+                <span class="active">文章审核</span>
+            </div>
+        </div>
+
+
+
+        <!--全部主体内容-->
+        <div class="list-content">
+            <!--块元素-->
+            <div class="block">
+                <!--修饰块元素名称-->
+                <div class="banner">
+                    <p class="tab fixed">文章审核</p>
+                </div>
+
+                <!--正文内容-->
+                <div class="main">
+                    <!--表单-->
+                    <form id="form">
+                        <!--文章id用隐藏域获得-->
+                        <input type="hidden" id="id" th:if="${articleInfo.id!=null}" name="id"  th:value="${articleInfo.id}"/>
+                        <!--输入框-->
+                        <div class="unit">
+                            <div class="left">
+                                <p class="subtitle">标题</p>
+                            </div>
+                            <div class="right">
+                                <input type="text" class="text" name="title" data-type="必填"  placeholder="请输入文章标题" th:value="${articleInfo.title }" disabled="disabled"/>
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+                        <!--分割线-->
+                        <p class="divider"></p>
+
+                        <!--下拉选择框-->
+                        <div class="unit">
+                            <div class="left">
+                                <p class="subtitle">文章分类</p>
+                                <!--使用隐藏域来获得值-->
+                                <input id="content" name="content" type="hidden" th:value="${articleInfo.content}" />
+                            </div>
+                            <div class="right">
+                                <!--使得不能修改类型-->
+                                <select id="type_id" name="type_id" disabled="disabled">
+                                    <tr>
+                                        <span th:each="typeInfo : ${typeList}">
+                                            <option th:if="${articleInfo.type_id==typeInfo.id}" th:text="${typeInfo.name}" th:value="${typeInfo.id}" selected></option>
+                                             <option th:if="${articleInfo.type_id!=typeInfo.id}" th:text="${typeInfo.name}" th:value="${typeInfo.id}"></option>
+                                        </span>
+                                    </tr>
+                                </select>
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+                        <!--分割线-->
+                        <p class="divider"></p>
+
+                        <!--下图片上传-->
+                        <div class="unit">
+                            <div class="left">
+                                <p class="subtitle">图片</p>
+                            </div>
+                            <div class="right">
+                                <!-- 图片承载容器 -->
+                                <label id="container2" for="upload" style="display: inline-block; width:132px;height:74px;" >
+
+                                    <img th:if="${articleInfo.cover==null}" src="/javaex/pc/images/default.png" width="100%" height="100%" />
+                                    <img th:if="${articleInfo.cover!=null}" th:src="'http://127.0.0.1:8087/upload/'+${articleInfo.cover}" width="100%" height="100%" />
+
+                                </label>
+                                <!-- 上传按钮 -->
+                                <input type="file" class="hide" id="upload" accept="image/gif, image/jpeg, image/jpg, image/png" />
+                                <input type="hidden" id="cover" name="cover" value=""/>
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+                        <!--分割线-->
+                        <p class="divider"></p>
+
+                        <!--文本域-->
+                        <div class="unit">
+                            <div class="left">
+                                <p class="subtitle">文章内容</p>
+                            </div>
+                            <div class="right">
+                                <div id="edit" class="edit-container"></div>
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                            <!-- 两个隐藏域,用来作为文章的内容的解答 -->
+                            <!--<input type="hidden" id="content2" name="content_text" value=""/>-->
+                        </div>
+                        <!--分割线-->
+                        <p class="divider"></p>
+
+                        <!--提交按钮-->
+                        <div class="unit">
+                            <div style="margin-left: 200px;">
+                                <!--表单提交时，必须是input元素，并指定type类型为button，否则ajax提交时，会返回error回调函数-->
+                                <input type="button" id="return" class="button no" value="返回" />
+                                <input type="button" id="submit" class="button yes" value="审核通过" />
+
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+                    </form>
+
+                    <!--分割线-->
+                    <p class="divider"></p>
+
+                    <!--输入框-->
+                    <div class="unit">
+                        <div class="left">
+                            <p class="subtitle">驳回理由</p>
+                        </div>
+                        <div class="right">
+                            <textarea style="width: 500px;height: 200px" id="backreason" name="backreason"></textarea>
+                        </div>
+                        <!--清浮动-->
+                        <span class="clearfix"></span>
+                    </div>
+                    <!--分割线-->
+                    <p class="divider"></p>
+
+
+                    <!--驳回按钮-->
+                    <div class="unit">
+                        <div style="margin-left: 200px;">
+                            <input type="button" id="back" class="button yellow" value="驳回" />
+                        </div>
+                        <!--清浮动-->
+                        <span class="clearfix"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    javaex.select({
+        id : "type_id",
+        isSearch:false
+    });
+
+
+var obj=$("#content").val()
+    javaex.edit({
+        id : "edit",
+        image : {
+            url : "/upload",	// 请求路径
+            param : "file",		// 参数名称，SSM中与MultipartFile的参数名保持一致
+            dataType : "url",	// 返回的数据类型：base64 或 url
+            rtn : "rtnData",	// 后台返回的数据对象，在前面页面用该名字存储
+            imgUrl : "data.imgUrl",	// 根据返回的数据对象，获取图片地址。  例如后台返回的数据为：{code: "000000", message: "操作成功！", data: {imgUrl: "1.jpg"}}
+            prefix : "http://127.0.0.1:8087/upload/"	// 图片地址的前缀，根据实际情况决定是否需要填写
+        },
+        content :obj,	// 这里必须是单引号，因为html代码中都是双引号，会产生冲突
+        callback : function(rtn) {
+             $("#content").attr("value",rtn.html())
+            // $("#contenttext").attr("value",rtn.text.substr(0,50))
+
+
+        }
+    });
+
+
+    javaex.upload({
+        type : "image",
+        url : "/upload",	// 请求路径
+        id : "upload",	// <input type="file" />的id
+        param : "file",			// 参数名称，SSM中与MultipartFile的参数名保持一致
+        dataType : "url",		// 返回的数据类型：base64 或 url
+        callback : function (rtn) {
+            // 后台返回的数据
+            console.log(rtn);
+            if (rtn.code=="000000") {
+                var imgUrl=rtn.data.imgUrl;
+                $("#container2 img").attr("src", "http://127.0.0.1:8087/upload/"+imgUrl);
+                $("#cover").val(imgUrl);
+            } else {
+                javaex.optTip({
+                    content : rtn.message,
+                    type : "error"
+                });
+            }
+        }
+    });
+
+    //返回
+    $("#return").click(function() {
+        history.back();
+    });
+
+
+    //提交保存
+    $("#submit").click(function() {
+       var obj=$(".edit-body-container").html()
+        $("#content").val(obj)
+        // alert(obj)
+        $.ajax({
+            url : "/saveArticleTrue",
+            type : "POST",
+            dataType : "json",
+            data : $("#form").serialize(),
+            success : function(rtn) {
+                if(rtn.code=="000000"){
+                    javaex.optTip({
+                        content : rtn.message+",将会在2秒后自动刷新页面"
+                    });
+
+                    //延迟加载
+                    setTimeout(function() {
+                        //跳转页面，否则
+                        window.location.href = "/toArticleEdit";
+                    }, 2000);
+                }else{
+                    javaex.optTip({
+                        content : rtn.message,
+                        type : "error"
+                    });
+                }
+            }
+        });
+    });
+
+
+
+
+    //驳回文章
+    $("#back").click(function() {
+        var id=$("#id").val()//获取文章id
+        var backreason= $("#backreason").val()//获取驳回理由
+        var obj=$(".edit-body-container").html()
+        javaex.optTip({
+            content : "文章驳回中，请稍候...",
+            type : "submit"
+        });
+        $("#content").val(obj)
+        $.ajax({
+            url : "/back",
+            type : "POST",
+            dataType : "json",
+            data : {
+                "id":id,
+                "backreason":backreason,
+                "status":"0"
+            },
+            success : function(rtn) {
+                if(rtn.code=="000000"){
+                    javaex.optTip({
+                        content : rtn.message+",将会在2秒后自动刷新页面"
+                    });
+
+                    //延迟加载
+                    setTimeout(function() {
+                        //跳转页面，否则
+                        window.location.href = "/toArticleEdit";
+                    }, 2000);
+                }else{
+                    javaex.optTip({
+                        content : rtn.message,
+                        type : "error"
+                    });
+                }
+            }
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+
+    //***这里是显示左侧栏格式的必不可少的地方
+    javaex.menu({
+        id : "menu",	// 菜单id
+        isAutoSelected : true
+    });
+</script>
+</body>
+</html>

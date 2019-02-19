@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>博客首页</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $( function() {
+          $.ajax({
+              url:"/getthings",
+              type : "POST",
+              success : function(rtn) {
+                 console.log(rtn.data.titles[2].id)
+                  var array=new Array()
+                  if(rtn.code=="000000"){
+                     for(var info in rtn.data.titles) {
+                         array.push(rtn.data.titles[info].title)
+                     }
+                      $( "#tags" ).autocomplete({
+                          source: array
+                      });
+                  }else{
+                     alert("失败")
+                  }
+              }
+          })
+
+
+        } );
+    </script>
+</head>
+<body>
+<div class="ui-widget">
+    <label for="tags">Tags: </label>
+    <input id="tags">
+</div>
+<button id="fun">获取</button>
+</body>
+<script>
+    $("#fun").click(function () {
+        var obj=$("#tags").val()
+        alert(obj)
+    })
+</script>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+</head>
+<body>
+
+<!--引入了左侧菜单栏-->
+<div th:replace="leftmenu :: html"></div>
+
+<!--右侧内容-->
+<div class="admin-right">
+
+    <!--引入头部文件-->
+    <div th:replace="head :: html"></div>
+    <!--内容-->
+    <div class="admin-content">
+        <!--面包屑导航-->
+        <div class="content-header">
+            <div class="breadcrumb">
+                <span>后台主页</span>
+                <span class="divider">/</span>
+                <span class="active">博客后台</span>
+            </div>
+        </div>
+
+
+
+        <!--全部主体内容-->
+        <div class="list-content">
+            <!--块元素-->
+            <div class="block">
+                <!--修饰块元素名称-->
+                <div class="banner">
+                    <p class="tab fixed">个人中心</p>
+                </div>
+
+                <!--正文内容-->
+                <div class="main">
+                    <div class="button yellow" id="revise">修改个人信息</div>
+                    <hr>
+                    <form id="form" action="/updateuserinfo" method="post" onkeydown="if(event.keyCode==13)return false;">
+
+                         <input type="hidden" th:value="${session.user.getId()}" name="id" id="id">
+                        <!--文本框-->
+                        <div class="unit">
+
+                            <div class="left"><span class="required"></span><p class="subtitle">头像</p></div>
+                            <!--<div class="right">-->
+                                <!--style="width: 100px; height:100px; border-radius:50px; overflow:hidden;"-->
+                            <div style="width: 200px; height:200px; border-radius:100px; overflow:hidden;">
+                                <img th:src="${session.user.getHead()}">
+                            </div>
+                            <!--</div>-->
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+                        <!--文本框-->
+                        <div class="unit">
+
+                            <div class="left"><span class="required"></span><p class="subtitle">账号</p></div>
+                            <div class="right">
+                                <input id="username" th:value="${session.user.getUsername()}" type="text" class="text" data-type="英文字母|中文" error-msg="账号格式错误" error-pos="42" placeholder="" name="username" disabled="disabled"/>
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+
+
+                        <div class="unit">
+                            <div class="left"><span class="required"></span><p class="subtitle">邮箱</p></div>
+                            <div class="right">
+                                <input id="email" type="text" th:value="${session.user.getEmail()}" class="text" data-type="邮箱" error-msg="邮箱格式错误" error-pos="42" placeholder="" name="email" disabled="disabled"/>
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+
+<input type="hidden" id="mytags" th:value="${session.user.getTags()}">
+
+                        <!--单选框-->
+                        <div class="unit">
+                            <div class="left"><p class="subtitle">性别</p></div>
+                            <div class="right">
+                                <ul class="equal-8">
+
+                                    <span th:if="${session.user.getGender()==0}">
+                                    <li><input id="gender1" type="radio" class="fill" name="gender" value="0" checked="checked" disabled="disabled"/>男</li>
+                                    <li><input id="gender2" type="radio" class="fill" name="gender" value="1" disabled="disabled"/>女</li>
+                                    </span>
+
+                                    <span th:if="${session.user.getGender()==1}">
+                                    <li><input id="gender3" type="radio" class="fill" name="gender" value="0" disabled="disabled"/>男</li>
+                                    <li><input id="gender4" type="radio" class="fill" name="gender" value="1"checked="checked" disabled="disabled"/>女</li>
+                                    </span>
+                                    <!--清浮动-->
+                                    <span class="clearfix"></span>
+                                </ul>
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+
+                        <!--文本域-->
+                        <div class="unit">
+                            <div class="left"><p class="subtitle">简介</p></div>
+                            <div class="right">
+                                <textarea id="introduction" name="introduction" class="desc" placeholder="请填写简介" th:text="${session.user.getIntroduction()}" disabled="disabled"></textarea>
+                                <!--提示说明-->
+                                <p class="hint">请填写个人简介。简介中不得包含令人反感的信息，且长度应在10到255个字符之间。</p>
+                            </div>
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+                        <div class="unit">
+                            <div class="button green" id="setimg" onmouseover="fn()" >设置头像</div>
+                            <input type="submit" class="button red" value="提交修改" id="submit" style="display: none">
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+                    </form>
+
+
+
+
+
+
+                    <!--这里是标签区域-->
+                    <div class="unit">
+                        <div class="left"><p class="subtitle">我的标签</p></div>
+                        <div class="right">
+                            <div class="tagbox"></div>
+                            <input type="hidden" id="tag" name="tag" value="" />
+                        </div>
+                    </div>
+                    <button style="margin-left: 700px" class="button blue" id="testbtn11"><span class="icon-check2"></span> 保存我的标签</button>
+
+
+                    <input type="hidden" value="" id="imgurl" name="imgurl">
+                    <!--正文内容-->
+                    <div class="main" id="showset" style="display: none">
+                        <!--静态提示-->
+                        <p class="tip warning">请勿使用包含不良信息或敏感内容的图片作为用户头像。</p>
+                        <!--分割线-->
+                        <p class="divider"></p>
+                        <!--上传组件区域-->
+                        <div class="unit">
+                            <a href="javascript:;" class="file-container button indigo">
+                                点击这里上传图片
+                                <input type="file" class="file" id="upload-avatar" accept="image/gif, image/jpeg, image/jpg, image/png" />
+                            </a>
+                            <p class="hint">支持JPG、GIF、PNG格式，文件应小于5M，文件太大将导致无法读取</p>
+                        </div>
+                        <!--分割线-->
+                        <p class="divider"></p>
+                        <!--头像上传预览区域-->
+                        <div class="unit">
+                            <div class="original">
+                                <div id="image-box" class="image-box">
+                                    <!--裁剪层-->
+                                    <div id="cut-box" class="cut-box"></div>
+                                    <!--背景层（可移动图片）-->
+                                    <div id="move-box" class="move-box"></div>
+                                </div>
+                                <!--放大、缩小-->
+                                <span id="narrow" class="icon-zoom-out" style="color: #666;font-size: 20px;"></span>
+                                <span id="enlarge" class="icon-zoom-in" style="color: #666;font-size: 20px;float: right;"></span>
+                            </div>
+                            <!--裁剪后的预览区域-->
+                            <div class="preview">
+                                <!--静态提示-->
+                                <p class="tip">
+                                    您上传的头像会自动生成3种尺寸，请注意中、小尺寸的头像是否清晰。
+                                </p>
+                                <div class="view">
+                                    <div class="view-avatar180">
+                                        <div class="avatar180"></div>
+                                        <p class="hint">大尺寸头像，180像素X180像素</p>
+                                    </div>
+                                    <div class="view-avatar50">
+                                        <div class="avatar50"></div>
+                                        <p class="hint">中尺寸头像，50像素X50像素</p>
+                                    </div>
+                                    <div class="view-avatar30">
+                                        <div class="avatar30"></div>
+                                        <p class="hint">小尺寸头像，30像素X30像素</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--自动返回裁剪后的图片地址-->
+                            <input type="hidden" id="data-url" value="" />
+                            <!--清浮动-->
+                            <span class="clearfix"></span>
+                        </div>
+                        <!--分割线-->
+                        <p class="divider"></p>
+                        <!--保存头像区域-->
+                        <div class="unit">
+                            <a href="" class="button navy" id="saveheadimg">保存头像</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    javaex.menu({
+        id : "menu",	// 菜单id
+        isAutoSelected : true
+    });
+
+function fn(){
+   $("#showset").show()
+}
+
+
+
+    // 点击上传（必须用change）
+    $("#upload-avatar").change(function() {
+        javaex.uploadAvatar(
+            this,	// 必填
+            {
+                imgDivId : "image-box",	// 本地上传的图片区域id
+                cutBox : "cut-box",		// 裁剪区域id
+                moveBox : "move-box",	// 背景区域id，可拖动
+                dataUrl : "imgurl",	// 最终将图片地址返回给哪个input存储
+                type : "base64"			// 图片地址类型，目前仅支持base64
+            }
+        );
+
+
+    });
+
+
+$("#saveheadimg").click(function () {
+    objimg=$("#imgurl").val()
+    id=$("#id").val()
+    $.ajax({
+        url:'/saveimg',
+        data:{'imgurl':objimg,'id':id},
+        dataType:'json',
+        success: function (result) {
+            if (result.code == 000000) {
+
+            }
+        }
+    });
+
+})
+
+
+
+    //修改显示
+    $("#revise").click(function () {
+
+        $("#username").attr("disabled",false)
+        $("#email").attr("disabled",false)
+        $("#gender1").attr("disabled",false)
+        $("#gender2").attr("disabled",false)
+        $("#gender3").attr("disabled",false)
+        $("#gender4").attr("disabled",false)
+        $("#introduction").attr("disabled",false)
+
+        $("#submit").fadeIn(2000)
+
+    })
+
+
+
+
+
+    var ids=new Array()
+    var obj=$("#mytags").val()
+    tags=obj.split(",")
+
+
+    //标签区域
+    javaex.tag({
+        id : "tag",
+        tags:tags
+    });
+
+
+
+$("#testbtn11").click(function () {
+     var ids=new Array()
+     var str=$("#tag").val()
+    id=$("#id").val()
+     ids=str.split(',')
+    $.ajax({
+        url:"/savetags",
+        data:{
+            ids:ids,
+            "id":id
+              },
+        dataType: 'json',
+        traditional: true,
+        success: function (result) {
+            if (result.code == 000000) {
+window.location.reload()
+            }
+        }
+    })
+
+})
+
+
+
+</script>
+</body>
+</html>

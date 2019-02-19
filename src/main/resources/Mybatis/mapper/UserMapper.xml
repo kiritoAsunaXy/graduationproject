@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyu.springboot.mapper.UserMapper">
+    <!--    public Employee getEmpById(Integer id);
+
+     public void insertEmp(Employee employee);-->
+    <select id="getEmpById" resultType="com.xuyu.springboot.bean.User">
+        SELECT * FROM user WHERE id=#{id}
+    </select>
+
+<select id="numsformonths" resultType="Integer">
+    select count(id) from user where time between #{beg} and #{end}
+</select>
+
+
+    <select id="selectAllUser" resultType="com.xuyu.springboot.bean.User">
+        select * from user
+
+    </select>
+
+
+    <insert id="insertEmp">
+        INSERT INTO user(username,email,password,gender,time) VALUES (#{username},#{email},#{password},#{gender},#{time})
+    </insert>
+
+    <select id="checkLogin" resultType="com.xuyu.springboot.bean.User">
+        select * from user where password=#{password} and username=#{username}
+    </select>
+
+    <update id="updateEmp">
+        update user set username=#{username} where id=#{id}
+    </update>
+
+
+    <select id="getUserByName" resultType="com.xuyu.springboot.bean.User">
+        select * from user where username=#{name}
+    </select>
+
+
+    <update id="setHead">
+        update user set head=#{imgurl} where id=#{id}
+    </update>
+
+
+    <update id="updateUserInfo">
+        update user set username=#{username},gender=#{gender},email=#{email},introduction=#{introduction}
+        where id=#{id}
+    </update>
+
+    <select id="selectHeadByName" resultType="String">
+
+        select head from user where username=#{myattentionname}
+
+    </select>
+
+    <update id="addtags">
+        update user set tags=#{str} where id=#{id}
+    </update>
+</mapper>

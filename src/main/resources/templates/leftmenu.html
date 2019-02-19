@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+</head>
+<!--左侧内容-->
+<div class="admin-left">
+    <!--logo-->
+    <div class="logo">
+        <h1>程序园博客</h1>
+    </div>
+    <!--左侧菜单-->
+    <div id="menu" class="menu">
+        <ul>
+            <li class="menu-item">
+                <a th:href="@{/index.action}"><span class="icon-home2" style="color: red"></span>主页</a>
+            </li>
+
+            <li shiro:hasRole="admin" class="menu-item">
+                <a href="#"><span class="icon-stats-dots" style="color: #3399ff"></span>数据分析<i class="icon-keyboard_arrow_left"></i></a>
+                <ul>
+                    <li><a href="/dataAnalyse" th:text="文章与分类作者"></a></li>
+                    <li><a href="/dataAnalyse2" th:text="用户数据"></a></li>
+                </ul>
+            </li>
+            <li shiro:hasRole="admin" class="menu-item">
+                <a href="#"><span class="icon-bar-chart" style="color: green"></span>文章分类<i class="icon-keyboard_arrow_left"></i></a>
+                <ul>
+                    <li><a href="/getType" th:text="文章类别管理"></a></li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="#"><span class="icon-magic" style="color: #b9def0"></span>文章详情<i class="icon-keyboard_arrow_left"></i></a>
+                <ul>
+                    <li><a href="/toArticleEdit">文章主库</a></li>
+                    <li><a href="/torecycle_bin">回收站</a></li>
+                    <li shiro:hasRole="admin"><a href="/toexamine">待审核</a></li>
+                </ul>
+            </li>
+
+
+           <!--用户管理-->
+            <li class="menu-item" shiro:hasRole="admin">
+                <a href="#"><span class="icon-users" style="color: #9729ea"></span>用户管理<i class="icon-keyboard_arrow_left"></i></a>
+                <ul>
+                    <li><a href="/userlist">用户信息</a></li>
+                </ul>
+            </li>
+
+            <!--我的关注-->
+            <li class="menu-item" shiro:hasRole="common_user">
+                <a href="#"><span class="icon-group" style="color: green"></span>我的关注<i class="icon-keyboard_arrow_left"></i></a>
+                <ul>
+                    <li><a href="/tomyattention">我关注的作者</a></li>
+                </ul>
+            </li>
+
+            <!--我的关注-->
+            <li class="menu-item" shiro:hasRole="common_user">
+                <a href="#"><span class="icon-add_circle" style="color: peachpuff"></span>我的收藏<i class="icon-keyboard_arrow_left"></i></a>
+                <ul>
+                    <li><a href="/tomycollection">我收藏的文章</a></li>
+                </ul>
+            </li>
+
+
+            <!--我的消息-->
+            <li class="menu-item">
+                <a href="#"><span class="icon-bubble" style="color: blue"></span>我的消息<i class="icon-keyboard_arrow_left"></i></a>
+                <ul>
+                    <li><a href="/tomymymessage">我收到的回复</a></li>
+                    <li shiro:hasRole="admin"><a href="/tomessageforall">系统消息群发</a></li>
+                </ul>
+            </li>
+
+            <!--历史记录-->
+            <li class="menu-item">
+                <a href="#"><span class="icon-update"></span>我的足迹<i class="icon-keyboard_arrow_left"></i></a>
+                <ul>
+                    <li><a href="/toHistory">历史记录</a></li>
+                </ul>
+            </li>
+
+        </ul>
+
+        <!--网站功能-->
+        <li class="menu-item" shiro:hasRole="admin">
+            <a href="#"><span class="icon-build" style="color: black"></span>网站维护<i class="icon-keyboard_arrow_left"></i></a>
+            <ul>
+                <li><a href="/operation">运转维护更新</a></li>
+            </ul>
+        </li>
+
+    </div>
+</div>

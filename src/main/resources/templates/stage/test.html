@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>博客首页</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+
+<body>
+<div id="comment" class="comment"></div>
+
+<script>
+    javaex.comment({
+        id : "comment",		// 评论列表的承载主键
+        avatar : "http://doc.javaex.cn/javaex/javaex/pc/images/user.jpg", 	// 默认头像地址
+        url : "http://www.m173.cc/?UID=", // 用户信息页面的请求地址
+        commentCount : 8,	// 评论+回复的总条数
+        list : list,		// 评论+回复的数据
+        commentMapping : {	// 评论字段映射
+            commentId : "id",	// 评论表的主键
+            userId : "userId",	// 评论用户的id
+            userName : "loginName",	// 评论用户的名称（一般为登录名或昵称）
+            avatar : "avatar",	// 评论用户的头像
+            content : "content",	// 评论内容
+            time : "updateTime",	// 评论时间
+            replyInfoList : "replyInfoList" // 该条评论下的回复数据
+        },
+        replyMapping : {	// 回复字段映射
+            userId : "userId",	// 回复用户的id
+            userName : "loginName",	// 回复用户的名称（一般为登录名或昵称）
+            avatar : "avatar",	// 回复用户的头像
+            toUserId : "toUserId",	// 被回复用户的id
+            toUserName : "toLoginName",	// 被回复用户的名称（一般为登录名或昵称）
+            content : "content",	// 回复内容
+            time : "updateTime"	// 回复时间
+        },
+        callback : function(rtn) {	// 用户评论后的回调函数
+            if (rtn.type=="comment") {
+                // 对视频的评论
+                // 返回评论内容
+                console.log(rtn.content);
+            } else if (rtn.type=="reply") {
+                // 对评论的回复
+                console.log(rtn.commentId);	// 返回评论的主键
+                console.log(rtn.toUserId);	// 返回回复对象的userId
+                console.log(rtn.toUserName);	// 返回回复对象的名称
+                console.log(rtn.content);	// 返回回复内容
+            }
+        }
+    });
+</script>
+
+
+</body>
+
+
+</html>

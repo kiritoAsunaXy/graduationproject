@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--字体图标-->
+    <link href="/javaex/pc/css/icomoon.css" rel="stylesheet" />
+    <!--动画-->
+    <link href="/javaex/pc/css/animate.css" rel="stylesheet" />
+    <!--骨架样式-->
+    <link href="/javaex/pc/css/common.css" rel="stylesheet" />
+    <!--皮肤（缇娜）-->
+    <link href="/javaex/pc/css/skin/tina.css" rel="stylesheet" />
+    <!--jquery，不可修改版本-->
+    <script src="/javaex/pc/lib/jquery-1.7.2.min.js"></script>
+    <!--全局动态修改-->
+    <script src="/javaex/pc/js/common.js"></script>
+    <!--核心组件-->
+    <script src="/javaex/pc/js/javaex.min.js"></script>
+    <!--表单验证-->
+    <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+
+
+</head>
+<body>
+
+<!--引入了左侧菜单栏-->
+<div th:replace="leftmenu :: html"></div>
+
+<!--右侧内容-->
+<div class="admin-right">
+
+    <!--引入头部文件-->
+    <div th:replace="head :: html"></div>
+    <!--内容-->
+    <div class="admin-content">
+        <!--面包屑导航-->
+        <div class="content-header">
+            <div class="breadcrumb">
+                <span>后台主页</span>
+                <span class="divider">/</span>
+                <span class="active">历史记录</span>
+            </div>
+        </div>
+
+        <!-- ...................... -->
+        <!--获取分页信息的隐藏标签-->
+        <p id="pages" th:text="${pageInfo.getPages()}" style="display: none"></p>
+        <p id="now" th:text="${pageInfo.getPageNum()}" style="display: none"></p>
+
+        <!--全部主体内容-->
+        <div class="list-content">
+            <!--块元素-->
+            <div class="block">
+                <!--修饰块元素名称-->
+                <div class="banner">
+                    <p class="tab fixed">我的足迹</p>
+                </div>
+
+                <!--正文内容-->
+                <div class="main">
+                    <!--关键内容-->
+                    <table class="table color">
+                        <tr style="text-align: center">
+                            <th>文章</th>
+                            <th>阅读时间</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr th:if="${lists=='have'}" th:each="item:${pageInfo.list}">
+                               <th><a th:href="@{'/article.action?id='+${item.articleid}+'&typeId=0'}" th:text="${item.articlename}"></a></th>
+                            <th style="text-align: center" th:text="${item.readtime}"></th>
+                            <th style="text-align: center"><button class="button red radius-10" th:id="${item.id}" onclick="deleteDialog(this,this.id)"><span class="icon-close"></span>删除记录</button></th>
+                        </tr>
+
+                        <tr th:if="${lists=='null'}">
+                            <th style="color: red;text-align: center" colspan="3">您暂时还没有浏览记录</th>
+                        </tr>
+                    </table>
+
+
+
+                    <div class="page">
+                        <ul id="page" class="pagination"></ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    javaex.menu({
+        id : "menu",	// 菜单id
+        isAutoSelected : true
+    });
+    var obj=$("#pages").html();
+    var now=$("#now").html();
+    javaex.page({
+        id : "page",
+        pageCount : obj,	// 总页数
+        currentPage : now,// 默认选中第几页
+        position : "center",
+        // 返回当前选中的页数
+        callback:function(rtn) {
+                window.location.href = "/toHistory" + "?pageNum=" + rtn.pageNum;
+        }
+    });
+
+
+
+    function deleteDialog(obj,id) {
+
+        javaex.deleteDialog(
+            obj,	// obj是必须的
+            {
+                content: "确定要删除么",
+                callback: "callback('" + id + "')"
+            }
+        );
+
+    }
+    function callback(id) {
+        //alert("回调函数："+id);
+        // 如果你想阻止弹出层关闭，直接 return false; 即可
+        //return false;
+        $.ajax({
+            url:"/changestatus",
+            data:{"id":id},
+            success:function (rtn) {
+                if(rtn.code=="000000"){
+                    javaex.optTip({
+                        content : "删除记录成功",
+                        type : "success"
+                    });
+                    // 建议延迟加载
+                    setTimeout(function() {
+                        // 刷新页面
+                        window.location.reload();
+                        // 跳转页面
+                        // window.location.href = "${pageContext.request.contextPath}/zone_info/list.action";
+                    }, 1000);
+                }
+            }
+        })
+    }
+
+
+
+
+</script>
+</body>
+</html>
