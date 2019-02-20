@@ -31,4 +31,6 @@ public interface UserMapper {
     void addtags(@Param("str") String str, @Param("id") Integer id);
 
     Integer numsformonths(@Param("beg") String beg, @Param("end") String end);
+
+    List<String> getAllUserName();
 }

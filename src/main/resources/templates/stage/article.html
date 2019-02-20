@@ -164,7 +164,8 @@
                     <span>&nbsp;&nbsp;&nbsp;</span>
                     <span th:text="'('+${comt2.date}+')'" style="font-size: small;color: silver"></span>
                     <span>&nbsp;&nbsp;</span>
-                    <a href=""  th:id="${comt.id}" onclick="show(this.id);return false" th:value="${comt2.user.username}"><span style="font-size: small;color: #2b669a">回复</span></a>
+                             <input type="hidden" th:id="${comt2.id}+'t'" th:value="${comt.id}">
+                    <a href=""  th:id="${comt2.id}" onclick="show(this.id);return false" th:value="${comt2.user.username}"><span style="font-size: small;color: #2b669a">回复</span></a>
                          </span>
                      </span>
 
@@ -398,7 +399,7 @@ var name=$("#authorname1").val()
 
        //用来回复的
      function show(a) {
-         recallid=a;
+          recallid=$("#"+a+'t').val()
          $("#comment").val("");
           name=$("#"+a).attr("value");
          $("#comment").val("回复 @"+name+":");

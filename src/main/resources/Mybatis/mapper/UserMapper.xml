@@ -20,6 +20,9 @@
 
     </select>
 
+    <select id="getAllUserName" resultType="String">
+        select username from user
+    </select>
 
     <insert id="insertEmp">
         INSERT INTO user(username,email,password,gender,time) VALUES (#{username},#{email},#{password},#{gender},#{time})

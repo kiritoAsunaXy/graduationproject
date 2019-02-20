@@ -1,10 +1,7 @@
 package com.xuyu.springboot.controller;
 
 
-import com.xuyu.springboot.bean.CommentInfo;
-import com.xuyu.springboot.bean.MyAttentionInfo;
-import com.xuyu.springboot.bean.MyCollection;
-import com.xuyu.springboot.bean.User;
+import com.xuyu.springboot.bean.*;
 import com.xuyu.springboot.service.ArticleInfoService;
 import com.xuyu.springboot.service.CommentService;
 import com.xuyu.springboot.service.MyAttentionService;
@@ -13,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -104,5 +103,9 @@ public class BackController {
     public String messageforall(){
         return "messageforall";
     }
+
+
+
+
 
 }

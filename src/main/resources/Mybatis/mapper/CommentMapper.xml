@@ -33,7 +33,7 @@
 
     <select id="getCommentInfoss" resultMap="commonMap">
           select c.id,c.articleid,c.userid,c.recall,c.replyname,c.date,c.comment,c.recallid,u.username,u.head from comment_info c,user u
-          where c.replyname=#{myname}
+          where c.replyname=#{myname} and c.userid=u.id
          and c.recall in (1,2)
         order by c.id desc
     </select>

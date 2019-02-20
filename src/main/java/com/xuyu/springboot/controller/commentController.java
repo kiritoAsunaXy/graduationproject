@@ -2,6 +2,7 @@ package com.xuyu.springboot.controller;
 
 
 import com.xuyu.springboot.bean.Result;
+import com.xuyu.springboot.mapper.UserMapper;
 import com.xuyu.springboot.service.ArticleInfoService;
 import com.xuyu.springboot.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class commentController {
@@ -25,8 +27,11 @@ public class commentController {
     private ArticleInfoService articleInfoService;
 
 
+    @Autowired
+    private UserMapper userMapper;
 
 
+    //保存评论
     @RequestMapping("/savecomment")
     @ResponseBody
     public Result saveComment(@RequestParam("comment") String comment,
@@ -46,6 +51,27 @@ public class commentController {
         commentService.savecomment(realcomment,article_id,user_id,dateforcmt,recallid,replayname);
         return Result.success();
     }
+
+
+
+
+    //管理员的消息群发功能
+    @RequestMapping("/sendmessageforall")
+    @ResponseBody
+    public Result sendmessageforall(@RequestParam("id") Integer id,@RequestParam("text") String mess){
+
+        Integer article_id=1;
+        Date date = new Date();
+        String dateforcmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+        List<String> usernames=userMapper.getAllUserName();
+        for(int a=0;a<usernames.size();a++){
+            commentService.savecomment(mess,article_id,id,dateforcmt,1,usernames.get(a));
+        }
+        return Result.success();
+    }
+
+
+
 
 
     @ResponseBody

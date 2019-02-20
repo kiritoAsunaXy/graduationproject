@@ -73,12 +73,13 @@
                         </tr>
                         <tr th:if="${status}==1" th:each="comment:${commentInfos}">
                             <td class="gen" style="width: 300px" th:id="${comment.id+'c'}" th:text="${#strings.abbreviate(comment.comment,20)}" th:value="${comment.comment}"></td>
-                            <td th:text="${comment.user.username}" style="text-align: center"></td>
+                            <td th:if="${comment.userid}!=3" th:text="${comment.user.username}" style="text-align: center"></td>
+                           <td th:if="${comment.userid}==3" th:text="系统" style="text-align: center"></td>
                             <td th:text="${comment.date}" style="text-align: center"></td>
                             <td  th:id="${comment.id}+'s'" th:if="${comment.recall==1}"  style="color: red;text-align: center">未读</td>
                             <td  th:id="${comment.id}+'s'" th:if="${comment.recall==2}"  style="color: gray;text-align: center">已读</td>
                             <td style="text-align: center"><button th:id="${'a'+comment.id}" th:value="${comment.recall}" onclick="fun1(this.id)" class="button indigo radius-10">查看</button> &nbsp;&nbsp;&nbsp;
-                                <button class="button red radius-10" th:id="${comment.id}" onclick="deleteDialog(this, this.id)">删除</button>&nbsp;&nbsp;&nbsp;<button class="button green radius-10" th:id="${comment.id}" onclick="replay(this.id)">前往回复</button></td>
+                                <button class="button red radius-10" th:id="${comment.id}" onclick="deleteDialog(this, this.id)">删除</button>&nbsp;&nbsp;&nbsp;<button th:if="${comment.userid}!=3" class="button green radius-10" th:id="${comment.id}" onclick="replay(this.id)">前往回复</button></td>
                         </tr>
 
                         <tr th:if="${status}==0">

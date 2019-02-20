@@ -57,8 +57,20 @@
             <!--块元素-->
             <div class="block">
                 <!--修饰块元素名称-->
-                <div class="banner">
+                <div class="banner" style="height: 400px">
                     <p class="tab fixed">消息群发</p>
+                    <br>
+                    <p style="text-align: center;color: gray;font-size: small">此功能用于向用户通告一些系统的变更或其他需要大家都知道的事项</p>
+
+
+                    <br>
+                    <p style="font-size: large;color: gray;font-weight: bold">内容输入：</p>
+
+                        <textarea id="content" style="margin-left: 100px;width: 300px;height: 200px" ></textarea>
+
+                        <button style="margin-left: 20px;margin-top: 50px" class="button blue" id="dosubmit" onclick="deleteDialog(this, 3)"><span class="icon-plus"></span>发送</button>
+                    <button style="margin-top: 150px" class="button red" id="doclear" onclick="clearthings()"><span class="icon-minus"></span>清空</button>
+
                 </div>
 
                 <!--正文内容-->
@@ -77,6 +89,57 @@
     });
 
 
+
+    // obj为当前点击的元素对象，此方法用来把群发消息发送出去
+    function deleteDialog(obj, id) {
+        javaex.deleteDialog(
+            obj,	// obj是必须的
+            {
+                content : "确定要发送吗？",
+                callback : "callback('"+id+"')",
+                tip:"发送后不可撤回！请确认内容"
+            }
+        );
+    }
+
+    function callback(id) {
+        //alert("回调函数："+id);
+        // 如果你想阻止弹出层关闭，直接 return false; 即可
+        //return false;
+       var content= $("#content").val()
+        //alert(content)
+
+        $.ajax({
+            url:"/sendmessageforall",
+            data:{
+                "id":id,
+                "text":content
+            },
+            success:function (rtn) {
+                if(rtn.code=="000000"){
+                    javaex.optTip({
+                        content : "发送成功",
+                        type : "success"
+                    });
+                    // 建议延迟加载
+                    setTimeout(function() {
+                        // 刷新页面
+                        // window.location.reload();
+                        // 跳转页面
+                        // window.location.href = "${pageContext.request.contextPath}/zone_info/list.action";
+                    }, 1000);
+                }
+            }
+
+
+        })
+    }
+
+
+    //此函数是清空输入的东西
+    function clearthings() {
+        $("#content").val(" ");
+    }
 
 
 </script>
