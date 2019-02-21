@@ -46,5 +46,11 @@ public interface ArticleMapper {
 
     List<Integer> getAIds();
 
+    Integer getArticleNumsByOwner(Integer id);
+
+    Integer getAllCountsByOwner(Integer id);
+
+    List<ArticleInfo> getAllArticlesByArticleId(Integer id);
+
     //List<ArticleInfo> findByIdLists(List<Integer> lists);
 }

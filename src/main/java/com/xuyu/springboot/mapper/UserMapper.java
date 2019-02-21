@@ -33,4 +33,10 @@ public interface UserMapper {
     Integer numsformonths(@Param("beg") String beg, @Param("end") String end);
 
     List<String> getAllUserName();
+
+    void addfans(@Param("name")String myattentionname,@Param("fans") Integer fans);
+
+    Integer findfans( String myattentionname);
+
+    Integer getFansNum(Integer id);
 }

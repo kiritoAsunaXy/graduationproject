@@ -13,8 +13,16 @@ public class User implements Serializable {
     private String introduction;
     private String tags;
     private String time;
+    private Integer fans;
 
 
+    public Integer getFans() {
+        return fans;
+    }
+
+    public void setFans(Integer fans) {
+        this.fans = fans;
+    }
 
     public Integer getId() {
         return id;

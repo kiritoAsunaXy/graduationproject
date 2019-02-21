@@ -111,6 +111,19 @@ public class ArticleInfoService {
         return articleMapper.getAIds();
     }
 
+    public Integer getArticleNumsByOwner(Integer id) {
+        return articleMapper.getArticleNumsByOwner(id);
+    }
+
+    public Integer getAllCountsByOwner(Integer id) {
+        return articleMapper.getAllCountsByOwner(id);
+    }
+
+    public List<ArticleInfo> getAllArticlesByArticleId(Integer id) {
+        return articleMapper.getAllArticlesByArticleId(id);
+    }
+
+
     /*public List<ArticleInfo> findByIdLists(List<Integer> lists) {
             return articleMapper.findByIdLists(lists);
     }*/

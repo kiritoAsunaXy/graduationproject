@@ -67,20 +67,20 @@
             </div>
             <div id="nav">
                 <ul class="nav">
-                    <li style="position: relative;"><a th:href="@{/index.action}" style="font-family: 华文琥珀;font-size: 18px">首页</a></li>
+                    <li style="position: relative;"><a th:href="@{/index.action}" style="font-family: 华文琥珀;font-size: 18px;color: grey">首页</a></li>
                     <li style="position: relative;">
                         <a href="javascript:;" style="font-family: 华文琥珀;font-size: 18px">今日热点</a>
-                        <ul class="classified-nav" id="hotsearch" style="width: 500px;text-align: left">
+                        <ul class="classified-nav" id="hotsearch" style="width: 500px;text-align: left;font-family: 华文琥珀">
                         </ul>
                     </li>
                     <li style="position: relative;">
                         <a href="javascript:;" style="font-family: 华文琥珀;font-size: 18px">文章目录</a>
-                        <ul class="classified-nav" id="typeList" >
+                        <ul class="classified-nav" id="typeList" style="font-family: 华文琥珀">
                         </ul>
                     </li>
                     <!--这是一处-->
-                    <li style="position: relative;"><a href="/aboutPage" style="font-family: 华文琥珀;font-size: 18px">关于我</a></li>
-                    <li th:if="${session.user==null}"><a href="/index" style="font-family: 华文琥珀;font-size: 18px">登录</a></li>
+                    <li style="position: relative;"><a href="/aboutPage" style="font-family: 华文琥珀;font-size: 18px;color: grey">关于我</a></li>
+                    <li th:if="${session.user==null}"><a href="/index" style="font-family: 华文琥珀;font-size: 18px;color: grey">登录</a></li>
                     <li style="position: relative;" th:if="${session.user!=null}"><span style="float: left;margin-top: 17px" class="icon-chevron-down"></span><a href="#" style="font-family: 华文琥珀;font-size: 14px" th:text="${session.user.getUsername()}"></a>
                         <ul class="classified-nav" id="menu1">
                             <li><a href="/tomyattention" style="font-family: 华文琥珀;font-size: 15px"><span class="icon-group" style="color: green">&nbsp;&nbsp;</span>我的关注</a></li>
@@ -96,7 +96,7 @@
                 </ul>
                 <div id="search" class="hide">
 						<span class="search-field-wrapper form-group">
-							<input id="tags" style="width: 200px;height: 61px" type="text" class="search" placeholder="搜索…" value="" onkeydown="if(event.keyCode==13){search(this.value);}" />
+							<input id="tags" style="width: 200px;height: 61px;color: grey;font-size: large" type="text" class="search" placeholder="搜索…" value="" onkeydown="if(event.keyCode==13){search(this.value);}" />
 						</span>
                     <span id="close-search" class="icon-close" style="font-size: 16px;"></span>
                 </div>
@@ -210,9 +210,23 @@
                 </div>
 
 
-                <div style="border: 1px solid black;width: 450px;margin-top: 40px;height: 600px;margin-right: 100px">
+                <div style="width: 450px;margin-top: 40px;height: 600px;margin-right: 100px">
                     <p style="font-family: 华文琥珀;font-size: large"><span class="icon-thumbs-up" style="color: red"></span>今日推荐</p>
 
+                    <!--这个div里呈现的就是当日热搜-->
+                   <ul th:if="${hotnull}=='1'">
+                       <span th:each="hot:${hotarts}">
+                           <li>
+                               <div style="width:400px;height:  100px;">
+                             <!--首先是文章图片-->
+                             <a th:href="'/article.action?id='+${hot.id}+'&typeId='+${hot.type_id}" style="float: left;margin-top: 18px;margin-right: 20px"> <img th:src="'http://127.0.0.1:8087/upload/'+${hot.cover }" style="width: 160px;height: 80px"></a>
+                        <!--   /article.action?id='+hotList[i].id+'&typeId='+hotList[i].type_id+'-->
+                             <a th:href="'/article.action?id='+${hot.id}+'&typeId='+${hot.type_id}" style="margin-left: 20px;margin-top: 20px"><p style="color: blue"  th:text="${hot.title}" ></p></a>
+                             <p th:text="${#strings.abbreviate(hot.content_text,30)}" style="margin-left:20px;color: grey"></p>
+                                   </div>
+                         </li>
+                           </span>
+                   </ul>
                 </div>
 
 

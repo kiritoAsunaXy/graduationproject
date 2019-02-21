@@ -300,7 +300,7 @@ public class StageController {
             for(int q=0;q<list.size();q++){
                 idsort.add(Integer.parseInt(list.get(q).getId()));
             }
-            System.out.println(idsort);
+           // System.out.println(idsort);
             //PageHelper插件5
             PageHelper.startPage(pageNum,pageSize);
             List<ArticleInfo> resultss=articleInfoService.selectByIdList(idsort);
@@ -311,6 +311,15 @@ public class StageController {
             map.put("typeList", typeMapper.selectAll(null));
            // System.out.println("进来了:"+pageInfo);
             //统计出现的
+            //这里放热搜
+            List<ArticleInfo> hotlists=hotService.getHotArticle();
+            if(hotlists.size()!=0){
+                map.put("hotarts",hotlists);
+                map.put("hotnull","1");
+            }else {
+                map.put("hotnull","0");
+            }
+           // System.out.println(hotlists);
             return "stage/index";
         }else {
             Map<String, Object> param = new HashMap<>();
@@ -322,6 +331,14 @@ public class StageController {
             map.put("pageInfo", pageInfo);
            // System.out.println("没进来了:"+pageInfo);
             //查询所有的文章分类
+            List<ArticleInfo> hotlists=hotService.getHotArticle();
+            if(hotlists.size()!=0){
+                map.put("hotarts",hotlists);
+                map.put("hotnull","1");
+            }else {
+                map.put("hotnull","0");
+            }
+            //System.out.println(hotlists);
             map.put("typeList", typeMapper.selectAll(null));
             return "stage/index";
         }
@@ -337,6 +354,7 @@ public class StageController {
         List<ArticleInfo> hotArticles=hotService.getHotArticle();
         return Result.success().add("TypeList", typelist).add("HotArticles",hotArticles);
     }
+
 
 
 
@@ -411,7 +429,19 @@ public class StageController {
           map.put("comment",commentInfolists);
           map.put("userlist",userinfo);
           map.put("referenceArticle",articleInfos);
-        map.put("articleInfo", articleInfo);
+          map.put("articleInfo", articleInfo);
+
+        //查出这个作者的作品数量和总计的阅读量和粉丝数目
+         Integer arts= articleInfoService.getArticleNumsByOwner(id);
+         Integer counts=articleInfoService.getAllCountsByOwner(id);
+         Integer fans=userMapper.getFansNum(id);
+         List<ArticleInfo> latestArts=articleInfoService.getAllArticlesByArticleId(id);
+         //System.out.println(latestArts);
+            map.put("latestArts",latestArts);
+           map.put("arts",arts);
+           map.put("counts",counts);
+           map.put("fans",fans);
+
         return "stage/article";
     }
 
@@ -437,6 +467,15 @@ public class StageController {
         map.put("pageInfo", pageInfo);
         map.put("typeList", typeMapper.selectAll(null));
         map.put("typeid",typeId);
+        List<ArticleInfo> hotlists=hotService.getHotArticle();
+        if(hotlists.size()!=0){
+            map.put("hotarts",hotlists);
+            map.put("hotnull","1");
+        }else {
+            map.put("hotnull","0");
+        }
+
+
         return "stage/index";
     }
 

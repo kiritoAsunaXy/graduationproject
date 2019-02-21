@@ -61,4 +61,17 @@
     <update id="addtags">
         update user set tags=#{str} where id=#{id}
     </update>
+    
+    <select id="findfans" resultType="Integer">
+
+        select fans from user where username=#{myattentionname}
+    </select>
+
+    <update id="addfans">
+        update user set fans=#{fans} where username=#{name}
+    </update>
+
+    <select id="getFansNum" resultType="Integer">
+        select fans from user  where id=(select owner from article_info  where id=#{id})
+    </select>
 </mapper>

@@ -5,11 +5,11 @@ public class MyAttentionInfo {
 
     private Integer id;
 
-    private String myattentionname;
+    private String myattentionname;//用户关注的人名字
 
-    private String myattentionhead;
+    private String myattentionhead;//那个人头像
 
-    private Integer outerid;
+    private Integer outerid;    //用户的id
 
     public Integer getId() {
         return id;
