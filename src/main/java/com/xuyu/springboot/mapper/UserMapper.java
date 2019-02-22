@@ -39,4 +39,6 @@ public interface UserMapper {
     Integer findfans( String myattentionname);
 
     Integer getFansNum(Integer id);
+
+    int checkUsername(String username);
 }

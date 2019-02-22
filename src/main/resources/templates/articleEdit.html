@@ -107,13 +107,13 @@
                                     <p id="now" th:text="${pageInfo.getPageNum()}" style="display: none"></p>
                                     <tr>
                                         <th style="width: 30px"><input type="checkbox" class="fill listen-1" /> </th>
-                                        <th style="width: 80px">序号</th>
-                                        <th style="width: 130px">文章类型</th>
+                                        <th style="width: 50px">序号</th>
+                                        <th style="width: 110px">文章类型</th>
                                         <th style="text-align:center">文章标题</th>
                                         <th style="width: 180px">发布日期</th>
-                                        <th style="width: 100px">阅读量</th>
+                                        <th style="width: 60px">阅读量</th>
                                         <th style="width: 100px">作者</th>
-                                        <th style="width: 70px">编辑</th>
+                                        <th style="width: 130px">编辑</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -123,7 +123,7 @@
                                       <td  th:if="${entity.status}!=0" th:text="${entity.name}"></td>
                                       <td th:if="${entity.status}!=0" th:text="${entity.title}"></td>
                                       <td th:if="${entity.status}!=0" th:text="${entity.update_time}"></td>
-                                      <td th:if="${entity.status}!=0" th:text="${entity.view_count}"></td>
+                                      <td th:if="${entity.status}!=0" th:text="${entity.view_count}" ></td>
                                       <td th:if="${entity.status}!=0" th:text="${entity.user.username}"></td>
 
                                       <td th:if="${entity.status}==1">

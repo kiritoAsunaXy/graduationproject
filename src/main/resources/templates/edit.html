@@ -53,7 +53,7 @@
                 <div class="main">
                     <!--表单-->
                     <form id="form">
-                        <input type="hidden" th:if="${articleInfo.id!=null}" name="id"  th:value="${articleInfo.id}"/>
+                        <input type="hidden" th:if="${not #strings.isEmpty(articleInfo.id)}" name="id"  th:value="${articleInfo.id}"/>
                         <!--输入框-->
                         <div class="unit">
                             <div class="left">
@@ -95,7 +95,7 @@
                         <!--下图片上传-->
                         <div class="unit">
                             <div class="left">
-                                <p class="subtitle">图片</p>
+                                <p class="subtitle">封面</p>
                             </div>
                             <div class="right">
                                 <!-- 图片承载容器 -->
@@ -121,7 +121,8 @@
                                 <p class="subtitle">文章内容</p>
                             </div>
                             <div class="right">
-                                <div id="edit" class="edit-container"></div>
+                                <div id="edit" class="edit-container">
+                                </div>
                             </div>
                             <!--清浮动-->
                             <span class="clearfix"></span>
@@ -140,6 +141,7 @@
                             <span class="clearfix"></span>
                         </div>
                     </form>
+                    <button onclick="func111()">点我</button>
                 </div>
             </div>
         </div>
@@ -153,10 +155,7 @@
         id : "type_id",
         isSearch:false
     });
-
-
-var obj=$("#content").val()
-
+    var obj=$("#content").val()
 
     javaex.edit({
         id : "edit",
@@ -173,10 +172,9 @@ var obj=$("#content").val()
             $("#content").val(rtn.html);
             $("#content_text").val(rtn.text.substring(0,100));
             // $("#contenttext").attr("value",rtn.text.substr(0,50))
-
-
         }
-    });
+    })
+
 
 
     javaex.upload({
@@ -187,7 +185,6 @@ var obj=$("#content").val()
         dataType : "url",		// 返回的数据类型：base64 或 url
         callback : function (rtn) {
             // 后台返回的数据
-            console.log(rtn);
             if (rtn.code=="000000") {
                 var imgUrl=rtn.data.imgUrl;
                 $("#container2 img").attr("src", "http://127.0.0.1:8087/upload/"+imgUrl);

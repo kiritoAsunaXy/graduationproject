@@ -85,6 +85,7 @@ public class StageController {
             Utils utils=new Utils();
             if(uniqueSet.size()>=3) {
                 for (int k = 0; k < 3; k++) {
+                    System.out.println(typelists);
                     String a = utils.SortTopFour(typelists);
                     for (int i = 0; i < typelists.size(); i++) {
                         if (typelists.get(i) == Integer.parseInt(a)) {
@@ -241,6 +242,9 @@ public class StageController {
         *
         * */
         //工具类
+
+        System.out.println();
+
         if(session.getAttribute("user")!=null) {
 
             //return "stage/index";
@@ -251,7 +255,9 @@ public class StageController {
              *
              * */
             User user = (User) session.getAttribute("user");
+            System.out.println(user.getId());
             List<Integer> mymaxtypeid = getTopThreeRead(user.getId());
+
             //将用户的模型信息存入
             UserModel userModel = new UserModel();
             userModel.setUserid(user.getId());
@@ -265,6 +271,11 @@ public class StageController {
             if (hava == 0) {
                 //这里是表示没有，那么就创建用户的模型信息
                 userModelService.insertUserModel(userModel);
+                //初始化用户关注的人很重要
+                List<String> attentionnames = new ArrayList<>();
+                attentionnames.add("0");
+                String a = attentionnames.toString();
+                userModelService.updateUserModelsubmitname(a, user.getId());
             } else {
                 //这里说明该用户暂时还没有关注的人
                 if (myAttentionService.getMyAttention(user.getId()).size() == 0) {

@@ -81,11 +81,11 @@
                     <!--这是一处-->
                     <li style="position: relative;"><a href="/aboutPage" style="font-family: 华文琥珀;font-size: 18px;color: grey">关于我</a></li>
                     <li th:if="${session.user==null}"><a href="/index" style="font-family: 华文琥珀;font-size: 18px;color: grey">登录</a></li>
-                    <li style="position: relative;" th:if="${session.user!=null}"><span style="float: left;margin-top: 17px" class="icon-chevron-down"></span><a href="#" style="font-family: 华文琥珀;font-size: 14px" th:text="${session.user.getUsername()}"></a>
+                    <li style="position: relative;" th:if="${session.user!=null}"><span style="float: left;margin-top: 17px" class="icon-chevron-down"></span><a href="#" style="font-family: 华文琥珀;font-size: 14px;color: white" th:text="${session.user.getUsername()}"></a>
                         <ul class="classified-nav" id="menu1">
                             <li><a href="/tomyattention" style="font-family: 华文琥珀;font-size: 15px"><span class="icon-group" style="color: green">&nbsp;&nbsp;</span>我的关注</a></li>
                             <li><a href="/tomycollection" style="font-family: 华文琥珀;font-size: 15px"><span class="icon-star_border" style="color: yellow">&nbsp;&nbsp;</span>我的收藏</a></li>
-                            <li><a href="/tomymymessage" style="font-family: 华文琥珀;font-size: 15px"><span class="icon-bubbles" style="color: #3399ff">&nbsp;&nbsp;</span>我的消息</a></li>
+                            <li><a href="/tomymymessage" style="font-family: 华文琥珀;font-size: 15px"><span class="icon-chat3" style="color: #3399ff">&nbsp;&nbsp;</span>我的消息</a></li>
                             <li><a href="/toHistory" style="font-family: 华文琥珀;font-size: 15px"><span class="icon-videocam">&nbsp;&nbsp;</span>历史记录</a></li>
                             <li><a href="/background" style="font-family: 华文琥珀;font-size: 15px"><span class="icon-grid" style="color: #b9def0">&nbsp;&nbsp;</span>后台管理</a></li>
                             <li><a href="/logout" style="font-family: 华文琥珀;font-size: 15px"><span class="icon-forward" style="color: red">&nbsp;&nbsp;</span>退出</a></li>
@@ -173,8 +173,8 @@
 
                 <p style="font-size: large;color: red;margin-left: 250px"  th:if="${message!=null}" th:text="${message}"/>
 <!--需要修改的-->
-                <div class="block block2" th:each="entity : ${pageInfo.list}" style="width: 750px">
-                    <div class="grid-5-7" style="height: 250px;">
+                <div class="block block2" th:each="entity : ${pageInfo.list}" style="width: 800px">
+                    <div class="grid-5-7" style="height: 250px;width: 800px">
                         <div class="img">
                             <img th:src="'http://127.0.0.1:8087/upload/'+${entity.cover }" />
                         </div>

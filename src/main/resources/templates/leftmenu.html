@@ -59,7 +59,7 @@
 
            <!--用户管理-->
             <li class="menu-item" shiro:hasRole="admin">
-                <a href="#"><span class="icon-users" style="color: #9729ea"></span>用户管理<i class="icon-keyboard_arrow_left"></i></a>
+                <a href="#"><span class="icon-content_paste" style="color: #9729ea"></span>用户管理<i class="icon-keyboard_arrow_left"></i></a>
                 <ul>
                     <li><a href="/userlist">用户信息</a></li>
                 </ul>
@@ -84,7 +84,7 @@
 
             <!--我的消息-->
             <li class="menu-item">
-                <a href="#"><span class="icon-bubble" style="color: blue"></span>我的消息<i class="icon-keyboard_arrow_left"></i></a>
+                <a href="#"><span class="icon-chat3" style="color: blue"></span>我的消息<i class="icon-keyboard_arrow_left"></i></a>
                 <ul>
                     <li><a href="/tomymymessage">我收到的回复</a></li>
                     <li shiro:hasRole="admin"><a href="/tomessageforall">系统消息群发</a></li>
@@ -101,13 +101,13 @@
 
         </ul>
 
-        <!--网站功能-->
+    <!--    &lt;!&ndash;网站功能&ndash;&gt;
         <li class="menu-item" shiro:hasRole="admin">
             <a href="#"><span class="icon-build" style="color: black"></span>网站维护<i class="icon-keyboard_arrow_left"></i></a>
             <ul>
                 <li><a href="/operation">运转维护更新</a></li>
             </ul>
-        </li>
+        </li>-->
 
     </div>
 </div>

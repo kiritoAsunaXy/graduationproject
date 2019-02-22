@@ -201,6 +201,7 @@ public class ArticleController {
             if(!StringUtils.isEmpty(id)){
                 ArticleInfo articleInfo=articleInfoService.selectById(id);
                 map.put("articleInfo", articleInfo);
+                System.out.println("id不为空:"+articleInfo);
             }else {
                 ArticleInfo articleInfo=new ArticleInfo();
                 articleInfo.setId(null);

@@ -20,6 +20,9 @@
     <!--表单验证-->
     <script src="/javaex/pc/js/javaex-formVerify.js"></script>
     <link href="/javaex/pc/mycss.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/javaex/pictureplay/css/style.css">
+
     <style>
         .header{height: 300px;background-image: url(/javaex/pc/images/grey.gif);background-position: center center;background-size: cover;position: relative;}.header-mask{background-color: rgba(0, 0, 0, 0.5);width: 100%;position: absolute;height: 100%;}#top{position: fixed;top: 0px;width: 100%;height: 70px;background-color: #fff;box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.5);z-index: 1003;}.container{width: 1170px;height: 50px;line-height: 50px;padding: 10px;margin: 0 auto;}.footer .container a{color: #ccc;}#logo > a{font-size: 18px;color: #666;}#nav{text-align: right;}#big-title{width: 1170px;margin: 0 auto;height: 450px;line-height: 450px;text-align: center;font-size: 50px;color: #fff;position: absolute;left: 50%;margin-left: -585px;}#article-time{width: 1170px;margin: 60px auto 0;text-align: center;font-size: 20px;color: #fff;position: absolute;left: 50%;margin-left: -585px;top: 220px;}#content{margin: -60px 30px 0;-webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);}.block{margin: 0 auto;box-shadow: none;}.img{height: 250px;margin: -15px 15px 0;}.img img{width:100%;height: 100%;border-radius: 6px;}.nav > li{display: inline-block;}.nav > li > a{font-size: 12px;margin: 0 15px;display: block;}.nav li a:link{color: #666;}.nav li:hover{background:#ededf1;}.nav li a:hover, .active > a{color: #06999e;}.nav > li:hover .classified-nav{display: block;}.classified-nav{position: absolute;top: 48px;left: -40%;z-index: 1000;display: none;float: left;min-width: 140px;padding: 5px 0;margin: 2px 0 0;font-size: 14px;text-align: center;list-style: none;background-color: #fff;-webkit-background-clip: padding-box;background-clip: padding-box;border: 1px solid #ccc;border: 1px solid rgba(0,0,0,.15);border-radius: 4px;-webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);box-shadow: 0 6px 12px rgba(0,0,0,.175);}input[type="text"]{border:none;}.search{-webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;background-image: -webkit-gradient(linear, left top, left bottom, from(#9c27b0), to(#9c27b0)), -webkit-gradient(linear, left top, left bottom, from(#d2d2d2), to(#d2d2d2));background-image: -webkit-linear-gradient(#9c27b0, #9c27b0), -webkit-linear-gradient(#d2d2d2, #d2d2d2);background-image: linear-gradient(#9c27b0, #9c27b0), linear-gradient(#d2d2d2, #d2d2d2);border: 0;border-radius: 0;background-color: transparent;background-repeat: no-repeat;background-position: center bottom, center -webkit-calc(100% - 1px);background-position: center bottom, center calc(100% - 1px);background-size: 0 2px, 100% 1px;-webkit-transition: background 0s ease-out;transition: background 0s ease-out;height: 36px;width: 220px;}.is-focused .search{background-image: -webkit-gradient(linear, left top, left bottom, from(#06999e), to(#06999e)), -webkit-gradient(linear, left top, left bottom, from(#d2d2d2), to(#d2d2d2));background-image: -webkit-linear-gradient(#06999e, #06999e), -webkit-linear-gradient(#d2d2d2, #d2d2d2);background-image: linear-gradient(#06999e, #06999e), linear-gradient(#d2d2d2, #d2d2d2);outline: none;background-size: 100% 2px, 100% 1px;-webkit-transition-duration: 0.3s;transition-duration: 0.3s;}.active{color: #06999e;}.content-header{position: relative;}.content-header span{opacity: 0.8;font-size: 16px;}.side-bar{position: fixed; bottom: 12px; right: 10px; z-index: 999; color: #fff; min-width: 50px;}#goTopBtn{display: none;width: 50px;height: 50px;border-radius: 50%;cursor: pointer;text-align: center;background-color: #999;}#goTopBtn > span{font-size: 20px;line-height: 50px;}.block2{margin: 50px 0;font-size: 18px;color: #555;}.content-header p{position: absolute;right: 0;top: 0;color: rgba(0, 0, 0, 0.1);font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;font-size: 25px;}
     </style>
@@ -56,6 +59,7 @@
     <input type="hidden" th:value="${articleInfo.id}" id="articleid">
     <!--获取用户的id-->
     <input type="hidden" th:if="${session.user!=null}" th:value="${session.user.getId()}" id="userid">
+
 </div>
 
 <div id="content">
@@ -122,7 +126,7 @@
 
             <!--这个div是今天需要完成的，添加作者的信息功能-->
             <div>
-                <div style="width: 350px;height: 1600px;border-left: 1px solid grey">
+                <div style="width: 350px;height: 1200px;border-left: 1px solid grey;margin-top: 0px">
 
                     <!--第一块div里面放文章作者的头像姓名和关注功能-->
                     <div id="div1" style="width: 330px;height: 80px;margin-left: 20px;margin-top: 30px">
@@ -132,30 +136,46 @@
                     </div>
 
               <hr style="color: grey">
-                    <div id="div2" style="width: 300px;height:80px ">
-                        <table style="margin-left: 30px;margin-top: 30px">
+                    <div id="div2" style="width: 400px;height:100px ">
+                        <table style="margin-left: 40px;margin-top: 30px;">
                             <tr>
-                                <th width="95px"><p class="p2" style="font-family: 'Adobe 黑体 Std R';font-size: 20px;font-weight: bolder">粉丝</p></th>
-                                <th width="95px"><p class="p3" style="font-family: 'Adobe 黑体 Std R';font-size: 20px;font-weight: bolder">原创</p></th>
-                                <th width="95px"><p class="p2" style="font-family: 'Adobe 黑体 Std R';font-size: 20px;font-weight: bolder">访问量</p></th>
+                                <td style="width:80px ; height: 40px;text-align: center" ><p class="p2" style="font-family: 'Adobe 黑体 Std R';font-size: 20px;font-weight: bolder">粉丝</p></td>
+                                <td style="width:80px ;height: 40px;text-align: center"><p class="p3" style="font-family: 'Adobe 黑体 Std R';font-size: 20px;font-weight: bolder">原创</p></td>
+                                <td style="width:80px ;height: 40px;text-align: center"><p class="p2" style="font-family: 'Adobe 黑体 Std R';font-size: 20px;font-weight: bolder">访问量</p></td>
                             </tr>
                             <tr>
-                                <td width="95px" style="text-align: center" th:text="${fans}"></td>
-                                <td width="95px" style="text-align: center" th:text="${arts}"></td>
-                                <td width="95px" style="text-align: center" th:text="${counts}"></td>
+                                <td  style="text-align: center;width: 80px" th:text="${fans}"></td>
+                                <td  style="text-align: center;width: 80px" th:text="${arts}"></td>
+                                <td  style="text-align: center;width: 80px" th:text="${counts}"></td>
                             </tr>
                         </table>
                     </div>
-                    <hr style="color: grey">
 
+
+
+                    <div class="demo">
+                        <a class="control prev"></a><a class="control next abs"></a><!--自定义按钮，移动端可不写-->
+                        <div class="slider"><!--主体结构，请用此类名调用插件，此类名可自定义-->
+                            <ul>
+                                <li><a href=""><img src="/javaex/pictureplay/images/1.jpeg" alt="人工智能到底是个什么？" /></a></li>
+                                <li><a href=""><img src="/javaex/pictureplay/images/2.jpg" alt="java全栈开发工程师你不想认识吗？" /></a></li>
+                                <li><a href=""><img src="/javaex/pictureplay/images/3.jpg" alt="去巴厘岛看海" /></a></li>
+                                <li><a href=""><img src="/javaex/pictureplay/images/4.jpeg" alt="云端上的超大数据体验" /></a></li>
+                                <li><a href=""><img src="/javaex/pictureplay/images/5.jpg" alt="数据的未来存储架构" /></a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <hr style="color: grey">
                     <div id="div4" style="width: 350px;height: 800px;margin-top: 10px">
-                        <p style="font-family:'Adobe 黑体 Std R';font-size: large"><span class="icon-local_offer" style="color: red"></span>该作者还写过</p>
+                        <p style="font-family:'Adobe 黑体 Std R';font-size: large;margin-top: 30px"><span class="icon-local_offer" style="color: red"></span>该作者还写过</p>
                         <ul>
                        <span th:each="latest:${latestArts}">
-                           <li style="margin-top: 30px">
+                           <li style="margin-top: 20px">
                                <div style="width:350px;height:  100px;">
                              <!--首先是文章图片-->
-                             <a th:href="'/article.action?id='+${latest.id}+'&typeId='+${latest.type_id}" style="float: left;margin-top: 18px;margin-right: 20px"> <img th:src="'http://127.0.0.1:8087/upload/'+${latest.cover }" style="width: 140px;height: 80px"></a>
+                             <a th:href="'/article.action?id='+${latest.id}+'&typeId='+${latest.type_id}" style="float: left;margin-top: 18px;margin-right: 20px;margin-left: 3px"> <img th:src="'http://127.0.0.1:8087/upload/'+${latest.cover }" style="width: 140px;height: 80px"></a>
                                    <!--   /article.action?id='+hotList[i].id+'&typeId='+hotList[i].type_id+'-->
                              <a th:href="'/article.action?id='+${latest.id}+'&typeId='+${latest.type_id}" style="margin-left: 10px;margin-top: 10px"><p style="color: blue"  th:text="${latest.title}" ></p></a>
                              <p th:text="${#strings.abbreviate(latest.content_text,25)}" style="margin-left:10px;color: grey"></p>
@@ -165,6 +185,13 @@
                         </ul>
 
                     </div>
+
+                    <br>
+
+
+
+
+
                 </div>
 
 
@@ -234,12 +261,12 @@
             <span th:each="comt:${comment}">
 
                 <li th:if="${comt.recallid}==0">
-                    <a href="javascript:;" onclick="img(this)"><img th:src="${comt.user.head}" style="width: 30px;height: 30px"></a>
-                    <span>&nbsp;&nbsp;</span>
+                    <a href="javascript:;" onclick="img(this)"><img th:src="${comt.user.head}" style="width: 20px;height: 20px"></a>
+                    <!--<span>&nbsp;</span>-->
                     <a href="#"><span th:text="${comt.user.username}+':'"></span></a>
-                    <span>&nbsp;&nbsp;</span>
+                    <!--<span>&nbsp;&nbsp;</span>-->
                     <span th:text="${comt.comment}"></span>
-                    <span>&nbsp;&nbsp;&nbsp;</span>
+                    <span>&nbsp;</span>
                     <span th:text="'('+${comt.date}+')'" style="font-size: small;color: silver"></span>
                     <span>&nbsp;&nbsp;</span>
                     <a href=""  th:id="${comt.id}" onclick="show(this.id);return false" th:value="${comt.user.username}"><span style="font-size: small;color: #2b669a" >回复</span></a>
@@ -251,13 +278,13 @@
                              <br>
                              <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                          <a href="javascript:;" onclick="img(this)"><img th:src="${comt2.user.head}" style="width: 30px;height: 30px"></a>
-                    <span>&nbsp;&nbsp;</span>
+                    <span>&nbsp;</span>
                              <a href="#"><span th:text="${comt2.user.username}"></span></a><span>回复@</span><a href="#" th:text="${comt.user.username}+':'"></a>
-                    <span>&nbsp;&nbsp;</span>
+                    <span>&nbsp;</span>
                     <span th:text="${comt2.comment}"></span>
-                    <span>&nbsp;&nbsp;&nbsp;</span>
+                    <span>&nbsp;</span>
                     <span th:text="'('+${comt2.date}+')'" style="font-size: small;color: silver"></span>
-                    <span>&nbsp;&nbsp;</span>
+                    <span>&nbsp;</span>
                              <input type="hidden" th:id="${comt2.id}+'t'" th:value="${comt.id}">
                     <a href=""  th:id="${comt2.id}" onclick="show(this.id);return false" th:value="${comt2.user.username}"><span style="font-size: small;color: #2b669a">回复</span></a>
                          </span>
@@ -288,7 +315,8 @@
     </div>
 </div>
 
-
+<script src="/javaex/pictureplay/js/jquery.min.js"></script>
+<script src="/javaex/pictureplay/js/YuxiSlider.jQuery.min.js"></script>
 
 
 </body>
@@ -384,32 +412,40 @@
      function fn(){
          var name=$("#authorname").val()
          var myid=$("#myid").val()
-         $.ajax({
-             url:"/addattention",
-             data:{
-                 "myattname":name,
-                 "myid":myid
-             },
-             success : function(rtn) {
-                 if(rtn.code=="000000"){
-                     javaex.optTip({
-                         content : "关注成功，请稍等...",
-                         type : "success"
-                     });
-                     // 建议延迟加载
-                     setTimeout(function() {
-                         //$("#nowstars").innerText(rtn.data.score)
-                         window.location.reload()
-                     }, 1000);
+         var panduan=$("#userid").val()
+       if(panduan==null){
+           javaex.optTip({
+               content : "您目前是游客，请先登陆！",
+               type : "error"
+           });
+       }else {
+           $.ajax({
+               url: "/addattention",
+               data: {
+                   "myattname": name,
+                   "myid": myid
+               },
+               success: function (rtn) {
+                   if (rtn.code == "000000") {
+                       javaex.optTip({
+                           content: "关注成功，请稍等...",
+                           type: "success"
+                       });
+                       // 建议延迟加载
+                       setTimeout(function () {
+                           //$("#nowstars").innerText(rtn.data.score)
+                           window.location.reload()
+                       }, 1000);
 
-                 }else{
-                     javaex.optTip({
-                         content : "您已经关注过此人啦！",
-                         type : "error"
-                     });
-                 }
-             }
-         })
+                   } else {
+                       javaex.optTip({
+                           content: "您已经关注过此人啦！",
+                           type: "error"
+                       });
+                   }
+               }
+           })
+       }
 
      }
 
@@ -566,6 +602,15 @@ var name=$("#authorname1").val()
          $("#"+id).css("font-size","15px")
      }
 
+     $(".slider").YuxiSlider({
+         width:350, //容器宽度
+         height:225, //容器高度
+         control:$('.control'), //绑定控制按钮
+         during:2000, //间隔4秒自动滑动
+         speed:800, //移动速度0.8秒
+         mousewheel:true, //是否开启鼠标滚轮控制
+         direkey:true //是否开启左右箭头方向控制
+     });
 
 </script>
 </html>

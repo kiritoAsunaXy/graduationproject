@@ -1,9 +1,10 @@
-pre {margin: 10px 0;padding: 15px;overflow: auto;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;}
+pre {padding: 16px;overflow: auto;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;}
 /*修改代码高亮*/
 .hljs {
 	display: block;
 	overflow-x: auto;
 	color: #525252;
+	padding: 15px;
 	-webkit-text-size-adjust: none
 }
 .hljs-doctype {
@@ -53,6 +54,10 @@ pre {margin: 10px 0;padding: 15px;overflow: auto;line-height: 1.45;background-co
 .javascript .hljs-literal {
 	color: #fc1e70
 }
+pre {
+	padding: 0;
+	margin: 0
+}
 code {
 	display: inline-block;
 	background: #f7f7f7;
@@ -68,7 +73,7 @@ pre code {
 	margin: 0;
 	padding: 0;
 	border: none;
-	background: transparent;
+	background: transparent
 }
 pre.bg code {
 	background: #f7f7f7

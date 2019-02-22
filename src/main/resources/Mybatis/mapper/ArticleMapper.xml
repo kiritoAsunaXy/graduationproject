@@ -61,7 +61,7 @@
         ai.view_count,u.username,ai.owner,u.head,u.fans
 		FROM
 			 Article_info ai,type_info ti,user u
-	   WHERE ai.id=#{id} and u.id=ai.owner and ai.status in (1,3)
+	   WHERE ai.id=#{id} and u.id=ai.owner and ai.status in (1,0,3)
 
 	</select>
 

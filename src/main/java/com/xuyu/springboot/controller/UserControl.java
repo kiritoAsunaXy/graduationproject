@@ -233,6 +233,22 @@ public class UserControl {
         return "regis";
     }
 
+
+
+    //检测注册的时候输入的用户名是否重复
+    @RequestMapping("/checkUsername")
+    @ResponseBody
+    public Result checkUsername(@RequestParam("username") String username){
+           int a=userMapper.checkUsername(username);
+          if(a==0){
+              return Result.success();
+          }else {
+              return Result.error("存在用户");
+          }
+    }
+
+
+
     //向目标邮箱发送验证码逻辑
     @ResponseBody
     @RequestMapping("/mailre")

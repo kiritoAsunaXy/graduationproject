@@ -4,15 +4,15 @@
  */
 $(function() {
 	// 改变元素的大小（放大、缩小）
-	$(":button, .switch, select, label").each(function() {
+	$(":button, input, p, select, textarea, label").each(function() {
 		var zoom = $(this).attr("zoom");
 		if (zoom!=null) {
 			$(this).css("zoom", zoom);
 		}
 	});
-	
+
 	// 改变元素的圆角
-	$(".button, input, textarea, .group-button").each(function() {
+	$(":button, input, textarea").each(function() {
 		if (!$(this).attr("class")) {
 			return;
 		}
@@ -24,23 +24,40 @@ $(function() {
 				var num = classArr[i].split("-")[1];
 				// 改变css样式
 				$(this).css("border-radius", num + "px");
-				break;
 			}
 		}
 	});
 	
+	// 圆角
+	$('[class^="radius-"]').each(function() {
+		// 判断含有多少个属性
+		var classArr = $(this).attr("class").split(" ");
+		
+		for (var i=0; i<classArr.length; i++) {
+			if (classArr[i].indexOf("radius-")>=0) {
+				// 获取圆角数值
+				var num = classArr[i].split("-")[1];
+				// 改变css样式
+				$(this).css("border-radius", num + "px");
+			}
+		}
+	});
+
 	// 栅格系统
 	$('[class^="grid-"]').each(function() {
 		// 判断含有多少个属性
 		var classArr = $(this).attr("class").split(" ");
+		
 		for (var i=0; i<classArr.length; i++) {
 			if (classArr[i].indexOf("grid-")>=0) {
 				// 获取栅格布局
 				var arr = classArr[i].split("-");
 				// 计算一共需要分成多少份
 				var sum = 0;
-				for (var j=1; j<arr.length; j++) {
-					sum = parseInt(sum) + parseInt(arr[j]);
+				for (var j in arr) {
+					if (j>0) {
+						sum = parseInt(sum) + parseInt(arr[j]);
+					}
 				}
 				// 为子级div设置宽度
 				$(this).children("div").each(function(k) {
@@ -64,13 +81,13 @@ $(function() {
 	$('[class^="equal-"]').each(function() {
 		// 判断含有多少个属性
 		var classArr = $(this).attr("class").split(" ");
+		
 		for (var i=0; i<classArr.length; i++) {
 			if (classArr[i].indexOf("equal-")>=0) {
 				// 获取等分布局的等分数
 				var num = classArr[i].split("-")[1];
 				// 为子级div设置宽度
 				$(this).children("li").css("width", (100/num) + "%");
-				break;
 			}
 		}
 	});
@@ -79,6 +96,7 @@ $(function() {
 	$('[class^="list-content-"]').each(function() {
 		// 判断含有多少个属性
 		var classArr = $(this).attr("class").split(" ");
+		
 		for (var i=0; i<classArr.length; i++) {
 			if (classArr[i].indexOf("list-content-")>=0) {
 				// 获取外边距数值
@@ -90,7 +108,6 @@ $(function() {
 					"margin-bottom" : 0,
 					"margin-left" : num + "px"
 				});
-				break;
 			}
 		}
 	});
@@ -99,13 +116,13 @@ $(function() {
 	$('[class^="main-"]').each(function() {
 		// 判断含有多少个属性
 		var classArr = $(this).attr("class").split(" ");
+		
 		for (var i=0; i<classArr.length; i++) {
 			if (classArr[i].indexOf("main-")>=0) {
 				// 获取内边距数值
 				var num = classArr[i].split("-")[1];
 				// 为div设置内边距
 				$(this).css("padding", num + "px");
-				break;
 			}
 		}
 	});
@@ -116,10 +133,10 @@ $(function() {
 			// 判断用户是否自己包裹了一层LABEL
 			if ($(this).parent()[0].tagName=="LABEL") {
 				$(this).parent().addClass("fill-label");
-				// 先获取input之后的文本，保存起来
-				var text = $(this)[0].nextSibling.nodeValue;
-				// 清空input之后的文本
-				$(this)[0].nextSibling.nodeValue = "";
+				// 判断是否已存在span标签
+				if ($(this).siblings().length==0) {
+					$(this).after('<span class="fill-css icon-check" style="color: #fff;"></span>');
+				}
 			} else {
 				// 先获取input之后的文本，保存起来
 				var text = $(this)[0].nextSibling.nodeValue;
@@ -127,20 +144,19 @@ $(function() {
 				$(this)[0].nextSibling.nodeValue = "";
 				// 为input创建父节点
 				$(this).wrap('<label class="fill-label"></label>');
-			}
-			
-			if (!!text) {
-				// 重新追加之前保存的input之后的文本
-				text = text.replace(/(\s*$)/g, "");
-				if (text.length==0) {
-					$(this).parent().append('<span></span>');
-				} else {
-					$(this).parent().append('<span class="fill-text">' + text + '</span>');
+				if (text!="" && text!=null) {
+					// 重新追加之前保存的input之后的文本
+					text = text.replace(/(\s*$)/g, "");
+					if (text.length==0) {
+						$(this).parent().append('<span>' + text + '</span>');
+					} else {
+						$(this).parent().append('<span style="margin-left: 4px;">' + text + '</span>');
+					}
 				}
-			}
-			// 判断是否已存在span标签
-			if ($(this).siblings().length==1) {
-				$(this).after('<span class="fill-css icon-check" style="color: #fff;"></span>');
+				// 判断是否已存在span标签
+				if ($(this).siblings().length==1) {
+					$(this).after('<span class="fill-css icon-check" style="color: #fff;"></span>');
+				}
 			}
 		}
 	});
@@ -170,7 +186,7 @@ $(function() {
 					// 选中时
 					$(":checkbox").each(function() {
 						var classArr = $(this).attr("class").split(" ");
-						for (var j=0; j<classArr.length; j++) {
+						for (var j in classArr) {
 							// 让子级复选框全部选中
 							if (classArr[j].indexOf(listen)>=0 && classArr[j]!=listen) {
 								// 跳过禁用的
@@ -234,14 +250,14 @@ $(function() {
 					// 未选中时
 					$(":checkbox").each(function() {
 						var classArr = $(this).attr("class").split(" ");
-						for (var j=0; j<classArr.length; j++) {
+						for (var j in classArr) {
 							// 让子级复选框全部取消选中
 							if (classArr[j].indexOf(listen)>=0 && classArr[j]!=listen) {
 								$(this).attr("checked", false);
 							}
 							// 让父级复选框全部取消选中
 							var parentClass = "listen";
-							for (var k=0; k<keyArr.length; k++) {
+							for (var k in keyArr) {
 								if (keyArr[k]!=keyArr[keyArr.length-1]) {
 									parentClass += "-";
 									parentClass += keyArr[k];

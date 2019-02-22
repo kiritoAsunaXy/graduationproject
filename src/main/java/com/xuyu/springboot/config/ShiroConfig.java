@@ -60,7 +60,7 @@ public class ShiroConfig {
         filterMap.put("/aboutPage","anon");
         filterMap.put("/search.action","anon");
         filterMap.put("/gotoBackhome","anon");
-
+        filterMap.put("/checkUsername","anon");///用户检测用户名是否重复
         filterMap.put("/dataAnalyse","anon");//数据分析
         filterMap.put("/test", "anon");//测试
         filterMap.put("/type.action","anon");//查询同类型的文章

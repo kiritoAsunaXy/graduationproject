@@ -4,27 +4,24 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
-
-import javax.mail.Session;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+//这个方法会在项目启动时启动，来定时重置今日最热
 @Component
 public class timer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args)  {
-        System.out.println("今日最热重置方法开始执行！！！！");
+        System.out.println("今日最热重置方法开始执行");
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 23); // 控制时
         calendar.set(Calendar.MINUTE, 59);       // 控制分
         calendar.set(Calendar.SECOND, 0);       // 控制秒
         Date time = calendar.getTime();         // 得出执行任务的时间,此处为今天的12：00：00
-
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
@@ -40,4 +37,5 @@ public class timer implements ApplicationRunner {
             }
         }, time, 1000 * 60 * 60 * 24);// 这里设定将延时每天固定执行
     }
+
 }

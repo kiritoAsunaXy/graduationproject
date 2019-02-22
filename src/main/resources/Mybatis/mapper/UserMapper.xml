@@ -74,4 +74,9 @@
     <select id="getFansNum" resultType="Integer">
         select fans from user  where id=(select owner from article_info  where id=#{id})
     </select>
+
+    <select id="checkUsername" resultType="Integer">
+        select count(id) from user where username=#{username}
+    </select>
+
 </mapper>

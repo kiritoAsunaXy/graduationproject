@@ -19,6 +19,17 @@
     <script src="/javaex/pc/js/javaex.min.js"></script>
     <!--表单验证-->
     <script src="/javaex/pc/js/javaex-formVerify.js"></script>
+
+    <style>
+
+        #checkifexist{
+            position: absolute;
+            left: 820px;
+            top: 142px;
+
+        }
+    </style>
+
 </head>
 <body>
 
@@ -39,7 +50,7 @@
                 <div class="unit">
                     <div class="left"><span class="required">*</span><p class="subtitle">注册邮箱</p></div>
                     <div class="right">
-                        <input type="text" class="text" data-type="邮箱" error-msg="邮箱格式错误" error-pos="42" placeholder="请输入邮箱" name="email"/>
+                        <input  id="email" type="text" class="text" data-type="邮箱" error-msg="邮箱格式错误" error-pos="42" placeholder="请输入邮箱" name="email"/>
                     </div>
                     <!--清浮动-->
                     <span class="clearfix"></span>
@@ -48,8 +59,10 @@
                 <div class="unit">
                     <div class="left"><span class="required">*</span><p class="subtitle">用户名</p></div>
                     <div class="right">
-                        <input type="text" class="text" data-type="英文字母|中文" error-msg="用户名格式错误,请输入英文或中文" error-pos="42" placeholder="请输入用户名" name="username" />
+                        <input  id="userinput" type="text" class="text" data-type="英文字母|中文" error-msg="用户名格式错误,请输入英文或中文" error-pos="42" placeholder="用户名不可重复" name="username"  />
                     </div>
+
+
                     <!--清浮动-->
                     <span class="clearfix"></span>
                 </div>
@@ -57,7 +70,7 @@
                 <div class="unit">
                     <div class="left"><span class="required">*</span><p class="subtitle">密码</p></div>
                     <div class="right">
-                        <input type="text" class="text" data-type="整数" error-msg="密码为整数" error-pos="42" placeholder="请输入密码" name="password"/>
+                        <input  id="pwd" type="text" class="text" data-type="整数" error-msg="密码为整数" error-pos="42" placeholder="请输入密码" name="password"/>
                     </div>
                     <!--清浮动-->
                     <span class="clearfix"></span>
@@ -84,10 +97,14 @@
                     <div style="text-align: center;">
                         <!--表单提交时，必须是input元素，并指定type类型为button，否则ajax提交时，会返回error回调函数-->
                         <input type="button" id="return" class="button no" value="返回"  />
-                        <input type="button" id="save" class="button yes" value="提交" />
+                        <input style="display: none" type="button" id="save" class="button yes" value="提交" />
                     </div>
                 </div>
             </form>
+            <div id="checkifexist" style="width: 500px">
+            <button  class="button green" style="margin-left: 20px;float: left" onclick="testifexist()"><span class="icon-build"></span>检测</button>
+            <span style="display: none;float: left;margin-left: 10px;margin-top: 5px;color: red" id="tipspan">请输入用户名，注意用户名应不能重复</span>
+            </div>
         </div>
     </div>
 </div>
@@ -110,7 +127,7 @@
     <div class="unit" style="width: 800px;">
         <div style="text-align: center;">
             <!--表单提交时，必须是input元素，并指定type类型为button，否则ajax提交时，会返回error回调函数-->
-            <input type="submit" id="check" class="button yes" value="提交" />
+            <input  type="submit" id="check" class="button yes" value="提交" />
         </div>
     </div>
 </form>
@@ -120,17 +137,23 @@
 
   <script>
 
+      var status=0
 
       // 监听点击保存按钮事件
       $("#save").click(function() {
 
+          var a=$("#email").val()
+          var b=$("#pwd").val()
+          $("#userinput").attr("disabled",false)
+          if(a!=""&&b!=""&&status==1) {
+
               javaex.optTip({
-                  content : "数据提交中，请稍候...",
-                  type : "submit"
+                  content: "数据提交中，请稍候...",
+                  type: "submit"
               });
 
-          // 表单验证函数
-          // if (javaexVerify()) {
+              // 表单验证函数
+              // if (javaexVerify()) {
               // 返回错误信息时，可以添加自定义异常提示。参数为元素id和提示
               // addErrorMsg("username", "用户名不存在");
               // 提交
@@ -139,36 +162,42 @@
                   //几个参数需要注意一下
                   type: "POST",//方法类型
                   dataType: "json",//预期服务器返回的数据类型
-                  url: "/mailre" ,//url
+                  url: "/mailre",//url
                   data: $('#form').serialize(),
                   success: function (result) {
                       console.log(result);//打印服务端返回的数据(调试用)
                       if (result.code == 000000) {
                           javaex.optTip({
-                              content : "操作成功",
-                              type : "success",
+                              content: "操作成功",
+                              type: "success",
                           });
                           // 建议延迟加载
-                           setTimeout(function() {
-                            $("#form1").show();
-                          //
-                          //     // 刷新页面
-                          //     // window.location.reload();
-                          //     // 跳转页面
-                          //     // window.location.href = "${pageContext.request.contextPath}/zone_info/list.action";
-                           }, 1000);
+                          setTimeout(function () {
+                              $("#form1").show();
+                              //
+                              //     // 刷新页面
+                              //     // window.location.reload();
+                              //     // 跳转页面
+                              //     // window.location.href = "${pageContext.request.contextPath}/zone_info/list.action";
+                          }, 1000);
 
 
-                      }
-                      ;
+                      };
                   },
-                  error : function() {
-                         alert("当前网络状态不佳导致崩溃，请关闭网页重试！抱歉");
+                  error: function () {
+                      status=0
+                      javaex.optTip({
+                          content: "操作失败，请检查邮箱是否有误",
+                          type: "error",
+                      });
+                     // alert("当前网络状态不佳导致崩溃，请关闭网页重试！抱歉");
                   }
               });
 
 
-
+          }else {
+              alert("请确认各项填写正确并对用户名进行检测！")
+          }
 
 
 
@@ -179,6 +208,38 @@
            window.location.href ="/index";
       });
 
+
+      function testifexist() {
+          var userinput=$("#userinput").val()
+          if(userinput==null||userinput==""){
+            $("#tipspan").css("display","block")
+          }else {
+              $("#tipspan").css("display","none")
+              $.ajax({
+                  url:"/checkUsername",
+                  data:{
+                      "username":userinput
+                  },
+                  success:function (rtn) {
+                      if(rtn.code=="000000"){
+                          $("#tipspan").css("color","green")
+                          $("#tipspan").text("该用户名可以使用")
+                          $("#tipspan").css("display","block")
+                          status=1
+                          $("#save").css("display","inline")
+                          $("#userinput").attr("disabled",true)
+
+                      }else {
+                          $("#tipspan").css("color","red")
+                          $("#tipspan").text("该用户名已经被注册")
+                          $("#tipspan").css("display","block")
+                      }
+                  }
+
+              })
+          }
+
+      }
 
 
   </script>
