@@ -85,7 +85,7 @@ public class StageController {
             Utils utils=new Utils();
             if(uniqueSet.size()>=3) {
                 for (int k = 0; k < 3; k++) {
-                    System.out.println(typelists);
+                  //  System.out.println(typelists);
                     String a = utils.SortTopFour(typelists);
                     for (int i = 0; i < typelists.size(); i++) {
                         if (typelists.get(i) == Integer.parseInt(a)) {
@@ -224,11 +224,6 @@ public class StageController {
 
 
 
-
-
-
-
-
     //查询所有文章（正常） 分页查询,并基于协调过滤推荐算法的思想去实现首页文章推荐
     @RequestMapping("/index.action")
     public String list(ModelMap map,
@@ -242,9 +237,6 @@ public class StageController {
         *
         * */
         //工具类
-
-        System.out.println();
-
         if(session.getAttribute("user")!=null) {
 
             //return "stage/index";
@@ -296,7 +288,6 @@ public class StageController {
 
                     //更新用户的模型，添加关注的作者信息
                     String a = attentionnames.toString();
-
                     userModelService.updateUserModelsubmitname(a, user.getId());
                 }
             }
@@ -332,16 +323,8 @@ public class StageController {
             }
            // System.out.println(hotlists);
             return "stage/index";
-        }else {
+        } else {
             Map<String, Object> param = new HashMap<>();
-            param.put("status", 1);
-            //PageHelper插件
-            PageHelper.startPage(pageNum, pageSize);
-            List<ArticleInfo> list = articleInfoService.list(param);
-            PageInfo<ArticleInfo> pageInfo = new PageInfo<ArticleInfo>(list);
-            map.put("pageInfo", pageInfo);
-           // System.out.println("没进来了:"+pageInfo);
-            //查询所有的文章分类
             List<ArticleInfo> hotlists=hotService.getHotArticle();
             if(hotlists.size()!=0){
                 map.put("hotarts",hotlists);
@@ -349,7 +332,17 @@ public class StageController {
             }else {
                 map.put("hotnull","0");
             }
-            //System.out.println(hotlists);
+            param.put("status", 1);
+            //PageHelper插件
+
+            List<ArticleInfo> list = articleInfoService.list(param);
+            List<Integer> ids=Utils.homeforguides(list,hotlists);
+            //这里是对于普游客而言，把今日最热随机放入其中
+            PageHelper.startPage(pageNum, pageSize);
+            List<ArticleInfo> list1 = articleInfoService.selectByIdList(ids);
+            PageInfo<ArticleInfo> pageInfo = new PageInfo<ArticleInfo>(list1);
+            map.put("pageInfo", pageInfo);
+            //查询所有的文章分类
             map.put("typeList", typeMapper.selectAll(null));
             return "stage/index";
         }
@@ -531,8 +524,8 @@ public class StageController {
         int status=1;//这个用来检测关键词中是否有某个是不存在的
         //自此，就转变为了多个关键词,每个关键词单独去搜索，然后取相重复度最高的文章
         for (int i=0;i<keywords.length;i++){
-            List<ElasticArticle>  list=articleRepository.findAllByTitleContains(keywords[i]);
-           // System.out.println("本次结果"+list);
+            List<ElasticArticle>  list = articleRepository.findAllByContentContainsAndTitleLike(keywords[i],keywords[i]);
+            System.out.println("本次结果"+list);
             if(list.isEmpty()){
                 status=0;
                 break;
@@ -558,13 +551,20 @@ public class StageController {
             List<Integer> index = Maxindex.maxindex(count);
 
             for (int i = 0; i < index.size(); i++) {
-                idindex.add(idto.get(index.get(i)));
+                idindex.add(idto.get(index.get(index.size()-i-1)));
             }
       //  System.out.println(idindex);
             //PageHelper插件
             PageHelper.startPage(pageNum, pageSize);
             List<ArticleInfo> list = articleInfoService.searchlist(idindex);
             PageInfo<ArticleInfo> pageInfo = new PageInfo<ArticleInfo>(list);
+            List<ArticleInfo> hotlists=hotService.getHotArticle();
+            if(hotlists.size()!=0){
+                map.put("hotarts",hotlists);
+                map.put("hotnull","1");
+            }else {
+                map.put("hotnull","0");
+            }
             map.put("pageInfo", pageInfo);
             //查询所有的文章分类
             map.put("typeList", typeMapper.selectAll(null));
@@ -578,6 +578,13 @@ public class StageController {
             PageHelper.startPage(pageNum, pageSize);
             List<ArticleInfo> list = articleInfoService.searchlist(idindex);
             PageInfo<ArticleInfo> pageInfo = new PageInfo<ArticleInfo>(list);
+            List<ArticleInfo> hotlists=hotService.getHotArticle();
+            if(hotlists.size()!=0){
+                map.put("hotarts",hotlists);
+                map.put("hotnull","1");
+            }else {
+                map.put("hotnull","0");
+            }
             map.put("pageInfo", pageInfo);
             map.put("typeList", typeMapper.selectAll(null));
             map.put("message","抱歉，暂时还没有人发布含有\""+keyword+"\"的关键词的文章");

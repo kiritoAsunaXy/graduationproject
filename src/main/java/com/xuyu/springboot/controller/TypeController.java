@@ -37,6 +37,9 @@ public class TypeController {
                           @RequestParam(required = false,value = "data") String data){
         PageHelper.startPage(pageNum, pageSize);
         List<TypeInfo> list=typeMapper.selectAll(data);
+        list.forEach(typeInfo -> typeInfo.setSort(
+                typeInfoService.getReadCount(typeInfo.getId()).toString()
+        ));
         if(list.size()==0){
             model.addAttribute("err_type","查无记录");
         }

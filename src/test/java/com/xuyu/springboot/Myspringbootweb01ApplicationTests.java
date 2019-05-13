@@ -5,6 +5,7 @@ import com.xuyu.springboot.elasticsearchRepository.ArticleRepository;
 import com.xuyu.springboot.mapper.TypeMapper;
 import com.xuyu.springboot.mapper.UserMapper;
 import com.xuyu.springboot.service.ArticleInfoService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,7 @@ public class Myspringbootweb01ApplicationTests {
 
 
 
+
     @Test
     public void test02(){
 
@@ -122,22 +124,53 @@ public class Myspringbootweb01ApplicationTests {
 
 
     @Test
+    public void insertElastic(){
+        Map<String,Object> param=new HashMap<>();
+             List<ArticleInfo> list=articleInfoService.list(param);
+             List<ArticleInfo> list2=new ArrayList<>();
+             list.forEach(item->{
+                 list2.add(articleInfoService.selectById(Integer.parseInt(item.getId())));
+             });
+
+             list2.forEach( it -> {
+                 ElasticArticle elasticArticle=new ElasticArticle();
+                 elasticArticle.setId(it.getId());
+                 elasticArticle.setTitle(it.getTitle());
+                 elasticArticle.setContent(it.getContent());
+                 articleRepository.index(elasticArticle);
+             });
+    }
+
+
+
+
+    @Test
     public void testElastic(){
             System.out.println("进来了");
             //List<ElasticArticle> lists=articleRepository.findByTitleLike("java");
         //List<ElasticArticle> lists= articleRepository.findAllByTitle("关于");
 
-        List<ElasticArticle> lists=articleRepository.findAllByTitleContains("linux");
-            System.out.println(lists.size());
-           for(ElasticArticle elasticArticle:lists){
-               System.out.println(elasticArticle.getTitle());
-           }
+       /* List<ElasticArticle> lists=articleRepository.findAllByTitleContains("linux");
+        System.out.println(lists.size());
+        for(ElasticArticle elasticArticle:lists){
+            System.out.println(elasticArticle.getTitle());
+        }*/
 
-
+     articleRepository.deleteAll();
 
 
     }
 
+    @Test
+    public void testQueryElastic(){
+
+
+       /* List<ElasticArticle> list=articleRepository.f("java","java");
+        list.forEach(item->{
+            System.out.println(item.toString());
+        });
+*/
+    }
 
 
 

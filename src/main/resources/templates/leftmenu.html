@@ -40,7 +40,22 @@
                     <li><a href="/dataAnalyse2" th:text="用户数据"></a></li>
                 </ul>
             </li>
+
+            <li shiro:hasPermission="dataanalyse" class="menu-item">
+                <a href="#"><span class="icon-stats-dots" style="color: #3399ff"></span>数据分析<i class="icon-keyboard_arrow_left"></i></a>
+                <ul>
+                    <li><a href="/dataAnalyse" th:text="文章与分类作者"></a></li>
+                    <li><a href="/dataAnalyse2" th:text="用户数据"></a></li>
+                </ul>
+            </li>
+
             <li shiro:hasRole="admin" class="menu-item">
+                <a href="#"><span class="icon-bar-chart" style="color: green"></span>文章分类<i class="icon-keyboard_arrow_left"></i></a>
+                <ul>
+                    <li><a href="/getType" th:text="文章类别管理"></a></li>
+                </ul>
+            </li>
+            <li shiro:hasPermission="typemanage" class="menu-item">
                 <a href="#"><span class="icon-bar-chart" style="color: green"></span>文章分类<i class="icon-keyboard_arrow_left"></i></a>
                 <ul>
                     <li><a href="/getType" th:text="文章类别管理"></a></li>
@@ -53,6 +68,7 @@
                     <li><a href="/toArticleEdit">文章主库</a></li>
                     <li><a href="/torecycle_bin">回收站</a></li>
                     <li shiro:hasRole="admin"><a href="/toexamine">待审核</a></li>
+                    <li shiro:hasPermission="examine"><a href="/toexamine">待审核</a> </li>
                 </ul>
             </li>
 
@@ -61,7 +77,14 @@
             <li class="menu-item" shiro:hasRole="admin">
                 <a href="#"><span class="icon-content_paste" style="color: #9729ea"></span>用户管理<i class="icon-keyboard_arrow_left"></i></a>
                 <ul>
-                    <li><a href="/userlist">用户信息</a></li>
+                    <li><a href="/userlist">用户管理</a></li>
+                </ul>
+            </li>
+
+            <li class="menu-item" shiro:hasPermission="usermanage">
+                <a href="#"><span class="icon-content_paste" style="color: #9729ea"></span>用户管理<i class="icon-keyboard_arrow_left"></i></a>
+                <ul>
+                    <li><a href="/userlist">用户管理</a></li>
                 </ul>
             </li>
 
@@ -88,6 +111,7 @@
                 <ul>
                     <li><a href="/tomymymessage">我收到的回复</a></li>
                     <li shiro:hasRole="admin"><a href="/tomessageforall">系统消息群发</a></li>
+                    <li shiro:hasPermission="message"><a href="/tomessageforall">系统消息群发</a></li>
                 </ul>
             </li>
 

@@ -64,7 +64,6 @@ public class ShiroConfig {
         filterMap.put("/dataAnalyse","anon");//数据分析
         filterMap.put("/test", "anon");//测试
         filterMap.put("/type.action","anon");//查询同类型的文章
-
         filterMap.put("/showtypeinfo","anon");//前台的信息
         filterMap.put("/index", "anon");//登录页面
         filterMap.put("/user","anon");//登录逻辑的开始
@@ -73,7 +72,7 @@ public class ShiroConfig {
         filterMap.put("/icode","anon");//获取和验证验证码
         filterMap.put("/getVerifyCode.action","anon");//获得session的验证码
         filterMap.put("/article.action", "anon");//前台具体文章查阅可以不用登陆，这里是游客用户
-
+        filterMap.put("/initpermission","anon");//修改权限
 
 
         filterMap.put("/**", "authc");//通配
@@ -111,6 +110,7 @@ public class ShiroConfig {
         filterMap.put("/numofmessage","authc");
         filterMap.put("/tomessageforall","authc");
         filterMap.put("/operation","authc");
+
     //授权过滤器,没有授权的会去未授权页面，需要配置一下
 //        filterMap.put("/user/add", "perms[user:add]");
 //        filterMap.put("/user/update", "perms[user:update]");
@@ -150,6 +150,7 @@ public class ShiroConfig {
     public ShiroDialect getShiroDialect() {
         return new ShiroDialect();
     }
+
 
     @Bean("hashedCredentialsMatcher")
     public HashedCredentialsMatcher hashedCredentialsMatcher(){

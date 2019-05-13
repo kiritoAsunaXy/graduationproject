@@ -25,4 +25,8 @@ public class TypeInfoService {
     public void searchByName(String data) {
 
     }
+
+    public Integer getReadCount(String id) {
+        return typeMapper.getReadCount(id);
+    }
 }

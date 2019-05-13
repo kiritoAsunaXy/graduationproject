@@ -10,7 +10,9 @@ import com.xuyu.springboot.mapper.TypeMapper;
 import com.xuyu.springboot.service.ArticleInfoService;
 import com.xuyu.springboot.service.CommentService;
 import com.xuyu.springboot.service.EmployeeService;
+import com.xuyu.springboot.service.PermissionService;
 import com.xuyu.springboot.utils.TestMD5;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -61,7 +63,8 @@ public class UserControl {
     @Autowired
     CommentService commentService;
 
-
+    @Autowired
+     PermissionService permissionService;
 
 
     @RequestMapping("/background")
@@ -90,7 +93,7 @@ public class UserControl {
         return employee;
    }
 
-   //前往用户列表展示界面,这里需要携带的数据有所有用户的信息
+   //前往用户列表展示界面,这里需要携带的数据有所有用户的信息和权限信息
    @RequestMapping("/userlist")
    public String toUserlist(ModelMap map,
                             @RequestParam(value="pageNum", defaultValue="1") int pageNum,
@@ -98,7 +101,9 @@ public class UserControl {
        PageHelper.startPage(pageNum,pageSize);
         List<User> userList= userMapper.selectAllUser();
        PageInfo<User> pageInfo=new PageInfo(userList,2);
+       List<Permission> permissionList=permissionService.queryAllDate();
       map.put("pageInfo",pageInfo);
+      map.put("permissionList",permissionList);
       return "userlist";
    }
 
@@ -287,6 +292,12 @@ public class UserControl {
            employee.setTime(nowtime);
            employee.setPassword(newPassword);
               userMapper.insertEmp(employee);
+             Integer id= employee.getId();
+           //这里去设置默认的权限,拿到前面插入用户的返回的自增id
+           Permission  permission = new Permission();
+           permission.setUserid(id.toString());
+           permission.setPermission("common");
+           permissionService.insertPermission(permission);
               //此上为注册成功了已经
            UserModel userModel=new UserModel();
            userModel.setUserid(employee.getId());
@@ -346,9 +357,13 @@ public class UserControl {
         param.put("owner",user.getId());
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleInfo> list= articleInfoService.list(param);
+        List<Permission> perlist=permissionService.queryPermissionByUserId(id);
         PageInfo<ArticleInfo> pageInfo = new PageInfo<ArticleInfo>(list);
         map.put("pageInfo", pageInfo);
+        map.put("perlist",perlist);
+
         return "personalList";
+
     }
 
 
@@ -426,10 +441,10 @@ public class UserControl {
         String end;
         List<Integer> userNums=new ArrayList<>();
         for(int i=0;i<12;i++){
-            beg="2019-"+(i+1)+"-0";
-            end="2091-"+(i+2)+"-0";
+            beg="2019-"+(i+1)+"-01";
+            end="2019-"+(i+1)+"-31";
             userNums.add(userMapper.numsformonths(beg,end));
-           /* System.out.println((i+1)+"月: "+userNums.get(i)+"用户数目");*/
+           // System.out.println((i+1)+"月: "+userNums.get(i)+"用户数目");
         }
         map.put("userNums",userNums);
         return "dataAnalyse2";
@@ -482,7 +497,24 @@ public class UserControl {
 
 
 
-
+    @RequestMapping("/initpermission")
+    @ResponseBody
+    public Result  initpermission(@RequestParam("checkval[]") String[] checkval,@RequestParam("id") String id){
+        List<String> list=new ArrayList<>();
+        for(String i :checkval){
+            list.add(i);
+        }
+        //先去删除所有的该用户的权限
+        permissionService.delAllByUserId(id);
+        //插入权限
+        for(int i=0;i<list.size();i++){
+            Permission permission=new Permission();
+            permission.setPermission(list.get(i));
+            permission.setUserid(id);
+            permissionService.insertPermission(permission);
+        }
+        return Result.success();
+    }
 
 
 

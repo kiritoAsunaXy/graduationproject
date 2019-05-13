@@ -24,7 +24,7 @@
         select username from user
     </select>
 
-    <insert id="insertEmp">
+    <insert id="insertEmp" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user(username,email,password,gender,time) VALUES (#{username},#{email},#{password},#{gender},#{time})
     </insert>
 

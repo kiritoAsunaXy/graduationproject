@@ -100,11 +100,12 @@
                                     <p id="now" th:text="${pageInfo.getPageNum()}" style="display: none"></p>
                                     <tr>
                                         <th style="width: 30px"><input type="checkbox" class="fill listen-1" /> </th>
-                                        <th style="width: 50px">序号</th>
+                                        <th style="width: 30px">序号</th>
                                         <th style="width: 120px">用户名</th>
-                                        <th style="text-align:center;width: 300px">邮箱</th>
-                                        <th style="width: 90px">性别</th>
-                                        <th style="width: 90px">权限</th>
+                                        <th style="text-align:center;width: 250px">邮箱</th>
+                                        <th style="width: 50px">性别</th>
+                                        <th style="width: 90px">角色</th>
+                                        <th style="width: 100px">权限</th>
                                         <th style="width: 70px">操作</th>
 
                                     </tr>
@@ -119,6 +120,14 @@
                                         <td th:if="${entity.gender==1}" th:text="女"></td>
                                         <td th:if="${entity.author=='admin'}" th:text="管理员"></td>
                                         <td th:if="${entity.author=='common_user'}" th:text="普通用户"></td>
+                                        <td>
+                                            <select>
+                                                <option value="" disabled selected hidden>用户权限</option>
+                                                <span th:each="permission:${permissionList}">
+                                                    <option  th:if="${permission.userid}==${entity.id}" th:text="${permission.permission}" th:value="${permission.permission}"></option>
+                                                </span>
+                                            </select>
+                                        </td>
                                         <td>
                                             <a th:href="@{'/personalList?id='+${entity.id}+'&pageNum=1'}">
                                                 <button class="button wathet"><span class="icon-mode_edit"></span>查看详情</button>

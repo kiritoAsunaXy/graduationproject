@@ -56,6 +56,31 @@
                 <!--正文内容-->
                 <div class="main">
                     <hr>
+                 <div id="per" style="margin-top: 20px;margin-bottom: 20px">
+                     <select>
+                        <option value="" disabled selected hidden> 用户当前权限</option>
+                         <option th:each="permission:${perlist}" th:text="${permission.permission}" disabled></option>
+                     </select>
+                     <button class="button blue" onclick="checkboxshow()">管理权限</button>
+                     <div style="display: none;margin-top: 10px;margin-bottom: 10px;margin-left: 10px" id="checkbox">
+                         <input  th:checked="${#strings.contains(perlist,'admin')}" type="checkbox" class="fill" name="per" value="admin"/>admin
+                         <span>&nbsp;&nbsp;</span>
+                         <input th:checked="${#strings.contains(perlist,'common')}" type="checkbox" class="fill" name="per" value="common"/>common
+                         <span>&nbsp;&nbsp;</span>
+                         <input th:checked="${#strings.contains(perlist,'examine')}" type="checkbox" class="fill" name="per" value="examine"/>examine
+                         <span>&nbsp;&nbsp;</span>
+                         <input th:checked="${#strings.contains(perlist,'message')}" type="checkbox" class="fill" name="per" value="message"/>message
+                         <span>&nbsp;&nbsp;</span>
+                         <input th:checked="${#strings.contains(perlist,'usermanage')}"type="checkbox" class="fill" name="per" value="usermanage"/>userManage
+                         <span>&nbsp;&nbsp;</span>
+                         <input th:checked="${#strings.contains(perlist,'dataanalyse')}"type="checkbox" class="fill" name="per" value="dataanalyse"/>dataAnalyse
+                         <span>&nbsp;&nbsp;</span>
+                         <input th:checked="${#strings.contains(perlist,'typemanage')}"type="checkbox" class="fill" name="per" value="typemanage"/>typemanage
+                         <span>&nbsp;&nbsp;</span>
+                         <button class="button green" onclick="saveper()">保存修改</button>
+                     </div>
+                 </div>
+                    <hr>
                     <form id="form" action="/updateuserinfo" method="post">
 
                          <input type="hidden" th:value="${session.userchoose.getId()}" name="id" id="id">
@@ -182,6 +207,10 @@
                                 </tr>
                                 </tbody>
                             </table>
+
+
+
+
                                 <!--分页显示栏-->
                                 <div class="page">
                                     <ul id="page" class="pagination"></ul>
@@ -242,6 +271,49 @@
     $(".tag-input").attr("placeholder","")
 
     $(".tag-remove").remove()
+
+    function checkboxshow() {
+        $("#checkbox").show()
+    }
+
+
+
+    function saveper() {
+        var obj=document.getElementsByName("per")
+        var checkval=[]
+        for(var a in obj){
+            if(obj[a].checked){
+                checkval.push(obj[a].value)
+            }
+        }
+       var id=$("#id").val()
+
+        $.ajax({
+            url:"/initpermission",
+            data:{
+                "checkval[]" : checkval,
+                "id":id
+            },
+            success : function(rtn) {
+                if(rtn.code=="000000"){
+                    javaex.optTip({
+                        content : "修改成功"
+                    });
+
+                    //延迟加载
+                    setTimeout(function() {
+                        //跳转页面，否则
+                        location.reload();
+                    }, 1000);
+                }else{
+                    javaex.optTip({
+                        content : "失败",
+                        type : "error"
+                    });
+                }
+            }
+        })
+    }
 
 </script>
 </body>

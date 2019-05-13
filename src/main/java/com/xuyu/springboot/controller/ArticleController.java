@@ -248,7 +248,7 @@ public class ArticleController {
             Date date = new Date();
             szDateFolder = new SimpleDateFormat("yyyy/MM/dd").format(date);
             // 存储文件的物理路径
-            String szFilePath = "G:\\upload\\" + szDateFolder;
+            String szFilePath = "D:\\upload\\" + szDateFolder;
             // 自动创建文件夹
             File f = new File(szFilePath);
             if (!f.exists()) {
@@ -293,6 +293,7 @@ public class ArticleController {
         try {
             elasticArticle.setId(articleInfo.getId());
             elasticArticle.setTitle(articleInfo.getTitle());
+            elasticArticle.setContent(articleInfo.getContent());
             articleRepository.index(elasticArticle);
         }catch (Exception e){
             System.out.println("未连接elasticsearch，存入失败");

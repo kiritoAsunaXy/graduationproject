@@ -130,7 +130,8 @@
 
                     <!--第一块div里面放文章作者的头像姓名和关注功能-->
                     <div id="div1" style="width: 330px;height: 80px;margin-left: 20px;margin-top: 30px">
-                        <a href="javascript:;" onclick="img(this)" style="width: 80px;height: 80px"><img th:src="${articleInfo.user.head}" style="width: 70px;height: 70px;border-radius: 35px"></a>
+                        <a href="javascript:;" onclick="img(this)" style="width: 80px;height: 80px"><img  th:if="${articleInfo.user.head}!=null"  th:src="${articleInfo.user.head}" style="width: 70px;height: 70px;border-radius: 35px">
+                            <img  th:if="${articleInfo.user.head}==null"  src="/javaex/pc/images/user.jpg" style="width: 70px;height: 70px;border-radius: 35px"></a>
                         <p class="p1" th:text="${articleInfo.user.username}" style="font-family: 华文琥珀;font-size: 20px;color: grey;"></p>
                         <button class="button blue" id="btnsubmit" onclick="fn()"><span class="icon-plus"></span> 关　注</button>
                     </div>
@@ -175,9 +176,9 @@
                            <li style="margin-top: 20px">
                                <div style="width:350px;height:  100px;">
                              <!--首先是文章图片-->
-                             <a th:href="'/article.action?id='+${latest.id}+'&typeId='+${latest.type_id}" style="float: left;margin-top: 18px;margin-right: 20px;margin-left: 3px"> <img th:src="'http://127.0.0.1:8087/upload/'+${latest.cover }" style="width: 140px;height: 80px"></a>
+                             <a th:href="'/article.action?id='+${latest.id}+'&typeId='+${latest.type_id}" style="float: left;margin-top: 18px;margin-right: 20px;margin-left: 3px"> <img  th:src="'http://127.0.0.1:8087/upload/'+${latest.cover }" style="width: 140px;height: 80px"></a>
                                    <!--   /article.action?id='+hotList[i].id+'&typeId='+hotList[i].type_id+'-->
-                             <a th:href="'/article.action?id='+${latest.id}+'&typeId='+${latest.type_id}" style="margin-left: 10px;margin-top: 10px"><p style="color: blue"  th:text="${latest.title}" ></p></a>
+                             <a th:href="'/article.action?id='+${latest.id}+'&typeId='+${latest.type_id}" style="margin-left: 10px;margin-top: 10px"><p onmouseover="changered2(this)"  onmouseleave="changeblue(this)" style="color: blue"  th:text="${latest.title}" ></p></a>
                              <p th:text="${#strings.abbreviate(latest.content_text,25)}" style="margin-left:10px;color: grey"></p>
                                    </div>
                          </li>
@@ -251,7 +252,7 @@
         </div>
 
         <!--用来承载我自己写的评论区相关-->
-<input style="margin-left: 152px" type="hidden" th:if="${session.user!=null}" th:value="${session.user.id}" id="myid">
+<input style="margin-left: 152px;margin-top: 40px" type="hidden" th:if="${session.user!=null}" th:value="${session.user.id}" id="myid">
         <div style="margin-left: 152px">
             <h2 style="color: gray;margin-left: 50px"> 评论：</h2>
             <textarea style="width:80%;height: 100px;margin-left: 50px" id="comment"> </textarea>
@@ -310,7 +311,7 @@
                     <li><a href="#">后台管理</a></li>
                 </ul>
             </div>
-            <div style="text-align: right;color: #ccc;">Powered by javaex ©2018 苏ICP备18008530号</div>
+            <div style="text-align: right;color: #ccc;">Powered by Xuyu ©2018 </div>
         </div>
     </div>
 </div>
@@ -449,6 +450,12 @@
 
      }
 
+
+
+
+
+
+
      //我的收藏
      function fn2() {
          //相关参数
@@ -456,6 +463,7 @@
          var myid=$("#myid").val()
          var articleid=$("#articleid").val()
          var typeid=$("#type_id").val()
+
 
         $.ajax({
             url:"/testcollection",
@@ -611,6 +619,16 @@ var name=$("#authorname1").val()
          mousewheel:true, //是否开启鼠标滚轮控制
          direkey:true //是否开启左右箭头方向控制
      });
+
+     function changered2(obj) {
+         $(obj).css("color","red")
+         $(obj).css("font-size","16px")
+     }
+
+     function changeblue(obj) {
+         $(obj).css("color","blue")
+         $(obj).css("font-size","14px")
+     }
 
 </script>
 </html>

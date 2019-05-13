@@ -26,4 +26,6 @@ public interface TypeMapper {
     void delArraysType(String data);
 
      List<TypeInfo> getTypeName();
+
+    Integer getReadCount(String id);
 }

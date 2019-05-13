@@ -1,7 +1,11 @@
 package com.xuyu.springboot.utils;
 
 
+import com.xuyu.springboot.bean.ArticleInfo;
+
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Utils {
 
@@ -104,6 +108,58 @@ public class Utils {
             c.add(a.get(b.get(i)));
         }
         return c;
+
+    }
+
+    //实现一个数组按一个数组序列重排序
+    public static List<ArticleInfo> rechange(List<ArticleInfo> article,List<String> sort){
+        List<Integer> list=new ArrayList<>();
+        sort.forEach(item -> {
+            list.add(Integer.parseInt(item));
+        });
+
+        return null;
+    }
+
+
+    //写一个方法用于首页的游客推荐
+    public static List<Integer>  homeforguides(List<ArticleInfo> alllist,List<ArticleInfo> hotlist){
+        if(hotlist.size()<5){
+            //不作处理
+            return null;
+        }else {
+            //1.产生5个0~9的随机数代表从热点文章中随机出的文章
+            List<Integer> indexList = new ArrayList<>();
+            while (indexList.size()<5){
+                Integer index = new Random().nextInt(10);
+                if( !indexList.stream().anyMatch( e -> e==index)){
+                    indexList.add(index);
+                }
+            }
+             //2.根据随机产生的下标拿到hotlist里面5个具体的文章
+            List<ArticleInfo> newHotList = indexList.stream()
+                    .map(index -> hotlist.get(index)).collect(Collectors.toList());
+             //3.构建最终返回结果list
+            List<ArticleInfo> result = new ArrayList<>();
+            while (true){
+                //生成在前十个插入位置的随机数,直接使用上面的indexList
+                //先插入所有的
+                result.addAll(alllist);
+                result.addAll(hotlist);
+                int count=0;
+                Stream.iterate(0, i -> i + 1).limit(result.size()).forEach(i -> {
+                    if(indexList.contains(i)){
+                        result.set(i,newHotList.get(0));
+                        newHotList.remove(0);
+                    }
+                });
+                if(newHotList.size()==0)break;
+            }
+            List<Integer> ids=new ArrayList<>();
+            result.forEach(item ->ids.add(Integer.parseInt(item.getId())));
+            return ids.stream().distinct().collect(Collectors.toList());
+        }
+
 
     }
 

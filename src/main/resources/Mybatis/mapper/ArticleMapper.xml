@@ -30,9 +30,9 @@
 
     <select id="list" resultMap="ArticleInfoMap">
         SELECT
-        ai.id,ai.owner,ai.title,ai.cover,ai.content_text,ti.name,ai.type_id,
+        ai.id,ai.owner,ai.title,ai.content,ai.cover,ai.content_text,ti.name,ai.type_id,
         DATE_FORMAT(ai.update_time,'%Y-%m-%d') as update_time,
-        ai.view_count,u.username,ai.status
+        ai.view_count,u.username,ai.status,u.head,u.fans,ai.stars
         FROM
         Article_info ai,type_info ti,user u
         WHERE
@@ -56,12 +56,12 @@
     <!-- 查询单个文章 -->
     <select id="selectById" resultMap="ArticleInfoMap">
 		SELECT
-			ai.id,ai.owner,ai.title,ai.cover,ai.content_text,ai.type_id,ai.content,ai.stars,
+			ai.id,ai.owner,ai.title,ai.cover,ai.content_text,ai.type_id,ai.content,ai.stars,ti.name,
         DATE_FORMAT(ai.update_time,'%Y-%m-%d') as update_time,
-        ai.view_count,u.username,ai.owner,u.head,u.fans
+        ai.view_count,u.username,ai.owner,u.head,u.fans,ai.status
 		FROM
 			 Article_info ai,type_info ti,user u
-	   WHERE ai.id=#{id} and u.id=ai.owner and ai.status in (1,0,3)
+	   WHERE ai.id=#{id} and u.id=ai.owner and ai.type_id=ti.id and ai.status in (1,0,3)
 
 	</select>
 
@@ -132,7 +132,7 @@
 
     <select id="selectByIdList" resultMap="ArticleInfoMap">
           SELECT
-        ai.id,ai.owner,ai.title,ai.cover,ai.content_text,ti.name,ai.type_id,
+        ai.id,ai.owner,ai.title,ai.cover,ai.content,ai.content_text,ti.name,ai.type_id,
         DATE_FORMAT(ai.update_time,'%Y-%m-%d') as update_time,
         ai.view_count,u.username
         FROM
@@ -227,7 +227,17 @@
             #{id}
         </foreach>
         and ai.status=1
-        ORDER BY ai.update_time DESC
+        ORDER BY field(
+
+        ai.id,
+
+        <foreach collection="list" separator="," item="id">
+
+            #{id}
+
+        </foreach>
+
+        )
 
     </select>
 

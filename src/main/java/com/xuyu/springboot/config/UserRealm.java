@@ -1,8 +1,10 @@
 package com.xuyu.springboot.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.xuyu.springboot.bean.Permission;
 import com.xuyu.springboot.bean.User;
 import com.xuyu.springboot.mapper.UserMapper;
+import com.xuyu.springboot.service.PermissionService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -14,12 +16,17 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 
 public class UserRealm extends AuthorizingRealm {
 
 
      @Autowired
     private UserMapper userMapper;
+
+     @Autowired
+     private PermissionService permissionService;
     /*
      *
      * 执行授权的逻辑
@@ -35,7 +42,10 @@ public class UserRealm extends AuthorizingRealm {
         Subject subject=SecurityUtils.getSubject();
         User user= (User) subject.getPrincipal();//如果认证成功了以后就会在全局的变量SecurityUtils.getSubject()中通过getPrincipal()获得用户信息
         User dbUser= userMapper.getEmpById(user.getId());
+        //去数据库里查出权限
+        List<String> permissionlist=permissionService.queryPermissionsByUserId(dbUser.getId());
         info.addRole(dbUser.getAuthor());
+        info.addStringPermissions(permissionlist);
         //  info.addStringPermission("user:add");
         return info;
 
@@ -55,7 +65,7 @@ public class UserRealm extends AuthorizingRealm {
         //编写shiro的判断逻辑
         //判断用户名
         UsernamePasswordToken token= (UsernamePasswordToken)authenticationToken;
-       User user=userMapper.getUserByName(token.getUsername());
+        User user=userMapper.getUserByName(token.getUsername());
         if(user==null){
             return null;//shiro底层会抛出UnknownAccountException异常
         }

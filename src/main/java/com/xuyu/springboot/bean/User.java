@@ -15,7 +15,6 @@ public class User implements Serializable {
     private String time;
     private Integer fans;
 
-
     public Integer getFans() {
         return fans;
     }
@@ -104,6 +103,8 @@ public class User implements Serializable {
     public void setTags(String tags) {
         this.tags = tags;
     }
+
+
 
     @Override
     public String toString() {

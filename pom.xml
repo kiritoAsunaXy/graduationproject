@@ -70,6 +70,12 @@
             <version>5.1.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!--整合shiro的标签-->
         <dependency>
             <groupId>com.github.theborakompanioni</groupId>

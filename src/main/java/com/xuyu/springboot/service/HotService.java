@@ -22,7 +22,7 @@ public class HotService {
 
     public void increase(Integer id){
        try {
-        Jedis jedis=new Jedis("192.168.181.131",6379);
+        Jedis jedis=new Jedis("127.0.0.1",6379);
         jedis.select(1);
         jedis.zincrby(HOT_ARTICLE_KEY,1,id+"");
         jedis.zremrangeByRank(HOT_ARTICLE_KEY,10,-1);
@@ -35,7 +35,7 @@ public class HotService {
 
     public List<Integer> getHot() {
         try {
-            Jedis jedis = new Jedis("192.168.181.131",6379);
+            Jedis jedis = new Jedis("127.0.0.1",6379);
             jedis.select(1);
             Set<String> idSet = jedis.zrevrange(HOT_ARTICLE_KEY, 0, -1);
             jedis.close();

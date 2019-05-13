@@ -31,7 +31,7 @@ public class HistoryController {
     @RequestMapping("/toHistory")
     public String toHistory(ModelMap map,
                             @RequestParam(value="pageNum", defaultValue="1") int pageNum,
-                            @RequestParam(value="pageSize", defaultValue="3") int pageSize){
+                            @RequestParam(value="pageSize", defaultValue="5") int pageSize){
         Subject subject=SecurityUtils.getSubject();
         User myuser= (User) subject.getPrincipal();
         PageHelper.startPage(pageNum,pageSize);

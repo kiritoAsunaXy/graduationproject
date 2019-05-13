@@ -9,5 +9,6 @@ public interface ArticleRepository extends ElasticsearchRepository<ElasticArticl
 
     public List<ElasticArticle> findAllByTitle(String keyword);
     public List<ElasticArticle> findAllByTitleContains(String a);
+    public List<ElasticArticle> findAllByContentContainsAndTitleLike(String keyword,String keyword2);
 
 }

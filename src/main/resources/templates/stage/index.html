@@ -119,6 +119,7 @@
     <p id="now" th:text="${pageInfo.getPageNum()}" style="display: none"></p>
 
 
+
     <!--获取分类的全局信息-->
      <input type="hidden" id="typeinfoforall" th:value="${typeid}">
 
@@ -130,7 +131,7 @@
 
 <div id="content">
     <div class="block" style="border-radius: 6px 6px 0 0;">
-        <div class="grid-3-7-10">
+        <div class="grid-3-7-10"  style="height: 1700px">
             <div style="width: 18%" class="grid">
 
                 <div>
@@ -179,11 +180,11 @@
                             <img th:src="'http://127.0.0.1:8087/upload/'+${entity.cover }" />
                         </div>
                         <div class="main-15">
-                            <h4>类型：<a href="#" th:text="${entity.name}"></a></h4>
-                            <h2><a th:href="@{'/article.action?id='+${entity.id}+'&typeId='+${entity.type_id}}"><b th:text="${ entity.title}"></b></a></h2>
+                            <h4>类型：<a th:href="'/type.action?typeId='+${entity.type_id}" th:text="${entity.name}"></a></h4>
+                            <h2><a th:href="@{'/article.action?id='+${entity.id}+'&typeId='+${entity.type_id}}"><b  onmouseover="changered(this)" onmouseleave="changeback(this)" style="color: black" th:text="${ entity.title}"></b></a></h2>
                             <p th:text="${ entity.content_text}" style="display: inline"></p><a th:href="@{'/article.action?id='+${entity.id}+'&typeId='+${entity.type_id}}"> 阅读更多…</a>
                             <div class="day" th:text="${ entity.update_time}" style="display: inline"></div>
-                            <h4>作者：<a href="#" th:text="${entity.user.username}"></a></h4>
+                            <h4>作者：<a  th:text="${entity.user.username}"></a></h4>
                         </div>
                     </div>
                 </div>
@@ -221,7 +222,7 @@
                              <!--首先是文章图片-->
                              <a th:href="'/article.action?id='+${hot.id}+'&typeId='+${hot.type_id}" style="float: left;margin-top: 18px;margin-right: 20px"> <img th:src="'http://127.0.0.1:8087/upload/'+${hot.cover }" style="width: 160px;height: 80px"></a>
                         <!--   /article.action?id='+hotList[i].id+'&typeId='+hotList[i].type_id+'-->
-                             <a th:href="'/article.action?id='+${hot.id}+'&typeId='+${hot.type_id}" style="margin-left: 20px;margin-top: 20px"><p style="color: blue"  th:text="${hot.title}" ></p></a>
+                             <a th:href="'/article.action?id='+${hot.id}+'&typeId='+${hot.type_id}" style="margin-left: 20px;margin-top: 20px"><p onmouseover="changered2(this)" onmouseleave="changeblue(this)" style="color: blue"  th:text="${hot.title}" ></p></a>
                              <p th:text="${#strings.abbreviate(hot.content_text,30)}" style="margin-left:20px;color: grey"></p>
                                    </div>
                          </li>
@@ -266,7 +267,7 @@
 
 
 
-<script src="/javaex/js/jquery-1.11.1.min.js"></script>
+<!--<script src="/javaex/js/jquery-1.11.1.min.js"></script>-->
 <script src="/javaex/js/unslider.min.js"></script>
 
 
@@ -288,7 +289,7 @@
                         for(var info in rtn.data.titles) {
                             array.push(rtn.data.titles[info].title)
                         }
-                        $( "#tags" ).autocomplete({
+                        $("#tags").autocomplete({
                             source: array
                         });
                     }else{
@@ -450,7 +451,26 @@
     }
 
 
+    function changered(obj) {
+      $(obj).css("color","red")
+        $(obj).css("font-size","25px")
+    }
 
+    function changeback(obj) {
+        $(obj).css("color","black")
+        $(obj).css("font-size","20px")
+    }
+
+
+    function changered2(obj) {
+        $(obj).css("color","red")
+        $(obj).css("font-size","14px")
+    }
+
+    function changeblue(obj) {
+        $(obj).css("color","blue")
+        $(obj).css("font-size","14px")
+    }
 </script>
 
 </html>

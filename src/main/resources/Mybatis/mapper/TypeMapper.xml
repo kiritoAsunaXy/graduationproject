@@ -17,4 +17,7 @@
     select id,name from type_info
 </select>
 
+    <select id="getReadCount" resultType="Integer">
+        select sum(view_count) from article_info where type_id=#{id}
+    </select>
 </mapper   >

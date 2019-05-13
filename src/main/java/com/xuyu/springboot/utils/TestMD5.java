@@ -12,8 +12,6 @@ public class TestMD5 {
         int hashIterations = 1024;
         Object result = new SimpleHash(hashAlgorithmName, credentials, salt, hashIterations);
         return result.toString();
-
-
     }
 }
 

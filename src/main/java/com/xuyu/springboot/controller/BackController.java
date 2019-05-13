@@ -69,14 +69,6 @@ public class BackController {
 
 
 
-
-
-
-
-
-
-
-
     //前往后台的我的消息
     @RequestMapping("/tomymymessage")
     public String tomymymessage(HttpSession session,ModelMap map){
